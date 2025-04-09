@@ -1,9 +1,8 @@
 ﻿namespace _2DGameFramework.Core
 {
-    public class AttackItem
+    public class AttackItem : WorldObject
     {
-        private string Name {  get; set; }
-        private int HitDamage {  get; set; }
-        private int Range { get; set; }
+        public int HitDamage {  get; init; }
+        public int Range { get; init; }
     }
 }

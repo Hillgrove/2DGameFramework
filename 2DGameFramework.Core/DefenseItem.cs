@@ -1,8 +1,7 @@
 ﻿namespace _2DGameFramework.Core
 {
-    public class DefenseItem
+    public class DefenseItem : WorldObject
     {
-        private string Name {  get; set; }
-        private int ReduceHitPoints { get; set; }
+        public int ReduceHitPoints { get; init; }
     }
 }

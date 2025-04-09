@@ -2,22 +2,54 @@
 {
     public class Creature
     {
-        private string Name { get; set; }
-        private int Hitpoints { get; set; }
+        public required string Name { get; init; }
+
+        private int _hitpoints;
+        private List<AttackItem> _attackItems = new();
+        private List<DefenseItem> _defenseItems = new();
+
+        public Creature(string name, int hitPoints)
+        {
+            Name = name;
+            _hitpoints = hitPoints;
+        }
+
 
         public int Hit()
         {
-            throw new NotImplementedException();
+            return _attackItems.Sum(i => i.HitDamage);
+
         }
 
         public void ReceiveHit(int hitdamage)
         {
-            throw new NotImplementedException();
+            int damageReduction = _defenseItems.Sum(i => i.ReduceHitPoints);
+            _hitpoints -= Math.Max(0, hitdamage - damageReduction);
+
+            if (_hitpoints <= 0)
+            {
+                Console.WriteLine($"{Name} is dead...");
+            }
         }
 
         public void Loot(WorldObject obj)
         {
-            throw new NotImplementedException();
+            if (!obj.IsLootable)
+            {
+                Console.WriteLine($"{obj.Name} can't be looted...");
+            }
+
+            Type objType = obj.GetType();
+
+            if (objType == typeof(AttackItem))
+            {
+                _attackItems.Add((AttackItem)obj);
+            }
+
+            if (objType == typeof(DefenseItem))
+            {
+                _defenseItems.Add((DefenseItem)obj);
+            }
         }
     }
 }

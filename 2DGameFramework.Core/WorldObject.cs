@@ -2,8 +2,8 @@
 {
     public class WorldObject
     {
-        private string Name { get; set; }
-        private bool Lootable { get; set; }
-        private bool Removeable { get; set; }
+        public required string Name { get; init; }
+        public bool IsLootable { get; set; }
+        public bool IsRemoveable { get; set; }
     }
 }
