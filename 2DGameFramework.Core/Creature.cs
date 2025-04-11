@@ -1,17 +1,21 @@
-﻿namespace _2DGameFramework.Core
+﻿using _2DGameFramework.Core.Objects;
+
+namespace _2DGameFramework.Core
 {
     public class Creature
     {
         public required string Name { get; init; }
+        public Position Position { get; private set; }
 
         private int _hitpoints;
-        private List<AttackItem> _attackItems = new();
-        private List<DefenseItem> _defenseItems = new();
+        private readonly List<AttackItem> _attackItems = new();
+        private readonly List<DefenseItem> _defenseItems = new();
 
-        public Creature(string name, int hitPoints)
+        public Creature(string name, int hitPoints, Position startPosition)
         {
             Name = name;
             _hitpoints = hitPoints;
+            Position = startPosition;
         }
 
 
@@ -23,7 +27,7 @@
 
         public void ReceiveHit(int hitdamage)
         {
-            int damageReduction = _defenseItems.Sum(i => i.ReduceHitPoints);
+            int damageReduction = _defenseItems.Sum(i => i.DamageReduction);
             _hitpoints -= Math.Max(0, hitdamage - damageReduction);
 
             if (_hitpoints <= 0)
@@ -37,19 +41,18 @@
             if (!obj.IsLootable)
             {
                 Console.WriteLine($"{obj.Name} can't be looted...");
+                return;
             }
 
-            Type objType = obj.GetType();
+            obj.Position = null; // as item is now picked up and doesn't exist in the world space
 
-            if (objType == typeof(AttackItem))
-            {
-                _attackItems.Add((AttackItem)obj);
-            }
+            if (obj is AttackItem ai) _attackItems.Add(ai);
+            else if (obj is DefenseItem di) _defenseItems.Add(di);
+        }
 
-            if (objType == typeof(DefenseItem))
-            {
-                _defenseItems.Add((DefenseItem)obj);
-            }
+        public void MoveBy(int dx, int dy)
+        {
+            Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
         }
     }
 }
