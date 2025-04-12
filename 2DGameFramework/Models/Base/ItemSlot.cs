@@ -1,6 +1,6 @@
-﻿namespace _2DGameFramework.Objects.Base
+﻿namespace _2DGameFramework.Models.Base
 {
-    public enum ArmorType
+    public enum ItemSlot
     {
         head,
         torso,

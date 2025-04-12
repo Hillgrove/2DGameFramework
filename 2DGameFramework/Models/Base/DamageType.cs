@@ -1,4 +1,4 @@
-﻿namespace _2DGameFramework.Objects.Base
+﻿namespace _2DGameFramework.Models.Base
 {
     public enum DamageType
     {

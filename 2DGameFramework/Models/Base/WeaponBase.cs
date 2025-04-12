@@ -1,8 +1,8 @@
-﻿namespace _2DGameFramework.Objects.Base
+﻿namespace _2DGameFramework.Models.Base
 {
     public abstract class WeaponBase : ItemBase
     {
-        protected WeaponBase(string name, WeaponType weaponType, int range, int hitdamage, string? description = null, bool isLootable = true, Position? position = null) 
+        protected WeaponBase(string name, WeaponType weaponType, int range, int hitdamage, string? description = null, bool isLootable = true, Position? position = null)
             : base(name, description, isLootable, position)
         {
             HitDamage = hitdamage;

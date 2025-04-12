@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\2DGameFramework.Core\2DGameFramework.csproj" />
+    <ProjectReference Include="..\2DGameFramework\2DGameFramework.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2DGameFramework", "2DGameFramework.Core\2DGameFramework.csproj", "{F75F563B-6BA6-45C6-8FD6-B5962981D9F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2DGameFramework", "2DGameFramework\2DGameFramework.csproj", "{F75F563B-6BA6-45C6-8FD6-B5962981D9F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7396C231-7BCA-4658-AFC3-5F6769EC2303}"
 	ProjectSection(SolutionItems) = preProject

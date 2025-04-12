@@ -1,4 +1,4 @@
-﻿namespace _2DGameFramework
+﻿namespace _2DGameFramework.Models
 {
     public readonly record struct Position(int X, int Y);
 }

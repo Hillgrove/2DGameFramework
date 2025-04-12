@@ -1,20 +1,23 @@
-﻿using _2DGameFramework.Objects.Base;
+﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Models.Base;
 
-namespace _2DGameFramework
+namespace _2DGameFramework.Models
 {
     public class Creature
     {
-        public required string Name { get; init; }
+        public string Name { get; }
+        public int Hitpoints { get; private set; }
         public Position Position { get; private set; }
 
-        private int _hitpoints;
+        private readonly int _maxhitpoints;
         private readonly List<WeaponBase> _attackItems = new();
         private readonly List<ArmorBase> _defenseItems = new();
 
         public Creature(string name, int hitPoints, Position startPosition)
         {
             Name = name;
-            _hitpoints = hitPoints;
+            Hitpoints = hitPoints;
+            _maxhitpoints = hitPoints;
             Position = startPosition;
         }
 
@@ -25,18 +28,23 @@ namespace _2DGameFramework
 
         }
 
-        public void ReceiveHit(int hitdamage)
+        public void ReceiveDamage(int hitdamage)
         {
             int damageReduction = _defenseItems.Sum(i => i.DamageReduction);
-            _hitpoints -= Math.Max(0, hitdamage - damageReduction);
+            Hitpoints -= Math.Max(0, hitdamage - damageReduction);
 
-            if (_hitpoints <= 0)
+            if (Hitpoints <= 0)
             {
                 Console.WriteLine($"{Name} is dead...");
             }
         }
 
-        public void Loot(ItemBase obj)
+        public void Heal(int amount)
+        {
+            Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
+        }
+
+        public void Loot(ItemBase obj, World world)
         {
             if (!obj.IsLootable)
             {
@@ -44,10 +52,27 @@ namespace _2DGameFramework
                 return;
             }
 
-            obj.Position = null; // as item is now picked up and doesn't exist in the world space
+            obj.Position = null; // remove from world space
+            // TODO: remove item from world - creature not currently aware of world
+            // world.RemoveObject(obj); // remove 
 
             if (obj is WeaponBase ai) _attackItems.Add(ai);
             else if (obj is ArmorBase di) _defenseItems.Add(di);
+
+
+        }
+
+        public void UseItem(ItemBase item)
+        {
+            if (item is IUsable usable)
+            {
+                usable.UseOn(this);
+            }
+
+            else
+            {
+                Console.WriteLine($"{item.Name} cannot be used.");
+            }
         }
 
         public void MoveBy(int dx, int dy)

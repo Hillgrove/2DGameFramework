@@ -1,11 +1,12 @@
-﻿using _2DGameFramework.Objects.Base;
+﻿using _2DGameFramework.Models;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework
 {
     public class World
     {
-        public int WorldWidth { get; init; }
-        public int WorldHeight { get; init; }
+        public int WorldWidth { get; }
+        public int WorldHeight { get; }
 
         private readonly List<Creature> _creatures = new();
         private readonly List<WorldObject> _objects = new();
@@ -28,5 +29,14 @@ namespace _2DGameFramework
 
         public IEnumerable<Creature> GetCreatures() => _creatures;
         public IEnumerable<WorldObject> GetObjects() => _objects;
+        public bool RemoveObject(EnvironmentObject obj)
+        {
+            if (obj.IsRemovable)
+            {
+                return _objects.Remove(obj);
+            }
+
+            return false;
+        }
     }
 }

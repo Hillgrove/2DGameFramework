@@ -1,16 +1,16 @@
-﻿namespace _2DGameFramework.Objects.Base
+﻿namespace _2DGameFramework.Models.Base
 {
     public class ArmorBase : ItemBase
     {
-        public ArmorBase(string name, ArmorType armorType, int damageReduction, DamageType damageType, string? description = null, bool isLootable = true, Position? position = null) 
+        public ArmorBase(string name, ItemSlot itemSlot, int damageReduction, DamageType damageType, string? description = null, bool isLootable = true, Position? position = null)
             : base(name, description, isLootable, position)
         {
-            ArmorType = armorType;
+            ItemSlot = itemSlot;
             DamageReduction = damageReduction;
             DamageType = damageType;
         }
 
-        public ArmorType ArmorType { get; }
+        public ItemSlot ItemSlot { get; }
         public int DamageReduction { get; }
         public DamageType DamageType { get; }
 
