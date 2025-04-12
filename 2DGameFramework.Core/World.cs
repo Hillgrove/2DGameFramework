@@ -1,20 +1,19 @@
-﻿using _2DGameFramework.Core.Objects;
+﻿using _2DGameFramework.Objects.Base;
 
-namespace _2DGameFramework.Core
+namespace _2DGameFramework
 {
     public class World
     {
-        public int MaxX { get; init; }
-        public int MaxY { get; init; }
-        public Position? Position { get; private set; }
+        public int WorldWidth { get; init; }
+        public int WorldHeight { get; init; }
 
         private readonly List<Creature> _creatures = new();
         private readonly List<WorldObject> _objects = new();
 
-        public World(int maxX, int maxY)
+        public World(int width, int height)
         {
-            MaxX = maxX;
-            MaxY = maxY;
+            WorldWidth = width;
+            WorldHeight = height;
         }
 
         public void AddObject(WorldObject obj)
@@ -26,7 +25,6 @@ namespace _2DGameFramework.Core
         {
             _creatures.Add(creature);
         }
-
 
         public IEnumerable<Creature> GetCreatures() => _creatures;
         public IEnumerable<WorldObject> GetObjects() => _objects;

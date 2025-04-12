@@ -1,6 +1,6 @@
-﻿using _2DGameFramework.Core.Objects;
+﻿using _2DGameFramework.Objects.Base;
 
-namespace _2DGameFramework.Core
+namespace _2DGameFramework
 {
     public class Creature
     {
@@ -8,8 +8,8 @@ namespace _2DGameFramework.Core
         public Position Position { get; private set; }
 
         private int _hitpoints;
-        private readonly List<AttackItem> _attackItems = new();
-        private readonly List<DefenseItem> _defenseItems = new();
+        private readonly List<WeaponBase> _attackItems = new();
+        private readonly List<ArmorBase> _defenseItems = new();
 
         public Creature(string name, int hitPoints, Position startPosition)
         {
@@ -36,7 +36,7 @@ namespace _2DGameFramework.Core
             }
         }
 
-        public void Loot(WorldObject obj)
+        public void Loot(ItemBase obj)
         {
             if (!obj.IsLootable)
             {
@@ -46,8 +46,8 @@ namespace _2DGameFramework.Core
 
             obj.Position = null; // as item is now picked up and doesn't exist in the world space
 
-            if (obj is AttackItem ai) _attackItems.Add(ai);
-            else if (obj is DefenseItem di) _defenseItems.Add(di);
+            if (obj is WeaponBase ai) _attackItems.Add(ai);
+            else if (obj is ArmorBase di) _defenseItems.Add(di);
         }
 
         public void MoveBy(int dx, int dy)
