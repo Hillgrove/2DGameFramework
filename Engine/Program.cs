@@ -10,13 +10,9 @@ HealingPotion hp20 = new("Healing potion", 20);
 Trap deadlyTrap = new("Deadly Trap", 90);
 
 hero.UseItem(hp20);
-Console.WriteLine(hero.Hitpoints);
-
 hero.UseItem(hp20);
 Console.WriteLine(hero.Hitpoints);
 
-hero.UseItem(hp20);
-Console.WriteLine(hero.Hitpoints);
 
 hero.UseItem(deadlyTrap);
 Console.WriteLine(hero.Hitpoints);
