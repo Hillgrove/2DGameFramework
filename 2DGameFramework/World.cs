@@ -8,6 +8,8 @@ namespace _2DGameFramework
         public int WorldWidth { get; }
         public int WorldHeight { get; }
 
+        public IReadOnlyCollection<WorldObject> Containers => throw new NotImplementedException();
+
         private readonly List<Creature> _creatures = new();
         private readonly List<WorldObject> _objects = new();
 
@@ -28,15 +30,7 @@ namespace _2DGameFramework
         }
 
         public IEnumerable<Creature> GetCreatures() => _creatures;
+        
         public IEnumerable<WorldObject> GetObjects() => _objects;
-        public bool RemoveObject(EnvironmentObject obj)
-        {
-            if (obj.IsRemovable)
-            {
-                return _objects.Remove(obj);
-            }
-
-            return false;
-        }
     }
 }

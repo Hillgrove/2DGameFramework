@@ -3,11 +3,12 @@ using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
-    public class Trap : ItemBase, IUsable
+    public class Trap : WorldObject, IUsable
     {
         public int DamageAmount { get; }
 
-        public Trap(string name, int damageAmount, string? description = null, bool isLootable = true, Position? position = null) : base(name, description, isLootable, position)
+        public Trap(string name, int damageAmount, string? description = null) 
+            : base(name, description, position: null, isLootable: false, isRemovable: false)
         {
             DamageAmount = damageAmount;
         }

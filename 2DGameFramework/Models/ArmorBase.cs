@@ -1,9 +1,11 @@
-﻿namespace _2DGameFramework.Models.Base
+﻿using _2DGameFramework.Models.Base;
+
+namespace _2DGameFramework.Models
 {
-    public class ArmorBase : ItemBase
+    public class ArmorBase : WorldObject
     {
-        public ArmorBase(string name, ItemSlot itemSlot, int damageReduction, DamageType damageType, string? description = null, bool isLootable = true, Position? position = null)
-            : base(name, description, isLootable, position)
+        public ArmorBase(string name, ItemSlot itemSlot, int damageReduction, DamageType damageType, string? description = null)
+            : base(name, description, position: null, isLootable: false, isRemovable: false)
         {
             ItemSlot = itemSlot;
             DamageReduction = damageReduction;

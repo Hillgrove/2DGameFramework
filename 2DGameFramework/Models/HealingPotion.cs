@@ -3,15 +3,16 @@ using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
-    public class HealingPotion : ItemBase, IUsable
+    public class HealingPotion : WorldObject, IUsable
     {
         public int HealAmount { get; }
 
-        public HealingPotion(string name, int healAmount, string? description = null, bool isLootable = true, Position? position = null)
-            : base(name, description, isLootable, position)
+        public HealingPotion(string name, int healAmount, string? description = null) 
+            : base(name, description, position: null, isLootable: false, isRemovable: false)
         {
             HealAmount = healAmount;
         }
+
 
         public void UseOn(Creature target)
         {

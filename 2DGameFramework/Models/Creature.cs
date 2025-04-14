@@ -44,25 +44,23 @@ namespace _2DGameFramework.Models
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
         }
 
-        public void Loot(ItemBase obj, World world)
+        public void Loot(ILootSource source)
         {
-            if (!obj.IsLootable)
+            if (source is not WorldObject obj || obj.IsLootable)
             {
-                Console.WriteLine($"{obj.Name} can't be looted...");
+                Console.WriteLine($"{source} can't be looted...");
                 return;
             }
 
-            obj.Position = null; // remove from world space
-            // TODO: remove item from world - creature not currently aware of world
-            // world.RemoveObject(obj); // remove 
-
-            if (obj is WeaponBase ai) _attackItems.Add(ai);
-            else if (obj is ArmorBase di) _defenseItems.Add(di);
-
-
+            foreach (var item in source.GetLoot())
+            {
+                if (item is WeaponBase ai) _attackItems.Add(ai);
+                else if (item is ArmorBase di) _defenseItems.Add(di);
+                else continue; // skip items that are not WeaponBase or ArmorBase
+            }
         }
 
-        public void UseItem(ItemBase item)
+        public void UseItem(WorldObject item)
         {
             if (item is IUsable usable)
             {

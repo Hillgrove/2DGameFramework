@@ -6,7 +6,7 @@ hero.ReceiveDamage(50);
 
 Console.WriteLine(hero.Hitpoints);
 
-HealingPotion hp20 = new("Healing potion", 20);
+HealingPotion hp20 = new("Healing Potion", 20);
 Trap deadlyTrap = new("Deadly Trap", 90);
 
 hero.UseItem(hp20);
