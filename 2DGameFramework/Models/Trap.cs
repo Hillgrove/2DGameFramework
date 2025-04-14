@@ -1,5 +1,4 @@
 ﻿using _2DGameFramework.Interfaces;
-using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {

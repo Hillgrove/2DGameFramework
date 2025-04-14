@@ -3,9 +3,9 @@ using System;
 
 namespace _2DGameFramework.Models
 {
-    public abstract class WeaponBase : WorldObject
+    public class WeaponBase : WorldObject
     {
-        protected WeaponBase(string name, WeaponType weaponType, int range, int hitdamage, string? description = null)
+        public WeaponBase(string name, WeaponType weaponType, int range, int hitdamage, string? description = null)
             : base(name, description, position: null, isLootable: false, isRemovable: false)
         {
             HitDamage = hitdamage;

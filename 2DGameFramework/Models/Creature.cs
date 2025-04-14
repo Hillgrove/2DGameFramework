@@ -1,5 +1,5 @@
 ﻿using _2DGameFramework.Interfaces;
-using _2DGameFramework.Models.Base;
+using System.ComponentModel;
 
 namespace _2DGameFramework.Models
 {
@@ -12,6 +12,7 @@ namespace _2DGameFramework.Models
         private readonly int _maxhitpoints;
         private readonly List<WeaponBase> _attackItems = new();
         private readonly List<ArmorBase> _defenseItems = new();
+        private readonly List<IUsable> _usables = new();
 
         public Creature(string name, int hitPoints, Position startPosition)
         {
@@ -44,21 +45,53 @@ namespace _2DGameFramework.Models
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
         }
 
-        public void Loot(ILootSource source)
+
+        // TODO: currently not deleting itemwrapper if looting from it
+        public void Loot(ILootSource source, World world)
         {
-            if (source is not WorldObject obj || obj.IsLootable)
+            if (source is not WorldObject container)
             {
-                Console.WriteLine($"{source} can't be looted...");
+                Console.WriteLine("Invalid loot source.");
                 return;
+            }
+
+            if (!container.IsLootable)
+            {
+                Console.WriteLine($"{container.Name} is not lootable.");
             }
 
             foreach (var item in source.GetLoot())
             {
-                if (item is WeaponBase ai) _attackItems.Add(ai);
-                else if (item is ArmorBase di) _defenseItems.Add(di);
-                else continue; // skip items that are not WeaponBase or ArmorBase
+                switch (item)
+                {
+                    case WeaponBase weapon:
+                        _attackItems.Add(weapon);
+                        Console.WriteLine($"{weapon.Name} equipped as weapon.");
+                        break;
+
+                    case ArmorBase armor:
+                        _defenseItems.Add(armor);
+                        Console.WriteLine($"{armor.Name} equipped as armor.");
+                        break;
+
+                    case IUsable usable:
+                        _usables.Add(usable);
+                        Console.WriteLine($"{item.Name} added to backpack.");
+                        break;
+
+                    default:
+                        Console.WriteLine($"{item.Name} ignored – unsupported item type.");
+                        break;
+                }
+            }
+
+            if (container is ItemWrapper wrapper && wrapper.IsRemovable)
+            {
+                world.RemoveObject(wrapper);
             }
         }
+
+        public IEnumerable<IUsable> GetUsables() => _usables;
 
         public void UseItem(WorldObject item)
         {

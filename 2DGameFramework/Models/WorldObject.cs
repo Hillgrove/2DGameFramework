@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace _2DGameFramework.Models.Base
+﻿namespace _2DGameFramework.Models
 {
     public class WorldObject
     {
