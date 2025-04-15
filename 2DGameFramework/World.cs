@@ -1,4 +1,5 @@
 ﻿using _2DGameFramework.Models;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework
 {
@@ -8,7 +9,7 @@ namespace _2DGameFramework
         public int WorldHeight { get; }
 
         private readonly List<Creature> _creatures = new();
-        private readonly List<WorldObject> _objects = new();
+        private readonly List<EnvironmentObject> _objects = new();
 
         public World(int width, int height)
         {
@@ -16,7 +17,7 @@ namespace _2DGameFramework
             WorldHeight = height;
         }
 
-        public void AddObject(WorldObject obj)
+        public void AddObject(EnvironmentObject obj)
         {
             _objects.Add(obj);
         }
@@ -28,9 +29,9 @@ namespace _2DGameFramework
 
         public IEnumerable<Creature> GetCreatures() => _creatures;
         
-        public IEnumerable<WorldObject> GetObjects() => _objects;
+        public IEnumerable<EnvironmentObject> GetObjects() => _objects;
 
-        public void RemoveObject(WorldObject obj)
+        public void RemoveObject(EnvironmentObject obj)
         {
             if (obj.IsRemovable)
             {

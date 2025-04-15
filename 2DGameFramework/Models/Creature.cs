@@ -1,5 +1,5 @@
 ﻿using _2DGameFramework.Interfaces;
-using System.ComponentModel;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
@@ -22,8 +22,14 @@ namespace _2DGameFramework.Models
             Position = startPosition;
         }
 
+        public void Hit(Creature target)
+        {
+            int damage = TotalDamage();
+            target.ReceiveDamage(damage);
+            Console.WriteLine($"{Name} hit {target.Name} for {damage} HP.");
+        }
 
-        public int Hit()
+        public int TotalDamage()
         {
             return _attackItems.Sum(i => i.HitDamage);
 
@@ -45,11 +51,9 @@ namespace _2DGameFramework.Models
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
         }
 
-
-        // TODO: currently not deleting itemwrapper if looting from it
         public void Loot(ILootSource source, World world)
         {
-            if (source is not WorldObject container)
+            if (source is not EnvironmentObject container || source is not (Container or ItemWrapper))
             {
                 Console.WriteLine("Invalid loot source.");
                 return;
@@ -58,9 +62,42 @@ namespace _2DGameFramework.Models
             if (!container.IsLootable)
             {
                 Console.WriteLine($"{container.Name} is not lootable.");
+                return;
             }
 
-            foreach (var item in source.GetLoot())
+            var loot = source.GetLoot();
+            EquipLoot(loot);
+
+            if (container.IsRemovable)
+            {
+                world.RemoveObject(container);
+            }
+        }
+
+        
+        public IEnumerable<IUsable> GetUsables() => _usables;
+
+        public void UseItem(WorldObject item)
+        {
+            if (item is IUsable usable)
+            {
+                usable.UseOn(this);
+            }
+
+            else
+            {
+                Console.WriteLine($"{item.Name} cannot be used.");
+            }
+        }
+
+        public void MoveBy(int dx, int dy)
+        {
+            Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
+        }
+        
+        private void EquipLoot(IEnumerable<ItemBase> loot)
+        {
+            foreach (var item in loot)
             {
                 switch (item)
                 {
@@ -84,31 +121,6 @@ namespace _2DGameFramework.Models
                         break;
                 }
             }
-
-            if (container is ItemWrapper wrapper && wrapper.IsRemovable)
-            {
-                world.RemoveObject(wrapper);
-            }
-        }
-
-        public IEnumerable<IUsable> GetUsables() => _usables;
-
-        public void UseItem(WorldObject item)
-        {
-            if (item is IUsable usable)
-            {
-                usable.UseOn(this);
-            }
-
-            else
-            {
-                Console.WriteLine($"{item.Name} cannot be used.");
-            }
-        }
-
-        public void MoveBy(int dx, int dy)
-        {
-            Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
         }
     }
 }

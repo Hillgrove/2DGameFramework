@@ -1,18 +1,19 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
-    public class Trap : WorldObject, IUsable
+    public class Trap : EnvironmentObject, ITriggerable
     {
-        public int DamageAmount { get; }
-
-        public Trap(string name, int damageAmount, string? description = null) 
-            : base(name, description, position: null, isLootable: false, isRemovable: false)
+        public Trap(string name, string? description, int damageAmount, Position position, bool isLootable = false, bool isRemovable = false) 
+            : base(name, description, position, isLootable, isRemovable)
         {
             DamageAmount = damageAmount;
         }
 
-        public void UseOn(Creature target)
+        public int DamageAmount { get; }
+    
+        public void ReactTo(Creature target)
         {
             target.ReceiveDamage(DamageAmount);
             Console.WriteLine($"{target.Name} took {DamageAmount} HP of damage from {Name}");

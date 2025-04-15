@@ -1,17 +1,18 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
-    public class ItemWrapper : WorldObject, ILootSource
+    public class ItemWrapper : EnvironmentObject, ILootSource
     {
-        private readonly WorldObject _itemInside;
+        private readonly ItemBase _itemInside;
 
-        public ItemWrapper(WorldObject item, Position position)
+        public ItemWrapper(ItemBase item, Position position)
             : base(item.Name, item.Description, position, isLootable: true, isRemovable: true)
         {
             _itemInside = item;
         }
 
-        public IEnumerable<WorldObject> GetLoot() => new[] { _itemInside };
+        public IEnumerable<ItemBase> GetLoot() => new[] { _itemInside };
     }
 }
