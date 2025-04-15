@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<WorldWidth>15</WorldWidth>
+	<WorldHeight>15</WorldHeight>
+	<GameLevel>Normal</GameLevel>
+</Configuration>

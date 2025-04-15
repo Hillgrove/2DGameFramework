@@ -1,4 +1,5 @@
-﻿using _2DGameFramework.Models;
+﻿using _2DGameFramework.Configuration;
+using _2DGameFramework.Models;
 using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework
@@ -7,14 +8,16 @@ namespace _2DGameFramework
     {
         public int WorldWidth { get; }
         public int WorldHeight { get; }
+        public GameLevel GameLevel { get; }
 
         private readonly List<Creature> _creatures = new();
         private readonly List<EnvironmentObject> _objects = new();
 
-        public World(int width, int height)
+        public World(int width, int height, GameLevel level = GameLevel.Normal)
         {
             WorldWidth = width;
             WorldHeight = height;
+            GameLevel = level;
         }
 
         public void AddObject(EnvironmentObject obj)

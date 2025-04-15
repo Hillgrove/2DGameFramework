@@ -1,7 +1,10 @@
 ﻿using _2DGameFramework;
+using _2DGameFramework.Configuration;
 using _2DGameFramework.Models;
 
-var world = new World(10, 10);
+var config = ConfigurationLoader.Load("config.xml");
+var world = new World(config.WorldWidth, config.WorldHeight, config.GameLevel);
+
 var hero = new Creature("Lennie", 100, new Position(0, 0));
 
 
