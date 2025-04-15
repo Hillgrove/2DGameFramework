@@ -94,33 +94,53 @@ namespace _2DGameFramework.Models
         {
             Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
         }
-        
+
         private void EquipLoot(IEnumerable<ItemBase> loot)
         {
             foreach (var item in loot)
             {
-                switch (item)
-                {
-                    case WeaponBase weapon:
-                        _attackItems.Add(weapon);
-                        Console.WriteLine($"{weapon.Name} equipped as weapon.");
-                        break;
-
-                    case ArmorBase armor:
-                        _defenseItems.Add(armor);
-                        Console.WriteLine($"{armor.Name} equipped as armor.");
-                        break;
-
-                    case IUsable usable:
-                        _usables.Add(usable);
-                        Console.WriteLine($"{item.Name} added to backpack.");
-                        break;
-
-                    default:
-                        Console.WriteLine($"{item.Name} ignored – unsupported item type.");
-                        break;
-                }
+                EquipSingleItem(item);
             }
+        }
+
+        private void EquipSingleItem(ItemBase item)
+        {
+            switch (item)
+            {
+                case WeaponBase weapon:
+                    EquipWeapon(weapon);
+                    break;
+
+                case ArmorBase armor:
+                    EquipArmor(armor);
+                    break;
+
+                case IUsable usable:
+                    AddUsable(usable);
+                    break;
+
+                default:
+                    Console.WriteLine($"{item.Name} ignored – unsupported item type.");
+                    break;
+            }
+        }
+
+        private void EquipWeapon(WeaponBase weapon)
+        {
+            _attackItems.Add(weapon);
+            Console.WriteLine($"{weapon.Name} equipped as weapon.");
+        }
+
+        private void EquipArmor(ArmorBase armor)
+        {
+            _defenseItems.Add(armor);
+            Console.WriteLine($"{armor.Name} equipped as armor.");
+        }
+
+        private void AddUsable(IUsable usable)
+        {
+            _usables.Add(usable);
+            Console.WriteLine($"{((ItemBase)usable).Name} added to backpack.");
         }
     }
 }
