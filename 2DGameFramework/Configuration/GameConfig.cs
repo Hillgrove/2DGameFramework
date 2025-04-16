@@ -1,4 +1,4 @@
-﻿using _2DGameFramework.Models;
+﻿using _2DGameFramework.Models.Base;
 
 
 namespace _2DGameFramework.Configuration

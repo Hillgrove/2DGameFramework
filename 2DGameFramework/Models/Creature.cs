@@ -1,5 +1,7 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Logging;
 using _2DGameFramework.Models.Base;
+using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
@@ -22,46 +24,69 @@ namespace _2DGameFramework.Models
             Position = startPosition;
         }
 
-        public void Hit(Creature target)
+        public IEnumerable<IUsable> GetUsables() => _usables;
+        
+        public void Attack(Creature target)
         {
             int damage = TotalDamage();
+
+            GameLogger.Log(
+                TraceEventType.Information,
+                LogCategory.Combat,
+                $"{Name} is attacking {target.Name} with total damage {damage}"
+            );
+
             target.ReceiveDamage(damage);
-            Console.WriteLine($"{Name} hit {target.Name} for {damage} HP.");
-        }
-
-        public int TotalDamage()
-        {
-            return _attackItems.Sum(i => i.HitDamage);
-
         }
 
         public void ReceiveDamage(int hitdamage)
         {
             int damageReduction = _defenseItems.Sum(i => i.DamageReduction);
-            Hitpoints -= Math.Max(0, hitdamage - damageReduction);
+            int actualDamage = Math.Max(0, hitdamage - damageReduction);
+            Hitpoints -= actualDamage;
+
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Combat, 
+                $"{Name} received {actualDamage} damage after {damageReduction} reduction. HP now {Hitpoints}");
 
             if (Hitpoints <= 0)
             {
-                Console.WriteLine($"{Name} is dead...");
+                GameLogger.Log(TraceEventType.Critical, LogCategory.Combat, $"{Name} has died.");
             }
         }
 
         public void Heal(int amount)
         {
+            int before = Hitpoints;
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
+            int actualHealed = Hitpoints - before;
+            
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Combat, 
+                $"{Name} healed for {actualHealed}. HP now {Hitpoints}");
         }
 
         public void Loot(ILootSource source, World world)
         {
             if (source is not EnvironmentObject container || source is not (Container or ItemWrapper))
             {
-                Console.WriteLine("Invalid loot source.");
+                GameLogger.Log(
+                    TraceEventType.Warning, 
+                    LogCategory.Inventory, 
+                    $"{Name} attempted to loot an invalid source.");
+                
                 return;
             }
 
             if (!container.IsLootable)
             {
-                Console.WriteLine($"{container.Name} is not lootable.");
+                GameLogger.Log(
+                    TraceEventType.Information, 
+                    LogCategory.Inventory,
+                    $"{Name} attempted to loot '{container.Name}', but it is currently not lootable.");
+
                 return;
             }
 
@@ -71,12 +96,14 @@ namespace _2DGameFramework.Models
             if (container.IsRemovable)
             {
                 world.RemoveObject(container);
+
+                GameLogger.Log(
+                    TraceEventType.Information, 
+                    LogCategory.Inventory, 
+                    $"{container.Name} removed from world after looting.");
             }
         }
-
         
-        public IEnumerable<IUsable> GetUsables() => _usables;
-
         public void UseItem(WorldObject item)
         {
             if (item is IUsable usable)
@@ -86,15 +113,25 @@ namespace _2DGameFramework.Models
 
             else
             {
-                Console.WriteLine($"{item.Name} cannot be used.");
+                GameLogger.Log(
+                    TraceEventType.Information, 
+                    LogCategory.Inventory, 
+                    $"{item.Name} cannot be used by {Name}.");
             }
         }
 
         public void MoveBy(int dx, int dy)
         {
+            var from = Position;
             Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
+
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Game, 
+                $"{Name} moved from {from} to {Position}");
         }
 
+        #region Private Functions
         private void EquipLoot(IEnumerable<ItemBase> loot)
         {
             foreach (var item in loot)
@@ -120,7 +157,10 @@ namespace _2DGameFramework.Models
                     break;
 
                 default:
-                    Console.WriteLine($"{item.Name} ignored – unsupported item type.");
+                    GameLogger.Log(
+                        TraceEventType.Warning, 
+                        LogCategory.Inventory, 
+                        $"{Name} ignored item '{item.Name}' – unsupported item type.");
                     break;
             }
         }
@@ -128,19 +168,38 @@ namespace _2DGameFramework.Models
         private void EquipWeapon(WeaponBase weapon)
         {
             _attackItems.Add(weapon);
-            Console.WriteLine($"{weapon.Name} equipped as weapon.");
+
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Inventory, 
+                $"{Name} equipped weapon: {weapon.Name}");
         }
 
         private void EquipArmor(ArmorBase armor)
         {
             _defenseItems.Add(armor);
-            Console.WriteLine($"{armor.Name} equipped as armor.");
+
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Inventory, 
+                $"{Name} equipped armor: {armor.Name}");
         }
 
         private void AddUsable(IUsable usable)
         {
             _usables.Add(usable);
-            Console.WriteLine($"{((ItemBase)usable).Name} added to backpack.");
+
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Inventory, 
+                $"{Name} added usable item to backpack: {((ItemBase)usable).Name}");
         }
+
+        private int TotalDamage()
+        {
+            return _attackItems.Sum(i => i.HitDamage);
+
+        }
+        #endregion
     }
 }

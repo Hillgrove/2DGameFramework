@@ -1,4 +1,4 @@
-﻿namespace _2DGameFramework.Models
+﻿namespace _2DGameFramework.Models.Base
 {
     public enum GameLevel
     {

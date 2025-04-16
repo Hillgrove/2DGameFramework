@@ -1,5 +1,7 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Logging;
 using _2DGameFramework.Models.Base;
+using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
@@ -13,6 +15,14 @@ namespace _2DGameFramework.Models
             _itemInside = item;
         }
 
-        public IEnumerable<ItemBase> GetLoot() => new[] { _itemInside };
+        public IEnumerable<ItemBase> GetLoot()
+        {
+            GameLogger.Log(
+                TraceEventType.Information,
+                LogCategory.Inventory,
+                $"Item '{_itemInside.Name}' looted from wrapper at {Position}");
+            
+            return new[] { _itemInside };
+        }
     }
 }

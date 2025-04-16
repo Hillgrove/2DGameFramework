@@ -1,5 +1,7 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Logging;
 using _2DGameFramework.Models.Base;
+using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
@@ -15,8 +17,12 @@ namespace _2DGameFramework.Models
     
         public void ReactTo(Creature target)
         {
+            GameLogger.Log(
+                TraceEventType.Warning,
+                LogCategory.World,
+                $"{target.Name} triggered trap '{Name}' at {Position} dealing {DamageAmount} HP damage");
+            
             target.ReceiveDamage(DamageAmount);
-            Console.WriteLine($"{target.Name} took {DamageAmount} HP of damage from {Name}");
         }
     }
 }

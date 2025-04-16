@@ -1,5 +1,7 @@
 ﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Logging;
 using _2DGameFramework.Models.Base;
+using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
@@ -14,9 +16,13 @@ namespace _2DGameFramework.Models
 
 
         public void UseOn(Creature target)
-        {
+        {          
+            GameLogger.Log(
+                TraceEventType.Information, 
+                LogCategory.Inventory, 
+                $"{Name} used on {target.Name}");
+
             _effect(target);
-            Console.WriteLine($"{Name} used on {target.Name}");
         }
     }
 }
