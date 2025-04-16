@@ -17,14 +17,19 @@ namespace _2DGameFramework.Configuration
             if (configElement == null)
                 throw new Exception("Invalid XML format. Root must be <Configuration>");
 
-            GameConfig config = new()
-            {
-                WorldWidth = int.Parse(configElement.Element("WorldWidth")?.Value ?? "100"),
-                WorldHeight = int.Parse(configElement.Element("WorldHeight")?.Value ?? "100"),
-                GameLevel = Enum.TryParse(configElement.Element("GameLevel")?.Value?.Trim(), ignoreCase: true, out GameLevel level)
-                            ? level
-                            : GameLevel.Normal
-            };
+            GameConfig config = new();
+
+            var widthNode = configElement.Element("WorldWidth");
+            if (widthNode != null)
+                config.WorldWidth = int.Parse(widthNode.Value);
+
+            var heightNode = configElement.Element("WorldHeight");
+            if (heightNode != null)
+                config.WorldHeight = int.Parse(heightNode.Value);
+
+            var levelNode = configElement.Element("GameLevel");
+            if (levelNode != null && Enum.TryParse(levelNode.Value.Trim(), true, out GameLevel level))
+                config.GameLevel = level;
 
             return config;
         }
