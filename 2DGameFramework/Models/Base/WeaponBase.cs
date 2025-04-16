@@ -13,5 +13,9 @@
             Range = range;
             WeaponType = weaponType;
         }
+
+        public override string ToString() =>
+            $"{base.ToString()} (Dmg: {HitDamage}, Range: {Range}, Type: {WeaponType})";
+
     }
 }

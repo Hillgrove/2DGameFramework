@@ -24,5 +24,9 @@ namespace _2DGameFramework.Models
             
             return new[] { _itemInside };
         }
+
+        public override string ToString() =>
+            $"{base.ToString()} [Contains: {_itemInside.Name}]";
+
     }
 }

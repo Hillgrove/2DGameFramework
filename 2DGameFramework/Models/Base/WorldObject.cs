@@ -10,5 +10,9 @@
             Name = name;
             Description = description;
         }
+
+        public override string ToString() =>
+            string.IsNullOrWhiteSpace(Description) ? Name : $"{Name} ({Description})";
+
     }
 }

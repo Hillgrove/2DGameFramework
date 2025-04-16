@@ -24,5 +24,9 @@ namespace _2DGameFramework.Models
             
             target.ReceiveDamage(DamageAmount);
         }
+
+        public override string ToString() =>
+            $"{base.ToString()} [Trap: {DamageAmount} dmg]";
+
     }
 }

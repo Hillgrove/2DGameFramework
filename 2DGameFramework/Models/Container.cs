@@ -36,5 +36,16 @@ namespace _2DGameFramework.Models
             
             return loot;
         }
+
+        public override string ToString()
+        {
+            var itemList = _items.Count > 0
+                ? string.Join(", ", _items.Select(i => i.Name))
+                : "None";
+
+            return $"{base.ToString()} [Items: {_items.Count}] [{itemList}]";
+        }
+
+
     }
 }

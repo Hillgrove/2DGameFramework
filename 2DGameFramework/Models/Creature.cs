@@ -131,6 +131,10 @@ namespace _2DGameFramework.Models
                 $"{Name} moved from {from} to {Position}");
         }
 
+        public override string ToString() =>
+            $"{Name} at {Position} ({Hitpoints}/{_maxhitpoints} HP)";
+
+
         #region Private Functions
         private void EquipLoot(IEnumerable<ItemBase> loot)
         {

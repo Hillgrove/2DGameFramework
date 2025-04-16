@@ -24,5 +24,9 @@ namespace _2DGameFramework.Models
 
             _effect(target);
         }
+
+        public override string ToString() =>
+            $"{base.ToString()} [Consumable]";
+
     }
 }

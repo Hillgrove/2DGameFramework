@@ -12,7 +12,11 @@
             ItemSlot = itemSlot;
             DamageReduction = damageReduction;
             DamageType = damageType;
-        }   
+        }
+
+        public override string ToString() => 
+            $"{base.ToString()} (Slot: {ItemSlot}, Reduces: {DamageReduction}, Type: {DamageType})";
+
 
         // TODO: Could be a possibility if I want to make armor that takes up several slots like a chainhauberk (torso, legs)
         //public IReadOnlyCollection<ItemSlot> RequiredSlots { get; init; } = new[] { ItemSlot.Head };

@@ -52,3 +52,15 @@ hero.Attack(hero);
 hero.UseItem(smallHealingPotion);
 hero.UseItem(smallHealingPotion);
 deadlyTrap.ReactTo(hero);
+
+Console.WriteLine();
+Console.WriteLine();
+
+var tree = new EnvironmentObject("A Tree", "A tall and majestic Tree", new Position(1, 3));
+Console.WriteLine(tree);
+
+var chest = new Container("A Chest", "An old chest", new Position(4, 1));
+Console.WriteLine(chest);
+
+Console.WriteLine(sword);
+Console.WriteLine(swordWrapper);
