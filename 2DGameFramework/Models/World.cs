@@ -4,17 +4,26 @@ using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
+    /// <summary>
+    /// Represents the 2D game world, managing its dimensions, creatures, and environment objects.
+    /// </summary>
     public class World
     {
         public int WorldWidth { get; }
         public int WorldHeight { get; }
         public GameLevel GameLevel { get; }
 
+        private readonly ILogger _logger;
         private readonly List<Creature> _creatures = new();
         private readonly List<EnvironmentObject> _objects = new();
 
-        private readonly ILogger _logger;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="World"/> class.
+        /// </summary>
+        /// <param name="width">The width of the world.</param>
+        /// <param name="height">The height of the world.</param>
+        /// <param name="logger">The logger to record world events.</param>
+        /// <param name="level">The game difficulty level.</param>
         public World(int width, int height, ILogger logger, GameLevel level = GameLevel.Normal)
         {
             WorldWidth = width;
@@ -28,6 +37,10 @@ namespace _2DGameFramework.Models
                 $"World created: {width}x{height}, Level={level}");
         }
 
+        /// <summary>
+        /// Adds an environment object to the world after validating its position.
+        /// </summary>
+        /// <param name="obj">The environment object to add.</param>
         public void AddObject(EnvironmentObject obj)
         {
             ValidatePositionWithinBounds(obj);
@@ -40,7 +53,10 @@ namespace _2DGameFramework.Models
                 $"Object '{obj.Name}' added at {obj.Position}");
         }
 
-
+        /// <summary>
+        /// Adds a creature to the world after validating its position.
+        /// </summary>
+        /// <param name="creature">The creature to add.</param>
         public void AddCreature(Creature creature)
         {
             ValidatePositionWithinBounds(creature);
@@ -53,6 +69,10 @@ namespace _2DGameFramework.Models
                 $"Creature '{creature.Name}' added at {creature.Position}");
         }
 
+        /// <summary>
+        /// Removes the specified environment object from the world if it is removable.
+        /// </summary>
+        /// <param name="obj">The object to remove.</param>
         public void RemoveObject(EnvironmentObject obj)
         {
             if (obj.IsRemovable)
@@ -65,7 +85,16 @@ namespace _2DGameFramework.Models
             }
         }
 
+        /// <summary>
+        /// Returns all creatures currently in the world.
+        /// </summary>
+        /// <returns>An enumerable of <see cref="Creature"/> instances.</returns>
         public IEnumerable<Creature> GetCreatures() => _creatures;
+
+        /// <summary>
+        /// Returns all environment objects currently in the world.
+        /// </summary>
+        /// <returns>An enumerable of <see cref="EnvironmentObject"/> instances.</returns>
         public IEnumerable<EnvironmentObject> GetObjects() => _objects;
 
         private void ValidatePositionWithinBounds(IPositionable entity)

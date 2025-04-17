@@ -10,19 +10,29 @@ namespace _2DGameFramework.Configuration
     /// </summary>
     public class ConfigurationException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationException"/> class with a specified error message.
+        /// </summary>
+        /// <param name="message">The message that describes the configuration error.</param>
         public ConfigurationException(string message) : base(message) { }
     }
 
     /// <summary>
-    /// Loads game and logging settings from an XML file into a GameConfig.
+    /// Loads game and logging settings from an XML file into a <see cref="GameConfig"/>.
     /// </summary>
     public class ConfigurationLoader
     {
         private readonly XmlDocument _doc = new();
 
         /// <summary>
-        /// Read and validate <Configuration> from the given XML file path.
+        /// Reads and validates the &lt;Configuration&gt; section from the given XML file path.
         /// </summary>
+        /// <param name="xmlFile">The file path of the XML configuration file.</param>
+        /// <returns>A <see cref="GameConfig"/> populated with world and logging settings.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if <paramref name="xmlFile"/> does not exist.</exception>
+        /// <exception cref="ConfigurationException">
+        /// Thrown if the XML is malformed, missing required elements, or contains invalid values.
+        /// </exception>
         public GameConfig Load(string xmlFile)
         {
             // 1) Validate existence and load XML document

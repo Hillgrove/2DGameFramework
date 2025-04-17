@@ -1,5 +1,8 @@
 ﻿namespace _2DGameFramework.Models.Base
 {
+    /// <summary>
+    /// Base type for all objects placed in the 2D world, carrying a name and optional description.
+    /// </summary>
     public abstract class WorldObject
     {
         public string Name { get; }
@@ -11,6 +14,11 @@
             Description = description;
         }
 
+        /// <summary>
+        /// Returns a formatted string describing this object’s base information,
+        /// including its name and optional description.
+        /// </summary>
+        /// <returns>A string representation of this world object.</returns>
         public override string ToString() =>
             string.IsNullOrWhiteSpace(Description) ? Name : $"{Name} ({Description})";
 

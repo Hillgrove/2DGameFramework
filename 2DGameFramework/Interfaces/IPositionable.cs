@@ -7,9 +7,6 @@ namespace _2DGameFramework.Interfaces
     /// </summary>
     public interface IPositionable
     {
-        /// <summary>
-        /// The current coordinates of this entity.
-        /// </summary>
         Position Position { get; }
     }
 }

@@ -1,5 +1,9 @@
 ﻿namespace _2DGameFramework.Models.Base
 {
+    /// <summary>
+    /// Defines categories for log messages, allowing trace events to be grouped
+    /// and filtered by area of concern within the framework.
+    /// </summary>
     public enum LogCategory
     {
         Game = 1000,

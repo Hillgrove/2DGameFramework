@@ -1,5 +1,8 @@
 ﻿namespace _2DGameFramework.Models.Base
 {
+    /// <summary>
+    /// Specifies the difficulty level of the game, affecting creature strength, loot rarity, etc.
+    /// </summary>
     public enum GameLevel
     {
         Novice,
