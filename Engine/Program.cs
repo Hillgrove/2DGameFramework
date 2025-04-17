@@ -1,5 +1,4 @@
-﻿using _2DGameFramework;
-using _2DGameFramework.Configuration;
+﻿using _2DGameFramework.Configuration;
 using _2DGameFramework.Logging;
 using _2DGameFramework.Models;
 using _2DGameFramework.Models.Base;
@@ -18,7 +17,7 @@ var config = ConfigurationLoader.Load("config.xml");
 var world = new World(config.WorldWidth, config.WorldHeight, config.GameLevel);
 
 
-var hero = new Creature("Lennie", 100, new Position(0, 0));
+var hero = new Creature("Lennie", null, 100, new Position(0, 0));
 
 var smallHealingPotion = new Consumable(
     name: "Small Healing Potion",
