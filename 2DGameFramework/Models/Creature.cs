@@ -5,9 +5,8 @@ using System.Diagnostics;
 
 namespace _2DGameFramework.Models
 {
-    public class Creature
+    public class Creature : WorldObject, IPositionable
     {
-        public string Name { get; }
         public int Hitpoints { get; private set; }
         public Position Position { get; private set; }
 
@@ -16,11 +15,11 @@ namespace _2DGameFramework.Models
         private readonly List<ArmorBase> _defenseItems = new();
         private readonly List<IUsable> _usables = new();
 
-        public Creature(string name, int hitPoints, Position startPosition)
+        public Creature(string name, string? description, int hitpoints, Position startPosition) 
+            : base(name, description)
         {
-            Name = name;
-            Hitpoints = hitPoints;
-            _maxhitpoints = hitPoints;
+            Hitpoints = hitpoints;
+            _maxhitpoints = hitpoints;
             Position = startPosition;
         }
 

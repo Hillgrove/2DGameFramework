@@ -1,4 +1,5 @@
-﻿using _2DGameFramework.Logging;
+﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Logging;
 using _2DGameFramework.Models;
 using _2DGameFramework.Models.Base;
 using System.Diagnostics;
@@ -28,6 +29,8 @@ namespace _2DGameFramework
 
         public void AddObject(EnvironmentObject obj)
         {
+            ValidatePositionWithinBounds(obj);
+
             _objects.Add(obj);
 
             GameLogger.Log(
@@ -36,8 +39,11 @@ namespace _2DGameFramework
                 $"Object '{obj.Name}' added at {obj.Position}");
         }
 
+
         public void AddCreature(Creature creature)
         {
+            ValidatePositionWithinBounds(creature);
+
             _creatures.Add(creature);
 
             GameLogger.Log(
@@ -45,10 +51,6 @@ namespace _2DGameFramework
                 LogCategory.World, 
                 $"Creature '{creature.Name}' added at {creature.Position}");
         }
-
-        public IEnumerable<Creature> GetCreatures() => _creatures;
-        
-        public IEnumerable<EnvironmentObject> GetObjects() => _objects;
 
         public void RemoveObject(EnvironmentObject obj)
         {
@@ -61,5 +63,23 @@ namespace _2DGameFramework
                     $"Removable object '{obj.Name}' removed from world");
             }
         }
+
+        public IEnumerable<Creature> GetCreatures() => _creatures;
+        public IEnumerable<EnvironmentObject> GetObjects() => _objects;
+
+        private void ValidatePositionWithinBounds(IPositionable entity)
+        {
+            var pos = entity.Position;
+            if (pos.X < 0 || pos.X > WorldWidth || pos.Y < 0 || pos.Y > WorldHeight)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(entity),
+                    pos,
+                    $"Position {pos} is outside world bounds (0,0) to ({WorldWidth},{WorldHeight})");
+            }
+        }
+
+
+
     }
 }

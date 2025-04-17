@@ -1,8 +1,9 @@
-﻿using _2DGameFramework.Models.Base;
+﻿using _2DGameFramework.Interfaces;
+using _2DGameFramework.Models.Base;
 
 namespace _2DGameFramework.Models
 {
-    public class EnvironmentObject : WorldObject
+    public class EnvironmentObject : WorldObject, IPositionable
     {
         public Position Position { get; internal set; }
         public bool IsLootable { get; internal set; }
