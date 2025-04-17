@@ -1,6 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
+	<!-- World settings -->
 	<WorldWidth>15</WorldWidth>
 	<WorldHeight>15</WorldHeight>
 	<GameLevel>Normal</GameLevel>
+
+	<!-- Logging configuration -->
+	<Logging>
+		<!-- Default Level -->
+		<GlobalSourceLevel>Information</GlobalSourceLevel>
+
+		<!-- Listeners -->
+		<Listeners>
+			<!-- Console Listener -->
+			<Listener type="Console" />
+
+			<!-- File listener -->
+			<Listener type="File">
+				<FilterLevel>Warning</FilterLevel>
+				<Path>game.log</Path>
+			</Listener>
+		</Listeners>
+	</Logging>
 </Configuration>

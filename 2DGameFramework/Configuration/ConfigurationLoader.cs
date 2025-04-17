@@ -1,83 +1,129 @@
-﻿using _2DGameFramework.Interfaces;
-using _2DGameFramework.Models.Base;
+﻿using _2DGameFramework.Models.Base;
 using System.Diagnostics;
 using System.Xml;
 
 
 namespace _2DGameFramework.Configuration
 {
+    /// <summary>
+    /// Thrown when something is wrong in the configuration file.
+    /// </summary>
     public class ConfigurationException : Exception
     {
         public ConfigurationException(string message) : base(message) { }
     }
 
-
+    /// <summary>
+    /// Loads game and logging settings from an XML file into a GameConfig.
+    /// </summary>
     public class ConfigurationLoader
     {
-        private readonly ILogger _logger;
+        private readonly XmlDocument _doc = new();
 
-        public ConfigurationLoader(ILogger logger)
-        {
-            _logger = logger;
-        }
-
+        /// <summary>
+        /// Read and validate <Configuration> from the given XML file path.
+        /// </summary>
         public GameConfig Load(string xmlFile)
         {
-            _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Configuration,
-                $"Loading config: {xmlFile}");
-            
+            // 1) Validate existence and load XML document
             if (!File.Exists(xmlFile))
-                throw new ConfigurationException($"Config file not found: {xmlFile}");
+                throw new FileNotFoundException($"Config file not found: {xmlFile}");
 
-            // 1) Load the XML document
-            var doc = new XmlDocument();
-            doc.Load(xmlFile);
+            // 2) Load the XML document
+            _doc.Load(xmlFile);
 
-            _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Configuration, 
-                $"Successfully loaded configuration file: {xmlFile}");
+            // 3) Grab the root <Configuration> element
+            var root = _doc.DocumentElement ?? throw new ConfigurationException("Invalid configuration file format");
 
-            // 2) Read and validate configuration values
+            // 4) Read the core game settings
             var config = new GameConfig
             {
-                WorldWidth = ReadInt("/Configuration/WorldWidth"),
-                WorldHeight = ReadInt("/Configuration/WorldHeight"),
-                GameLevel = ReadEnum<GameLevel>("/Configuration/GameLevel")
+                WorldWidth = ReadInt(root, "WorldWidth"),
+                WorldHeight = ReadInt(root, "WorldHeight"),
+                GameLevel = ReadEnum<GameLevel>(root, "GameLevel")
             };
 
-            #region Local helper functions
-            // Helper to read & validate an int
-            int ReadInt(string xpath)
-            {
-                var node = doc.SelectSingleNode(xpath) ?? throw new ConfigurationException($"Missing element: {xpath}");
-                
-                if (!int.TryParse(node.InnerText, out var v))
-                    throw new ConfigurationException($"Invalid integer in {xpath}: '{node.InnerText}'");
-                
-                return v;
-            }
+            // 5) Look for an optional <Logging> section and process it
+            var loggingElement = root.SelectSingleNode("Logging");
+            if (loggingElement != null)
+                ParseLogging(loggingElement, config);
 
-            // Helper to read & validate an enum
-            T ReadEnum<T>(string xpath) where T : struct
-            {
-                var node = doc.SelectSingleNode(xpath) ?? throw new ConfigurationException($"Missing element: {xpath}");
-                
-                if (!Enum.TryParse(node.InnerText, out T e))
-                    throw new ConfigurationException($"Invalid value in {xpath}: '{node.InnerText}'");
-                
-                return e;
-            }
-            #endregion
-
-            _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Configuration,
-                "Config loaded successfully");
-            
             return config;
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Reads an integer child element and throws if missing or invalid.
+        /// </summary>
+        private static int ReadInt(XmlElement root, string name)
+        {
+            var node = root[name] ?? throw new ConfigurationException($"Missing <{name}> in config");
+            
+            if (!int.TryParse(node.InnerText, out int val))
+                throw new ConfigurationException($"Invalid integer for <{name}>: '{node.InnerText}'");
+            
+            return val;
+        }
+
+        /// <summary>
+        /// Reads an enum child element of type T and throws if missing or invalid.
+        /// </summary>
+        private static T ReadEnum<T>(XmlElement root, string name) where T : struct
+        {
+            var node = root[name] ?? throw new ConfigurationException($"Missing <{name}> in config");
+            
+            if (!Enum.TryParse(node.InnerText, out T val))
+                throw new ConfigurationException($"Invalid enum value for <{name}>: '{node.InnerText}'");
+            
+            return val;
+        }
+
+        /// <summary>
+        /// Parses the <Logging> section, filling in cfg.LogLevel and cfg.Listeners.
+        /// </summary>
+        private static void ParseLogging(XmlNode loggingElement, GameConfig config)
+        {
+            // 1) Read the <SourceLevel> element into cfg.LogLevel (if present)
+            var globalSrcLvlNode = loggingElement.SelectSingleNode("GlobalSourceLevel");
+            if (globalSrcLvlNode != null && Enum.TryParse(globalSrcLvlNode.InnerText, out SourceLevels globalLvl))
+                config.LogLevel = globalLvl;
+
+            // 2) Find all <Listener> entries under <Listeners>
+            var listenerElements = loggingElement.SelectNodes("Listeners/Listener");
+            if (listenerElements == null) return;
+
+            // 3) For each Listener node, capture type and any custom settings
+            foreach (XmlNode ln in listenerElements)
+            {
+                // a) Must have a type attribute
+                var typeAttr = ln.Attributes?["type"]?.Value;
+                if (string.IsNullOrWhiteSpace(typeAttr)) continue;
+
+                // b) Create a new ListenerConfig and populate its settings dictionary
+                var listener = new ListenerConfig { Type = typeAttr };
+
+                // c) Read any <FilterLevel> override
+                var filterNode = ln.SelectSingleNode("FilterLevel");
+                if (filterNode != null
+                    && Enum.TryParse(filterNode.InnerText, out SourceLevels filterLvl))
+                {
+                    listener.FilterLevel = filterLvl;
+                }
+
+                // d) Read the rest of the child settigns
+                foreach (XmlNode child in ln.ChildNodes)
+                {
+                    if (child.Name == "FilterLevel")
+                        continue;
+
+                    listener.Settings[child.Name] = child.InnerText;
+                }
+
+                // e) Add to the master list on GameConfig
+                config.Listeners.Add(listener);
+            }
+        }
+        #endregion
     }
 }
