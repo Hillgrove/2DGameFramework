@@ -16,7 +16,7 @@ GameLogger.Trace.Listeners.Add(fileListener);
 
 // Testing Logger
 GameLogger.Log(
-    TraceEventType.Warning, 
+    TraceEventType.Information, 
     LogCategory.Game,
     "Startup logged");
 

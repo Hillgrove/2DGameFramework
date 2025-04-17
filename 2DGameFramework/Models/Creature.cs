@@ -121,15 +121,19 @@ namespace _2DGameFramework.Models
             }
         }
 
-        public void MoveBy(int dx, int dy)
+        public void MoveBy(int dx, int dy, World world)
         {
             var from = Position;
-            Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
+            Position = Position with 
+            {
+                X = Math.Clamp(from.X + dx, 0, world.WorldWidth),
+                Y = Math.Clamp(from.Y + dy, 0, world.WorldHeight)
+            };
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Game, 
-                $"{Name} moved from {from} to {Position}");
+                TraceEventType.Information,
+                LogCategory.Game,
+                $"{Name} attempted move from {from} to ({from.X + dx},{from.Y + dy}), clamped to {Position}");
         }
 
         public override string ToString() =>
