@@ -1,5 +1,4 @@
 ﻿using _2DGameFramework.Interfaces;
-using _2DGameFramework.Logging;
 using _2DGameFramework.Models.Base;
 using System.Diagnostics;
 
@@ -14,13 +13,16 @@ namespace _2DGameFramework.Models
         private readonly List<WeaponBase> _attackItems = new();
         private readonly List<ArmorBase> _defenseItems = new();
         private readonly List<IUsable> _usables = new();
+        private readonly ILogger _logger;
 
-        public Creature(string name, string? description, int hitpoints, Position startPosition) 
+        public Creature(string name, string? description, int hitpoints, Position startPosition, ILogger logger) 
             : base(name, description)
         {
             Hitpoints = hitpoints;
             _maxhitpoints = hitpoints;
             Position = startPosition;
+
+            _logger = logger;
         }
 
         public IEnumerable<IUsable> GetUsables() => _usables;
@@ -29,7 +31,7 @@ namespace _2DGameFramework.Models
         {
             int damage = TotalDamage();
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Combat,
                 $"{Name} is attacking {target.Name} with total damage {damage}"
@@ -44,14 +46,14 @@ namespace _2DGameFramework.Models
             int actualDamage = Math.Max(0, hitdamage - damageReduction);
             Hitpoints -= actualDamage;
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Combat, 
                 $"{Name} received {actualDamage} damage after {damageReduction} reduction. HP now {Hitpoints}");
 
             if (Hitpoints <= 0)
             {
-                GameLogger.Log(TraceEventType.Critical, LogCategory.Combat, $"{Name} has died.");
+                _logger.Log(TraceEventType.Critical, LogCategory.Combat, $"{Name} has died.");
             }
         }
 
@@ -61,7 +63,7 @@ namespace _2DGameFramework.Models
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
             int actualHealed = Hitpoints - before;
             
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Combat, 
                 $"{Name} healed for {actualHealed}. HP now {Hitpoints}");
@@ -71,7 +73,7 @@ namespace _2DGameFramework.Models
         {
             if (source is not EnvironmentObject container || source is not (Container or ItemWrapper))
             {
-                GameLogger.Log(
+                _logger.Log(
                     TraceEventType.Warning, 
                     LogCategory.Inventory, 
                     $"{Name} attempted to loot an invalid source.");
@@ -81,7 +83,7 @@ namespace _2DGameFramework.Models
 
             if (!container.IsLootable)
             {
-                GameLogger.Log(
+                _logger.Log(
                     TraceEventType.Information, 
                     LogCategory.Inventory,
                     $"{Name} attempted to loot '{container.Name}', but it is currently not lootable.");
@@ -96,7 +98,7 @@ namespace _2DGameFramework.Models
             {
                 world.RemoveObject(container);
 
-                GameLogger.Log(
+                _logger.Log(
                     TraceEventType.Information, 
                     LogCategory.Inventory, 
                     $"{container.Name} removed from world after looting.");
@@ -112,7 +114,7 @@ namespace _2DGameFramework.Models
 
             else
             {
-                GameLogger.Log(
+                _logger.Log(
                     TraceEventType.Information, 
                     LogCategory.Inventory, 
                     $"{item.Name} cannot be used by {Name}.");
@@ -124,7 +126,7 @@ namespace _2DGameFramework.Models
             var from = Position;
             Position = Position with { X = Position.X + dx, Y = Position.Y + dy };
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Game, 
                 $"{Name} moved from {from} to {Position}");
@@ -160,7 +162,7 @@ namespace _2DGameFramework.Models
                     break;
 
                 default:
-                    GameLogger.Log(
+                    _logger.Log(
                         TraceEventType.Warning, 
                         LogCategory.Inventory, 
                         $"{Name} ignored item '{item.Name}' – unsupported item type.");
@@ -172,7 +174,7 @@ namespace _2DGameFramework.Models
         {
             _attackItems.Add(weapon);
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Inventory, 
                 $"{Name} equipped weapon: {weapon.Name}");
@@ -182,7 +184,7 @@ namespace _2DGameFramework.Models
         {
             _defenseItems.Add(armor);
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Inventory, 
                 $"{Name} equipped armor: {armor.Name}");
@@ -192,7 +194,7 @@ namespace _2DGameFramework.Models
         {
             _usables.Add(usable);
 
-            GameLogger.Log(
+            _logger.Log(
                 TraceEventType.Information, 
                 LogCategory.Inventory, 
                 $"{Name} added usable item to backpack: {((ItemBase)usable).Name}");
