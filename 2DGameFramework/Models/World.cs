@@ -1,10 +1,9 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
-using _2DGameFramework.Models;
 using _2DGameFramework.Models.Base;
 using System.Diagnostics;
 
-namespace _2DGameFramework
+namespace _2DGameFramework.Models
 {
     public class World
     {
@@ -22,8 +21,8 @@ namespace _2DGameFramework
             GameLevel = level;
 
             GameLogger.Log(
-                TraceEventType.Information, 
-                LogCategory.World, 
+                TraceEventType.Information,
+                LogCategory.World,
                 $"World created: {width}x{height}, Level={level}");
         }
 
@@ -47,8 +46,8 @@ namespace _2DGameFramework
             _creatures.Add(creature);
 
             GameLogger.Log(
-                TraceEventType.Information, 
-                LogCategory.World, 
+                TraceEventType.Information,
+                LogCategory.World,
                 $"Creature '{creature.Name}' added at {creature.Position}");
         }
 
@@ -58,8 +57,8 @@ namespace _2DGameFramework
             {
                 _objects.Remove(obj);
                 GameLogger.Log(
-                    TraceEventType.Information, 
-                    LogCategory.World, 
+                    TraceEventType.Information,
+                    LogCategory.World,
                     $"Removable object '{obj.Name}' removed from world");
             }
         }
