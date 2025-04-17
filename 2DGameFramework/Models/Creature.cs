@@ -200,7 +200,10 @@ namespace _2DGameFramework.Models
 
         private int TotalDamage()
         {
-            return _attackItems.Sum(i => i.HitDamage);
+            // If no weapons equipped, do 1 HP damage with “fists”
+            return _attackItems.Any()
+                ? _attackItems.Sum(i => i.HitDamage)
+                : 1;
 
         }
         #endregion
