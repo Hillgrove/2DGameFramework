@@ -1,59 +1,82 @@
-﻿using _2DGameFramework.Logging;
+﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
 using System.Diagnostics;
-using System.Xml.Linq;
+using System.Xml;
 
 
 namespace _2DGameFramework.Configuration
 {
-    public static class ConfigurationLoader
+    public class ConfigurationException : Exception
     {
-        public static GameConfig Load(string filePath)
+        public ConfigurationException(string message) : base(message) { }
+    }
+
+
+    public class ConfigurationLoader
+    {
+        private readonly ILogger _logger;
+
+        public ConfigurationLoader(ILogger logger)
         {
-            GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, $"Attempting to load configuration file: {filePath}", offset: 1);
+            _logger = logger;
+        }
 
-            if (!File.Exists(filePath))
-            {
-                GameLogger.Log(TraceEventType.Error, LogCategory.Configuration, $"Config file not found: {filePath}", offset: 2);
-                throw new FileNotFoundException($"Configuration file not found: {filePath}");
-            }
-
-            XDocument doc = XDocument.Load(filePath);
-            GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, $"Successfully loaded configuration file: {filePath}", offset: 3);
+        public GameConfig Load(string xmlFile)
+        {
+            _logger.Log(
+                TraceEventType.Information, 
+                LogCategory.Configuration,
+                $"Loading config: {xmlFile}");
             
-            var configElement = doc.Element("Configuration");
+            if (!File.Exists(xmlFile))
+                throw new ConfigurationException($"Config file not found: {xmlFile}");
 
-            if (configElement == null)
+            // 1) Load the XML document
+            var doc = new XmlDocument();
+            doc.Load(xmlFile);
+
+            _logger.Log(
+                TraceEventType.Information, 
+                LogCategory.Configuration, 
+                $"Successfully loaded configuration file: {xmlFile}");
+
+            // 2) Read and validate configuration values
+            var config = new GameConfig
             {
-                GameLogger.Log(TraceEventType.Error, LogCategory.Configuration, "Invalid XML format: Root element <Configuration> missing", offset: 4);
-                throw new Exception("Invalid XML format. Root must be <Configuration>");
+                WorldWidth = ReadInt("/Configuration/WorldWidth"),
+                WorldHeight = ReadInt("/Configuration/WorldHeight"),
+                GameLevel = ReadEnum<GameLevel>("/Configuration/GameLevel")
+            };
+
+            #region Local helper functions
+            // Helper to read & validate an int
+            int ReadInt(string xpath)
+            {
+                var node = doc.SelectSingleNode(xpath) ?? throw new ConfigurationException($"Missing element: {xpath}");
+                
+                if (!int.TryParse(node.InnerText, out var v))
+                    throw new ConfigurationException($"Invalid integer in {xpath}: '{node.InnerText}'");
+                
+                return v;
             }
 
-            GameConfig config = new();
-            GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, "Beginning to parse configuration values", offset: 5);
-
-            var widthNode = configElement.Element("WorldWidth");
-            if (widthNode != null)
+            // Helper to read & validate an enum
+            T ReadEnum<T>(string xpath) where T : struct
             {
-                config.WorldWidth = int.Parse(widthNode.Value);
-                GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, $"WorldWidth set to {config.WorldWidth}", offset: 6);
+                var node = doc.SelectSingleNode(xpath) ?? throw new ConfigurationException($"Missing element: {xpath}");
+                
+                if (!Enum.TryParse(node.InnerText, out T e))
+                    throw new ConfigurationException($"Invalid value in {xpath}: '{node.InnerText}'");
+                
+                return e;
             }
+            #endregion
 
-            var heightNode = configElement.Element("WorldHeight");
-            if (heightNode != null)
-            {
-                config.WorldHeight = int.Parse(heightNode.Value);
-                GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, $"WorldHeight set to {config.WorldHeight}", offset: 7);
-            }
-
-            var levelNode = configElement.Element("GameLevel");
-            if (levelNode != null && Enum.TryParse(levelNode.Value.Trim(), true, out GameLevel level))
-            {
-                config.GameLevel = level;
-                GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, $"GameLevel set to {config.GameLevel}", offset: 8);
-            }
-
-            GameLogger.Log(TraceEventType.Information, LogCategory.Configuration, "Configuration parsing complete", offset: 9);
+            _logger.Log(
+                TraceEventType.Information, 
+                LogCategory.Configuration,
+                "Config loaded successfully");
+            
             return config;
         }
     }

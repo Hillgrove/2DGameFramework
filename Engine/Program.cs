@@ -29,7 +29,9 @@ ILogger logger = new GameLoggerAdapter();
 
 #region Configuration
 // Load config
-var config = ConfigurationLoader.Load("config.xml");
+var loader = new ConfigurationLoader(logger);
+var config = loader.Load("config.xml");
+
 #endregion
 
 #region Constructors

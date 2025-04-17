@@ -6,7 +6,7 @@ namespace _2DGameFramework.Logging
 {
     public class GameLoggerAdapter : ILogger
     {
-        public void Log(TraceEventType level, LogCategory category, string message)
-            => GameLogger.Log(level, category, message);
+        public void Log(TraceEventType level, LogCategory category, string message, int offset = 1)
+            => GameLogger.Log(level, category, message, offset);
     }
 }
