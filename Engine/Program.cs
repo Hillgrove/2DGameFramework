@@ -1,10 +1,9 @@
-﻿using _2DGameFramework.Combat;
-using _2DGameFramework.Configuration;
+﻿using _2DGameFramework.Configuration;
 using _2DGameFramework.Core;
-using _2DGameFramework.Core.Creatures;
+using _2DGameFramework.Core.Factories;
 using _2DGameFramework.Core.Objects;
 using _2DGameFramework.Logging;
-using _2DGameFramework.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 
@@ -50,34 +49,29 @@ else
 }
 #endregion
 
-#region Logger
-//3) Create logger adapter
-ILogger logger = new GameLoggerAdapter(trace);
+#region Framework Startup
+// Create logger adapter based on the TraceSource created in the Configuration
+var logger = new GameLoggerAdapter(trace);
 
-// 3a) Log a startup message at Information level
-logger.Log(TraceEventType.Information, LogCategory.Game, "Game starting...");
+// Initialize DI container
+var provider = GameFramework.Start(logger, worldSettings);
 #endregion
 
-#region Constructors
+#region Startup Log
+var frameworkLogger = provider.GetRequiredService<ILogger>();
+// 3a) Log a startup message at Information level
+frameworkLogger.Log(TraceEventType.Information, LogCategory.Game, "Game starting...");
+#endregion
+
+#region Create World and Hero
+var world = provider.GetRequiredService<World>();
+var creatureFactory = provider.GetRequiredService<ICreatureFactory>();
+var hero = creatureFactory.Create("Lennie", new Position(3, 4), 100);
+#endregion
+
+
+#region Creating of other objects
 // 4) Instantiate core game objects
-var world = new World(
-    worldSettings,
-    logger
-    );
-
-var inventory = new InventoryService(logger);
-var damageCalculator = new DamageCalculator();
-
-var hero = new Creature(
-    name: "Lennie", 
-    description: null, 
-    hitpoints: 100, 
-    startPosition: new Position(3, 4), 
-    logger: logger,
-    inventory: inventory,
-    damageCalculator: damageCalculator
-    );
-
 var smallHealingPotion = new Consumable(
     name: "Small Healing Potion",
     effect: creature => creature.Heal(20),
