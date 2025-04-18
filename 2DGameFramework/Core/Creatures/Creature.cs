@@ -34,8 +34,9 @@ namespace _2DGameFramework.Core.Creatures
             string? description, 
             int hitpoints, 
             Position startPosition, 
-            ILogger logger,
             IInventory inventory,
+            
+            ILogger logger,
             IDamageCalculator damageCalculator)
             : base(name, description)
         {
@@ -43,6 +44,7 @@ namespace _2DGameFramework.Core.Creatures
             _maxhitpoints = hitpoints;
             Position = startPosition;
             _inventory = inventory;
+            
             _logger = logger;
             _damageCalculator = damageCalculator;
         }

@@ -1,12 +1,11 @@
-﻿using _2DGameFramework.Core;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 
 namespace _2DGameFramework.Configuration
 {
     /// <summary>
-    /// Holds the settings needed to configure a single log listener
-    /// (type, optional filter level, and custom key/value settings).
+    /// Represents the configuration settings for initializing the game world,
+    /// including its dimensions and difficulty level.
     /// </summary>
     public class ListenerConfig
     {
@@ -19,12 +18,8 @@ namespace _2DGameFramework.Configuration
     /// Represents all adjustable parameters loaded from the XML configuration file,
     /// including world dimensions, difficulty level, and logging listeners.
     /// </summary>
-    public class GameConfig
+    public class LoggerSettings
     {
-        public int WorldWidth { get; set; } = 50;
-        public int WorldHeight { get; set; } = 50;
-        public GameLevel GameLevel { get; set; } = GameLevel.Normal;
-
         public SourceLevels LogLevel { get; set; } = SourceLevels.All;
         public List<ListenerConfig> Listeners { get; set; } = new List<ListenerConfig>();
     }

@@ -11,19 +11,19 @@ using System.Diagnostics;
 #region Configuration
 // 1) Load configuration (world dimensions, game level, plus logging settings)
 var loader = new ConfigurationLoader();
-var config = loader.Load("config.xml");
+var (worldSettings, loggerSettings) = loader.Load("config.xml");
 
 // 2) Set up the TraceSource for framework-wide logging
 var trace = new TraceSource("2DGameFramework")
 {
     // 2a) Use the log‑level from config to filter events
-    Switch = { Level = config.LogLevel }
+    Switch = { Level = loggerSettings.LogLevel }
 };
 
 // 2b) Wire up each listener defined in the config (or default to Console)
-if (config.Listeners.Count > 0)
+if (loggerSettings.Listeners.Count > 0)
 {
-    foreach (var ListenerConfig in config.Listeners)
+    foreach (var ListenerConfig in loggerSettings.Listeners)
     {
         // Determine listener type and any extra settings (e.g. file path)
         TraceListener listener = ListenerConfig.Type switch
@@ -39,7 +39,7 @@ if (config.Listeners.Count > 0)
         };
 
         // 2c) Apply the same filter to each listener
-        listener.Filter = new EventTypeFilter(config.LogLevel);
+        listener.Filter = new EventTypeFilter(loggerSettings.LogLevel);
         trace.Listeners.Add(listener);
     }
 }
@@ -59,12 +59,11 @@ logger.Log(TraceEventType.Information, LogCategory.Game, "Game starting...");
 #endregion
 
 #region Constructors
-// 4) Instantiate core game objects, injecting the shared ILogger
+// 4) Instantiate core game objects
 var world = new World(
-    width: config.WorldWidth,
-    height: config.WorldHeight,
-    logger: logger,
-    level: config.GameLevel);
+    worldSettings,
+    logger
+    );
 
 var inventory = new InventoryService(logger);
 var damageCalculator = new DamageCalculator();

@@ -32,10 +32,7 @@ namespace _2DGameFramework.Core.Objects
         }
 
 
-        /// <summary>
-        /// Causes this trap to react to the specified creature, logging and applying damage.
-        /// </summary>
-        /// <param name="target">The creature that triggered the trap.</param>
+        /// <inheritdoc/>
         public void ReactTo(Creature target)
         {
             _logger.Log(
@@ -46,10 +43,7 @@ namespace _2DGameFramework.Core.Objects
             target.ReceiveDamage(DamageAmount);
         }
 
-        /// <summary>
-        /// Returns a concise string describing this trap and its damage amount.
-        /// </summary>
-        /// <returns>A string representation of the trap.</returns>
+        /// <inheritdoc/>
         public override string ToString() =>
             $"{base.ToString()} [Trap: {DamageAmount} dmg]";
 

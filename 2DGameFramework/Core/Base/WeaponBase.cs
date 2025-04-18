@@ -11,23 +11,15 @@ namespace _2DGameFramework.Core.Base
         public int BaseDamage { get; }
         public int Range { get; }
         public WeaponType WeaponType { get; }
-        public DamageType DamageType { get; } = DamageType.Physical;
+        public DamageType DamageType { get; }
 
-        protected WeaponBase(string name, string? description, int hitdamage, DamageType damageType, int range, WeaponType weaponType)
+        protected WeaponBase(string name, string? description, int hitdamage, int range, WeaponType weaponType, DamageType damageType = DamageType.Physical)
             : base(name, description)
         {
-            BaseDamage = hitdamage;
-            DamageType = damageType;
-            Range = range;
-            WeaponType = weaponType;
-        }
-
-        protected WeaponBase(string name, string? description, int hitdamage, int range, WeaponType weaponType)
-            : base(name, description)
-        {
-            BaseDamage = hitdamage;
-            Range = range;
-            WeaponType = weaponType;
+            BaseDamage  = hitdamage;
+            DamageType  = damageType;
+            Range       = range;
+            WeaponType  = weaponType;
         }
 
         /// <summary>

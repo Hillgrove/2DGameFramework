@@ -1,4 +1,5 @@
-﻿using _2DGameFramework.Core.Creatures;
+﻿using _2DGameFramework.Configuration;
+using _2DGameFramework.Core.Creatures;
 using _2DGameFramework.Core.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
@@ -19,23 +20,22 @@ namespace _2DGameFramework.Core
         private readonly List<EnvironmentObject> _objects = new();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="World"/> class.
+        /// Initializes a new instance of the <see cref="World"/> class using the specified settings and logger.
         /// </summary>
-        /// <param name="width">The width of the world.</param>
-        /// <param name="height">The height of the world.</param>
+        /// <param name="settings">The configuration settings for the world, including dimensions and game level.</param>
         /// <param name="logger">The logger to record world events.</param>
-        /// <param name="level">The game difficulty level.</param>
-        public World(int width, int height, ILogger logger, GameLevel level = GameLevel.Normal)
+        /// Initializes a new instance of the <see cref="World"/> class.
+        public World(WorldSettings settings, ILogger logger)
         {
-            WorldWidth = width;
-            WorldHeight = height;
-            GameLevel = level;
+            WorldWidth = settings.WorldWidth;
+            WorldHeight = settings.WorldHeight;
+            GameLevel = settings.GameLevel;
 
             _logger = logger;
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.World,
-                $"World created: {width}x{height}, Level={level}");
+                $"World created: {WorldWidth}x{WorldHeight}, Level={GameLevel}");
         }
 
         /// <summary>
