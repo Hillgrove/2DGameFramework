@@ -7,12 +7,4 @@
     <Nullable>enable</Nullable>  
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Configuration\Configuration.xsd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Module\" />
-  </ItemGroup>
-
 </Project>
