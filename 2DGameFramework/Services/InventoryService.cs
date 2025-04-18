@@ -1,5 +1,4 @@
-﻿using _2DGameFramework.Combat;
-using _2DGameFramework.Core;
+﻿using _2DGameFramework.Core;
 using _2DGameFramework.Core.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
