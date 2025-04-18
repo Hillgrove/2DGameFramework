@@ -1,7 +1,6 @@
 ﻿using _2DGameFramework.Combat;
 using _2DGameFramework.Core;
 using _2DGameFramework.Core.Factories;
-using _2DGameFramework.Logging;
 using _2DGameFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,15 +18,14 @@ namespace _2DGameFramework.Extensions
         /// <returns>The updated service collection.</returns>
         public static IServiceCollection Add2DGameFramework(this IServiceCollection services)
         {
-            // Logging
-            services.AddSingleton<ILogger>(new GameLoggerAdapter(GameLogger.Trace));
-
             // Core services
             services.AddSingleton<IDamageCalculator, DamageCalculator>();
             services.AddTransient<IInventory, InventoryService>();
 
             // Factories
             services.AddSingleton<ICreatureFactory, CreatureFactory>();
+            services.AddSingleton<IConsumableFactory, ConsumableFactory>();
+            services.AddSingleton<ITrapFactory, TrapFactory>();
 
             // World
             services.AddSingleton<World>();
