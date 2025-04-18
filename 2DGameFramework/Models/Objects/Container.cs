@@ -1,8 +1,9 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Core;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Represents a container in the world that can hold items for creatures to loot.
@@ -21,7 +22,7 @@ namespace _2DGameFramework.Models
         /// <param name="logger">The logger to record inventory events.</param>
         /// <param name="isLootable">Whether the container can be looted.</param>
         /// <param name="isRemovable">Whether the container can be removed from the world.</param>
-        public Container(string name, string? description, Position position, ILogger logger, bool isLootable = true, bool isRemovable = false) 
+        public Container(string name, string? description, Position position, ILogger logger, bool isLootable = true, bool isRemovable = false)
             : base(name, description, position, isLootable, isRemovable)
         {
             _logger = logger;
@@ -36,8 +37,8 @@ namespace _2DGameFramework.Models
             _items.Add(item);
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"Item '{item.Name}' added to container '{Name}' at {Position}");
         }
 
@@ -53,10 +54,10 @@ namespace _2DGameFramework.Models
             _items.Clear();
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"Loot retrieved from container '{Name}' at {Position}. Items: {loot.Count}");
-            
+
             return loot;
         }
 

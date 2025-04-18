@@ -1,8 +1,10 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Core;
+using _2DGameFramework.Models.Objects;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Creatures
 {
     /// <summary>
     /// Represents a creature in the world that can move, attack, receive damage, heal, and loot items.
@@ -26,7 +28,7 @@ namespace _2DGameFramework.Models
         /// <param name="hitpoints">The starting and maximum hit points of the creature.</param>
         /// <param name="startPosition">The initial position of the creature in the world.</param>
         /// <param name="logger">The logger used to record game events.</param>
-        public Creature(string name, string? description, int hitpoints, Position startPosition, ILogger logger) 
+        public Creature(string name, string? description, int hitpoints, Position startPosition, ILogger logger)
             : base(name, description)
         {
             Hitpoints = hitpoints;
@@ -71,8 +73,8 @@ namespace _2DGameFramework.Models
             Hitpoints -= actualDamage;
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Combat, 
+                TraceEventType.Information,
+                LogCategory.Combat,
                 $"{Name} received {actualDamage} damage after {damageReduction} reduction. HP now {Hitpoints}");
 
             if (Hitpoints <= 0)
@@ -90,10 +92,10 @@ namespace _2DGameFramework.Models
             int before = Hitpoints;
             Hitpoints = Math.Min(Hitpoints + amount, _maxhitpoints);
             int actualHealed = Hitpoints - before;
-            
+
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Combat, 
+                TraceEventType.Information,
+                LogCategory.Combat,
                 $"{Name} healed for {actualHealed}. HP now {Hitpoints}");
         }
 
@@ -109,17 +111,17 @@ namespace _2DGameFramework.Models
             if (source is not EnvironmentObject container || source is not (Container or ItemWrapper))
             {
                 _logger.Log(
-                    TraceEventType.Warning, 
-                    LogCategory.Inventory, 
+                    TraceEventType.Warning,
+                    LogCategory.Inventory,
                     $"{Name} attempted to loot an invalid source.");
-                
+
                 return;
             }
 
             if (!container.IsLootable)
             {
                 _logger.Log(
-                    TraceEventType.Information, 
+                    TraceEventType.Information,
                     LogCategory.Inventory,
                     $"{Name} attempted to loot '{container.Name}', but it is currently not lootable.");
 
@@ -156,8 +158,8 @@ namespace _2DGameFramework.Models
             else
             {
                 _logger.Log(
-                    TraceEventType.Information, 
-                    LogCategory.Inventory, 
+                    TraceEventType.Information,
+                    LogCategory.Inventory,
                     $"{item.Name} cannot be used by {Name}.");
             }
         }
@@ -171,7 +173,7 @@ namespace _2DGameFramework.Models
         public void MoveBy(int dx, int dy, World world)
         {
             var from = Position;
-            Position = Position with 
+            Position = Position with
             {
                 X = Math.Clamp(from.X + dx, 0, world.WorldWidth),
                 Y = Math.Clamp(from.Y + dy, 0, world.WorldHeight)
@@ -218,8 +220,8 @@ namespace _2DGameFramework.Models
 
                 default:
                     _logger.Log(
-                        TraceEventType.Warning, 
-                        LogCategory.Inventory, 
+                        TraceEventType.Warning,
+                        LogCategory.Inventory,
                         $"{Name} ignored item '{item.Name}' – unsupported item type.");
                     break;
             }
@@ -230,8 +232,8 @@ namespace _2DGameFramework.Models
             _attackItems.Add(weapon);
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"{Name} equipped weapon: {weapon.Name}");
         }
 
@@ -240,8 +242,8 @@ namespace _2DGameFramework.Models
             _defenseItems.Add(armor);
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"{Name} equipped armor: {armor.Name}");
         }
 
@@ -250,15 +252,15 @@ namespace _2DGameFramework.Models
             _usables.Add(usable);
 
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"{Name} added usable item to backpack: {((ItemBase)usable).Name}");
         }
 
         private int TotalDamage()
         {
             // If no weapons equipped, do 1 HP damage with “fists”
-            return _attackItems.Any()
+            return _attackItems.Count != 0
                 ? _attackItems.Sum(i => i.HitDamage)
                 : 1;
 

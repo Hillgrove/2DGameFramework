@@ -1,8 +1,10 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Core;
+using _2DGameFramework.Models.Creatures;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Represents a trap in the world that deals damage when a creature triggers it.
@@ -10,7 +12,7 @@ namespace _2DGameFramework.Models
     public class Trap : EnvironmentObject, ITriggerable
     {
         public int DamageAmount { get; }
-        
+
         private readonly ILogger _logger;
 
         /// <summary>
@@ -23,7 +25,7 @@ namespace _2DGameFramework.Models
         /// <param name="logger">The logger to record trap events.</param>
         /// <param name="isLootable">Whether the trap can be looted after triggering.</param>
         /// <param name="isRemovable">Whether the trap can be removed from the world.</param>
-        public Trap(string name, string? description, int damageAmount, Position position, ILogger logger, bool isLootable = false, bool isRemovable = false) 
+        public Trap(string name, string? description, int damageAmount, Position position, ILogger logger, bool isLootable = false, bool isRemovable = false)
             : base(name, description, position, isLootable, isRemovable)
         {
             DamageAmount = damageAmount;
@@ -41,7 +43,7 @@ namespace _2DGameFramework.Models
                 TraceEventType.Warning,
                 LogCategory.World,
                 $"{target.Name} triggered trap '{Name}' at {Position} dealing {DamageAmount} HP damage");
-            
+
             target.ReceiveDamage(DamageAmount);
         }
 

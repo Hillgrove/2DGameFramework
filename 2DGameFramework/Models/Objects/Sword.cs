@@ -1,6 +1,6 @@
 ﻿using _2DGameFramework.Models.Base;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Represents a one‑handed melee weapon that can be used to attack at close range.
@@ -14,7 +14,7 @@ namespace _2DGameFramework.Models
         /// <param name="hitdamage">The base damage this sword inflicts.</param>
         /// <param name="range">The attack range of the sword.</param>
         /// <param name="description">An optional description of the sword.</param>
-        public Sword(string name, int hitdamage, int range, string? description) 
+        public Sword(string name, int hitdamage, int range, string? description)
             : base(name, description, hitdamage, range, WeaponType.OneHanded)
         {
         }

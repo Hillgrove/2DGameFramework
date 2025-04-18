@@ -1,6 +1,6 @@
 ﻿using _2DGameFramework.Models.Base;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Represents a two‑handed ranged weapon that can be used to attack at a distance.
@@ -14,7 +14,7 @@ namespace _2DGameFramework.Models
         /// <param name="description">An optional description of the bow.</param>
         /// <param name="hitdamage">The base damage this bow inflicts.</param>
         /// <param name="range">The maximum range at which this bow can hit.</param>
-        public Bow(string name, string? description, int hitdamage, int range) 
+        public Bow(string name, string? description, int hitdamage, int range)
             : base(name, description, hitdamage, range, WeaponType.TwoHanded)
         {
         }

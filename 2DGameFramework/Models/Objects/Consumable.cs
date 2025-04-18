@@ -1,8 +1,9 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Creatures;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Represents an item that can be consumed to apply a specific effect to a creature.
@@ -19,7 +20,7 @@ namespace _2DGameFramework.Models
         /// <param name="effect">The action to perform on the target creature when used.</param>
         /// <param name="description">An optional description of the consumable.</param>
         /// <param name="logger">The logger to record usage events.</param>
-        public Consumable(string name, Action<Creature> effect, string? description, ILogger logger) 
+        public Consumable(string name, Action<Creature> effect, string? description, ILogger logger)
             : base(name, description)
         {
             _effect = effect;
@@ -33,8 +34,8 @@ namespace _2DGameFramework.Models
         public void UseOn(Creature target)
         {
             _logger.Log(
-                TraceEventType.Information, 
-                LogCategory.Inventory, 
+                TraceEventType.Information,
+                LogCategory.Inventory,
                 $"{Name} used on {target.Name}");
 
             _effect(target);

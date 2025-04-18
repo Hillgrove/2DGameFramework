@@ -1,8 +1,10 @@
 ﻿using _2DGameFramework.Configuration;
 using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
-using _2DGameFramework.Models;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Core;
+using _2DGameFramework.Models.Creatures;
+using _2DGameFramework.Models.Objects;
 using System.Diagnostics;
 
 
@@ -124,7 +126,7 @@ world.AddObject(tree);
 world.AddObject(chest);
 #endregion
 
-Console.WriteLine(world.GetObjects().ToString());
+Console.WriteLine(world.GetObjects());
 
 hero.Loot(swordWrapper, world);
 hero.Attack(hero);

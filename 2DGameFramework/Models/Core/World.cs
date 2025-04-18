@@ -1,8 +1,9 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Creatures;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Core
 {
     /// <summary>
     /// Represents the 2D game world, managing its dimensions, creatures, and environment objects.
@@ -108,8 +109,5 @@ namespace _2DGameFramework.Models
                     $"Position {pos} is outside world bounds (0,0) to ({WorldWidth},{WorldHeight})");
             }
         }
-
-
-
     }
 }

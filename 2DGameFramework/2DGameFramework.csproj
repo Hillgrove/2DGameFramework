@@ -4,11 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>_2DGameFramework</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>enable</Nullable>  
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Configuration\Configuration.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Module\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using _2DGameFramework.Models;
+﻿using _2DGameFramework.Models.Creatures;
 
 namespace _2DGameFramework.Interfaces
 {

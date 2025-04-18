@@ -1,7 +1,7 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Core
 {
     /// <summary>
     /// Represents an object placed in the world, with position and optional loot/removal capabilities.

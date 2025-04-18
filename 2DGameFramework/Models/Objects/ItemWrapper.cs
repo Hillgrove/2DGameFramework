@@ -1,8 +1,9 @@
 ﻿using _2DGameFramework.Interfaces;
 using _2DGameFramework.Models.Base;
+using _2DGameFramework.Models.Core;
 using System.Diagnostics;
 
-namespace _2DGameFramework.Models
+namespace _2DGameFramework.Models.Objects
 {
     /// <summary>
     /// Wraps a single item in the world as a lootable and removable object.
@@ -36,7 +37,7 @@ namespace _2DGameFramework.Models
                 TraceEventType.Information,
                 LogCategory.Inventory,
                 $"Item '{_itemInside.Name}' looted from wrapper at {Position}");
-            
+
             return new[] { _itemInside };
         }
 
