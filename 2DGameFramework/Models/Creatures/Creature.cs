@@ -261,9 +261,8 @@ namespace _2DGameFramework.Models.Creatures
         {
             // If no weapons equipped, do 1 HP damage with “fists”
             return _attackItems.Count != 0
-                ? _attackItems.Sum(i => i.HitDamage)
+                ? _attackItems.Sum(i => i.BaseDamage)
                 : 1;
-
         }
         #endregion
     }

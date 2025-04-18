@@ -1,21 +1,30 @@
-﻿namespace _2DGameFramework.Models.Base
+﻿using _2DGameFramework.Interfaces;
+
+namespace _2DGameFramework.Models.Base
 {
     /// <summary>
     /// Serves as the abstract base for all armor items, defining the equipment slot,
     /// damage reduction amount, and type of damage this armor mitigates.
     /// </summary>
-    public abstract class ArmorBase : ItemBase
+    public abstract class ArmorBase : ItemBase, IDefenseSource
     {
         public ItemSlot ItemSlot { get; }
         public int DamageReduction { get; }
-        public DamageType DamageType { get; }
+        public DamageType DamageType { get; } = DamageType.Physical;
 
         protected ArmorBase(string name, string? description, ItemSlot itemSlot, int damageReduction, DamageType damageType) 
             : base(name, description)
         {
-            ItemSlot = itemSlot;
-            DamageReduction = damageReduction;
-            DamageType = damageType;
+            ItemSlot            = itemSlot;
+            DamageReduction     = damageReduction;
+            DamageType          = damageType;
+        }
+
+        protected ArmorBase(string name, string? description, ItemSlot itemSlot, int damageReduction)
+            : base(name, description)
+        {
+            ItemSlot            = itemSlot;
+            DamageReduction     = damageReduction;
         }
 
         /// <summary>
