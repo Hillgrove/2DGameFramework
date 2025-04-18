@@ -1,6 +1,4 @@
-﻿using _2DGameFramework.Interfaces;
-using _2DGameFramework.Models.Base;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace _2DGameFramework.Logging
 {

@@ -1,10 +1,10 @@
-﻿using _2DGameFramework.Configuration;
-using _2DGameFramework.Interfaces;
+﻿using _2DGameFramework.Combat;
+using _2DGameFramework.Configuration;
+using _2DGameFramework.Core;
+using _2DGameFramework.Core.Creatures;
+using _2DGameFramework.Core.Objects;
 using _2DGameFramework.Logging;
-using _2DGameFramework.Models.Base;
-using _2DGameFramework.Models.Core;
-using _2DGameFramework.Models.Creatures;
-using _2DGameFramework.Models.Objects;
+using _2DGameFramework.Services;
 using System.Diagnostics;
 
 
@@ -66,12 +66,18 @@ var world = new World(
     logger: logger,
     level: config.GameLevel);
 
+var inventory = new InventoryService(logger);
+var damageCalculator = new DamageCalculator();
+
 var hero = new Creature(
     name: "Lennie", 
     description: null, 
     hitpoints: 100, 
     startPosition: new Position(3, 4), 
-    logger: logger);
+    logger: logger,
+    inventory: inventory,
+    damageCalculator: damageCalculator
+    );
 
 var smallHealingPotion = new Consumable(
     name: "Small Healing Potion",
