@@ -30,6 +30,6 @@ namespace _2DGameFramework.Core.Base
 
 
         // TODO: Could be a possibility if I want to make armor that takes up several slots like a chainhauberk (torso, legs)
-        //public IReadOnlyCollection<ItemSlot> RequiredSlots { get; init; } = new[] { ItemSlot.Head };
+        //public IReadOnlyCollection<ItemSlot> RequiredSlots { get; init; } = new[] { ItemSlot.torso, ItemSlot.legs };
     }
 }
