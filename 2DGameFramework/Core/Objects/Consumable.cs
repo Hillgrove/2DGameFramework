@@ -11,7 +11,7 @@ namespace _2DGameFramework.Core.Objects
     /// </summary>
     public class Consumable : ItemBase, IUsable
     {
-        private readonly Action<Creature> _effect;
+        private readonly Action<ICreature> _effect;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="effect">The action to perform on the target creature when used.</param>
         /// <param name="description">An optional description of the consumable.</param>
         /// <param name="logger">The logger to record usage events.</param>
-        public Consumable(string name, Action<Creature> effect, string description, ILogger logger)
+        public Consumable(string name, Action<ICreature> effect, string description, ILogger logger)
             : base(name, description)
         {
             _effect = effect;
@@ -29,7 +29,7 @@ namespace _2DGameFramework.Core.Objects
         }
 
         ///<inheritdoc/>
-        public void UseOn(Creature target)
+        public void UseOn(ICreature target)
         {
             _logger.Log(
                 TraceEventType.Information,

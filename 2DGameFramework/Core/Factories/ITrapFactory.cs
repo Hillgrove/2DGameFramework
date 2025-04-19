@@ -13,6 +13,6 @@ namespace _2DGameFramework.Core.Factories
         /// <param name="damageAmount">The amount of damage the trap inflicts when triggered.</param>
         /// <param name="position">The position in the world where the trap is placed.</param>
         /// <returns>A new <see cref="Trap"/> object configured with the provided parameters.</returns>
-        Trap CreateTrap(string name, int damageAmount, Position position, string? description = null, bool isLootable = false, bool isRemovable = false);
+        Trap CreateTrap(string name, int damageAmount, Position position, string? description = null, bool isRemovable = false);
     }
 }

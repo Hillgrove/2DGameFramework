@@ -11,6 +11,6 @@ namespace _2DGameFramework.Core.Interfaces
         /// Applies this usable object's effect to the specified creature.
         /// </summary>
         /// <param name="target">The creature on which this object is used.</param>
-        void UseOn(Creature target);
+        void UseOn(ICreature target);
     }
 }

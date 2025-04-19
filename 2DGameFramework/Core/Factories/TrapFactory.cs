@@ -14,9 +14,9 @@ namespace _2DGameFramework.Core.Factories
         }
 
         ///<inheritdoc/>
-        public Trap CreateTrap(string name, int damageAmount, Position position, string? description = null, bool isLootable = false, bool isRemovable = false)
+        public Trap CreateTrap(string name, int damageAmount, Position position, string? description = null, bool isRemovable = false)
         {
-            return new Trap(name, damageAmount, position, _logger, description, isLootable, isRemovable);
+            return new Trap(name, damageAmount, position, _logger, description, isRemovable);
         }
     }
 }

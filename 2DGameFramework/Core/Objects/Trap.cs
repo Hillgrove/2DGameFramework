@@ -24,22 +24,22 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="logger">The logger to record trap events.</param>
         /// <param name="isLootable">Whether the trap can be looted after triggering.</param>
         /// <param name="isRemovable">Whether the trap can be removed from the world.</param>
-        public Trap(string name, int damageAmount, Position position, ILogger logger, string? description = null, bool isLootable = false, bool isRemovable = false)
-            : base(name, description, position, isLootable, isRemovable)
+        public Trap(string name, int damageAmount, Position position, ILogger logger, string? description = null, bool isRemovable = false)
+            : base(name, description, position, isRemovable)
         {
             DamageAmount = damageAmount;
             _logger = logger;
         }
 
         /// <inheritdoc/>
-        public void ReactTo(Creature target)
+        public void ReactTo(ICreature target)
         {
             _logger.Log(
                 TraceEventType.Warning,
                 LogCategory.World,
                 $"{target.Name} triggered trap '{Name}' at {Position} dealing {DamageAmount} HP damage");
 
-            target.ReceiveDamage(DamageAmount);
+            target.AdjustHitPoints(-DamageAmount);
         }
 
         /// <summary>

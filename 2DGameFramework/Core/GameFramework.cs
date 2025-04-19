@@ -20,13 +20,14 @@ namespace _2DGameFramework.Core
         {
             var services = new ServiceCollection();
 
-            // Load config and set up logging
+            // config + logging
             var (loggerAdapter, worldsettings) = InitializeLoggingAndConfiguration();
-
-            // register services
-            services.Add2DGameFramework();
+            
             services.AddSingleton<ILogger>(loggerAdapter);
             services.AddSingleton(worldsettings);
+
+            // all internal framework wiring
+            services.Add2DGameFramework();
 
             return services.BuildServiceProvider();
         }

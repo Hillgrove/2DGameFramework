@@ -1,9 +1,11 @@
-﻿namespace _2DGameFramework.Core
+﻿using _2DGameFramework.Core.Interfaces;
+
+namespace _2DGameFramework.Core
 {
     /// <summary>
     /// Base type for all objects placed in the 2D world, carrying a name and optional description.
     /// </summary>
-    public abstract class WorldObject
+    public abstract class WorldObject : IWorldObject
     {
         public string Name { get; }
         public string? Description { get; }

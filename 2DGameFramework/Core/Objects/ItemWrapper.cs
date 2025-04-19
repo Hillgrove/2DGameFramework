@@ -10,8 +10,11 @@ namespace _2DGameFramework.Core.Objects
     /// </summary>
     public class ItemWrapper : EnvironmentObject, ILootSource
     {
-        private readonly ItemBase _itemInside;
+        public bool IsLootable { get; internal set; }
+
+        private readonly ItemBase _wrappedItem;        
         private readonly ILogger _logger;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemWrapper"/> class,
@@ -20,10 +23,11 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="item">The item to wrap.</param>
         /// <param name="position">The position of the wrapper in the world.</param>
         /// <param name="logger">The logger to record loot events.</param>
-        public ItemWrapper(ItemBase item, Position position, ILogger logger)
-            : base(item.Name, item.Description, position, isLootable: true, isRemovable: true)
+        public ItemWrapper(ItemBase wrappedItem, Position position, ILogger logger, bool isLootable = true)
+            : base(wrappedItem.Name, wrappedItem.Description, position, isRemovable: true)
         {
-            _itemInside = item;
+            IsLootable = isLootable;
+            _wrappedItem = wrappedItem;
             _logger = logger;
         }
 
@@ -33,9 +37,9 @@ namespace _2DGameFramework.Core.Objects
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Item '{_itemInside.Name}' looted from wrapper at {Position}");
+                $"Item '{_wrappedItem.Name}' looted from wrapper at {Position}");
 
-            return new[] { _itemInside };
+            return new[] { _wrappedItem };
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace _2DGameFramework.Core.Objects
         /// </summary>
         /// <returns>A string representation of the item wrapper.</returns>
         public override string ToString() =>
-            $"{base.ToString()} [Contains: {_itemInside.Name}]";
+            $"{base.ToString()} [Contains: {_wrappedItem.Name}]";
 
     }
 }

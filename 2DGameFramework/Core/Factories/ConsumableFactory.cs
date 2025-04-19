@@ -14,7 +14,7 @@ namespace _2DGameFramework.Core.Factories
         }
 
         ///<inheritdoc/>
-        public Consumable CreateConsumable(string name, string description, Action<Creature> effect)
+        public Consumable CreateConsumable(string name, string description, Action<ICreature> effect)
         {
             return new Consumable(name, effect, description, _logger);
         }

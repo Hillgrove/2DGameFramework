@@ -12,6 +12,6 @@ namespace _2DGameFramework.Core.Factories
         /// <param name="description">A description of the consumable's effect or use.</param>
         /// <param name="effect">The action applied to the creature when the consumable is used.</param>
         /// <returns>A new <see cref="Consumable"/> object configured with the provided parameters.</returns>
-        Consumable CreateConsumable(string name, string description, Action<Creature> effect);
+        Consumable CreateConsumable(string name, string description, Action<ICreature> effect);
     }
 }

@@ -7,7 +7,7 @@ namespace _2DGameFramework.Services
     /// <summary>
     /// Manages the creature's equipped items and inventory operations.
     /// </summary>
-    public interface IInventory : ICombatStats
+    public interface IInventoryService
     {
         /// <summary>
         /// Equips an attack item to the creature's inventory.
@@ -32,5 +32,13 @@ namespace _2DGameFramework.Services
         /// </summary>
         /// <returns>A collection of <see cref="IUsable"/> items.</returns>
         IEnumerable<IUsable> GetUsables();
+
+        void Loot(ICreature looter, ILootSource source, World world);
+        
+        void UseItem(ICreature user, WorldObject item);
+
+        IEnumerable<IDamageSource> GetAttackItems();
+        
+        IEnumerable<IDefenseSource> GetDefenseItems();
     }
 }

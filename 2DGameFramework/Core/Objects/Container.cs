@@ -10,6 +10,8 @@ namespace _2DGameFramework.Core.Objects
     /// </summary>
     public class Container : EnvironmentObject, ILootSource
     {
+        public bool IsLootable { get; internal set; }
+
         private readonly List<ItemBase> _items = new();
         private readonly ILogger _logger;
 
@@ -23,8 +25,9 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="isLootable">Whether the container can be looted.</param>
         /// <param name="isRemovable">Whether the container can be removed from the world.</param>
         public Container(string name, string description, Position position, ILogger logger, bool isLootable = true, bool isRemovable = false)
-            : base(name, description, position, isLootable, isRemovable)
+            : base(name, description, position, isRemovable)
         {
+            IsLootable = isLootable;
             _logger = logger;
         }
 

@@ -18,14 +18,18 @@ namespace _2DGameFramework.Extensions
         public static IServiceCollection Add2DGameFramework(this IServiceCollection services)
         {
             // Core services
+            services.AddSingleton<IStatsService, StatsService>();
+            services.AddSingleton<ICombatService, CombatService>();
+            services.AddSingleton<IMovementService, MovementService>();
             services.AddSingleton<IDamageCalculator, DamageCalculator>();
-            services.AddTransient<IInventory, InventoryService>();
+            services.AddTransient<IInventoryService, InventoryService>();
 
             // Factories
+            services.AddSingleton<ITrapFactory, TrapFactory>();
+            services.AddSingleton<IArmorFactory, ArmorFactory>();
+            services.AddSingleton<IWeaponFactory, WeaponFactory>();
             services.AddSingleton<ICreatureFactory, CreatureFactory>();
             services.AddSingleton<IConsumableFactory, ConsumableFactory>();
-            services.AddSingleton<ITrapFactory, TrapFactory>();
-            services.AddSingleton<IWeaponFactory, WeaponFactory>();
 
             // World
             services.AddSingleton<World>();

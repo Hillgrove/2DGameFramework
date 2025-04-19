@@ -1,5 +1,4 @@
 ﻿using _2DGameFramework.Core.Creatures;
-using _2DGameFramework.Logging;
 using _2DGameFramework.Services;
 
 namespace _2DGameFramework.Core.Factories
@@ -9,27 +8,38 @@ namespace _2DGameFramework.Core.Factories
     /// </summary>
     internal class CreatureFactory : ICreatureFactory
     {
-        private readonly ILogger _logger;
-        private readonly IInventory _inventory;
-        private readonly IDamageCalculator _damageCalculator;
+        private readonly IStatsService _statsService;
+        private readonly ICombatService _combatService;
+        private readonly IMovementService _movementService;
+        private readonly IInventoryService _inventoryService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatureFactory"/> class.
         /// </summary>
         public CreatureFactory(
-            ILogger logger,
-            IInventory inventory,
-            IDamageCalculator damageCalculator)
+            IStatsService statsService,
+            ICombatService combatService,
+            IMovementService movementService,
+            IInventoryService inventoryService)
         {
-            _logger = logger;
-            _inventory = inventory;
-            _damageCalculator = damageCalculator;
+            _statsService = statsService;
+            _combatService = combatService;
+            _movementService = movementService;
+            _inventoryService = inventoryService;
         }
 
         /// <inheritdoc/>
-        public Creature Create(string name, Position position, int hitpoints, string? description = null)
+        public Creature Create(string name, string description, int hitpoints, Position position)
         {
-            return new Creature(name, description, hitpoints, position, _inventory, _logger, _damageCalculator);
+            return new Creature(
+                name,
+                description,
+                hitpoints,
+                position,
+                _statsService,
+                _combatService,
+                _movementService,
+                _inventoryService);
         }
     }
 }

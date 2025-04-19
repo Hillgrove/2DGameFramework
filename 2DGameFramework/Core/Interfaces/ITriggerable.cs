@@ -11,6 +11,6 @@ namespace _2DGameFramework.Core.Interfaces
         /// Reacts to being triggered by the specified creature.
         /// </summary>
         /// <param name="target">The creature that triggered this object.</param>
-        void ReactTo(Creature target);
+        void ReactTo(ICreature target);
     }
 }

@@ -16,7 +16,7 @@ namespace _2DGameFramework.Core
         public GameLevel GameLevel { get; }
 
         private readonly ILogger _logger;
-        private readonly List<Creature> _creatures = new();
+        private readonly List<ICreature> _creatures = new();
         private readonly List<EnvironmentObject> _objects = new();
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace _2DGameFramework.Core
         /// Adds a creature to the world after validating its position.
         /// </summary>
         /// <param name="creature">The creature to add.</param>
-        public void AddCreature(Creature creature)
+        public void AddCreature(ICreature creature)
         {
             ValidatePositionWithinBounds(creature);
 
@@ -90,7 +90,7 @@ namespace _2DGameFramework.Core
         /// Returns all creatures currently in the world.
         /// </summary>
         /// <returns>An enumerable of <see cref="Creature"/> instances.</returns>
-        public IEnumerable<Creature> GetCreatures() => _creatures;
+        public IEnumerable<ICreature> GetCreatures() => _creatures;
 
         /// <summary>
         /// Returns all environment objects currently in the world.

@@ -9,28 +9,28 @@ var provider = GameFramework.Start();
 var frameworkLogger = provider.GetRequiredService<ILogger>();
 frameworkLogger.Log(TraceEventType.Information, LogCategory.Game, "Framework starting...");
 
-var creatureFactory = provider.GetRequiredService<ICreatureFactory>();
-var consumableFactory = provider.GetRequiredService<IConsumableFactory>();
 var trapFactory = provider.GetRequiredService<ITrapFactory>();
 var armorFactory = provider.GetRequiredService<IArmorFactory>();
 var weaponFactory = provider.GetRequiredService<IWeaponFactory>();
+var creatureFactory = provider.GetRequiredService<ICreatureFactory>();
+var consumableFactory = provider.GetRequiredService<IConsumableFactory>();
 #endregion
 
 #region Create World and Creatures
 var world = provider.GetRequiredService<World>();
-var hero = creatureFactory.Create("Hero-Man", new Position(3, 4), 100);
-var goblin = creatureFactory.Create("Goblin", new Position(5, 6), 50);
+var hero = creatureFactory.Create("Hero-Man", "The hero of all the lands", 100, new Position(3, 4));
+var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(5, 6));
 #endregion
 
 #region Creating of other objects
 var smallHealingPotion = consumableFactory.CreateConsumable(
     name: "Small Healing Potion",
-    effect: creature => creature.Heal(20),
+    effect: creature => creature.AdjustHitPoints(20),
     description: "Heals for 20 HP");
 
 var poisonVial = consumableFactory.CreateConsumable(
     name: "Weak Poison",
-    effect: creature => creature.ReceiveDamage(10),
+    effect: creature => creature.AdjustHitPoints(-10),
     description: "Deals 10 HP damage");
 
 var deadlyTrap = trapFactory.CreateTrap(
@@ -38,12 +38,11 @@ var deadlyTrap = trapFactory.CreateTrap(
     damageAmount: 50,
     position: new Position(2, 4));
 
-var lootableRemovableTrap = trapFactory.CreateTrap(
-    name: "LootableRemovale Trap",
+var RemovableTrap = trapFactory.CreateTrap(
+    name: "Removale Trap",
     description: "With a description",
     damageAmount: 50,
     position: new Position(2, 4),
-    isLootable: true,
     isRemovable: true);
 
 var sword = weaponFactory.CreateSword(

@@ -17,6 +17,6 @@ namespace _2DGameFramework.Core.Factories
         /// <param name="hitpoints">The initial and maximum hit points of the creature.</param>
         /// <param name="description">An optional description providing additional details about the creature.</param>
         /// <returns>A fully initialized <see cref="Creature"/> instance.</returns>
-        Creature Create(string name, Position position, int hitpoints, string? description = null);
+        Creature Create(string name, string description, int hitpoints, Position position);
     }
 }

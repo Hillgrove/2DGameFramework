@@ -1,5 +1,7 @@
 ﻿using _2DGameFramework.Core;
+using _2DGameFramework.Core.Creatures;
 using _2DGameFramework.Core.Interfaces;
+using _2DGameFramework.Core.Objects;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
 
@@ -8,12 +10,11 @@ namespace _2DGameFramework.Services
     /// <summary>
     /// Manages equipped attack and defense items for a creature.
     /// </summary>
-    public class InventoryService : IInventory
+    public class InventoryService : IInventoryService
     {
         private readonly List<IDamageSource> _attackItems = new();
         private readonly List<IDefenseSource> _defenseItems = new();
         private readonly List<IUsable> _usableItems = new();
-
         private readonly ILogger _logger;
 
         /// <summary>
@@ -47,13 +48,33 @@ namespace _2DGameFramework.Services
         }
 
         /// <inheritdoc/>
-        public int GetTotalBaseDamage() => _attackItems.Sum(item => item.BaseDamage);
+        public IEnumerable<IDamageSource> GetAttackItems() => _attackItems.AsReadOnly();
 
         /// <inheritdoc/>
-        public int GetTotalDamageReduction() => _defenseItems.Sum(item => item.DamageReduction);
+        public IEnumerable<IDefenseSource> GetDefenseItems() => _defenseItems.AsReadOnly();
 
         /// <inheritdoc/>
         public IEnumerable<IUsable> GetUsables() => _usableItems.AsReadOnly();
+
+        public void Loot(ICreature looter, ILootSource source, World world)
+        {
+            if (!source.IsLootable)
+            {
+                _logger.Log(TraceEventType.Information, LogCategory.Inventory,
+                    $"{looter.Name} tried to loot {source.Name}, but it's not lootable right now.");
+                return;
+            }
+
+            var items = source.GetLoot();
+            ProcessLoot(items);
+
+            if (source is ItemWrapper)
+            {
+                world.RemoveObject((EnvironmentObject)source);
+                _logger.Log(TraceEventType.Information, LogCategory.Inventory,
+                    $"{source.Name} removed after looting.");
+            }
+        }
 
         /// <inheritdoc/>
         public void ProcessLoot(IEnumerable<WorldObject> loot)
@@ -86,6 +107,15 @@ namespace _2DGameFramework.Services
                         break;
                 }
             }
+        }
+
+        public void UseItem(ICreature user, WorldObject item)
+        {
+            if (item is IUsable usable)
+                usable.UseOn(user);
+            else
+                _logger.Log(TraceEventType.Warning, LogCategory.Inventory,
+                    $"{item.Name} cannot be used by {user.Name}.");
         }
     }
 }
