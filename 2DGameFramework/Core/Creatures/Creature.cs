@@ -1,5 +1,4 @@
-﻿using _2DGameFramework.Combat;
-using _2DGameFramework.Core.Interfaces;
+﻿using _2DGameFramework.Core.Interfaces;
 using _2DGameFramework.Core.Objects;
 using _2DGameFramework.Logging;
 using _2DGameFramework.Services;
@@ -202,23 +201,17 @@ namespace _2DGameFramework.Core.Creatures
         public override string ToString() =>
             $"{Name} at {Position} ({Hitpoints}/{_maxhitpoints} HP)";
 
-        /// <summary>
-        /// Calculates the total base damage from all equipped attack items.
-        /// </summary>
-        /// <returns>The combined hit points of all equipped attack sources.</returns>
+        ///<inheritdoc/>
         public int GetTotalBaseDamage() => _inventory.GetTotalBaseDamage();
 
-        /// <summary>
-        /// Calculates the total damage reduction from all equipped defense items.
-        /// </summary>
-        /// <returns>The combined damage reduction value of all equipped defense sources.</returns>
+        ///<inheritdoc/>
         public int GetTotalDamageReduction() => _inventory.GetTotalDamageReduction();
 
         /// <summary>
         /// Equips a new attack item to this creature’s inventory.
         /// </summary>
         /// <param name="weapon">The attack item to equip.</param>
-        public void EquipWeapon(IAttackSource weapon) => _inventory.EquipAttackItem(weapon);
+        public void EquipWeapon(IDamageSource weapon) => _inventory.EquipAttackItem(weapon);
 
         /// <summary>
         /// Equips a new defense item to this creature’s inventory.

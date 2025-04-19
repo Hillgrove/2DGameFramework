@@ -1,5 +1,4 @@
-﻿using _2DGameFramework.Combat;
-using _2DGameFramework.Core.Creatures;
+﻿using _2DGameFramework.Core.Creatures;
 using _2DGameFramework.Logging;
 using _2DGameFramework.Services;
 
@@ -8,7 +7,7 @@ namespace _2DGameFramework.Core.Factories
     /// <summary>
     /// Concrete factory for creating Creature instances.
     /// </summary>
-    public class CreatureFactory : ICreatureFactory
+    internal class CreatureFactory : ICreatureFactory
     {
         private readonly ILogger _logger;
         private readonly IInventory _inventory;

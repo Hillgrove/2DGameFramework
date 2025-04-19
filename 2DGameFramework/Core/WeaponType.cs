@@ -7,7 +7,6 @@ namespace _2DGameFramework.Core
     /// </summary>
     public enum WeaponType
     {
-        // TODO: Not really using it atm
         OneHanded,
         TwoHanded
     }

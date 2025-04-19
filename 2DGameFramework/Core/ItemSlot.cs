@@ -7,7 +7,6 @@ namespace _2DGameFramework.Core
     /// </summary>
     public enum ItemSlot
     {
-        // TODO: Not really using them yet - like only allowing 1 pair of boots
         head,
         torso,
         legs,

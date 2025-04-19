@@ -27,10 +27,7 @@ namespace _2DGameFramework.Core.Objects
             _logger = logger;
         }
 
-        /// <summary>
-        /// Retrieves the wrapped item, logging the action.
-        /// </summary>
-        /// <returns>An enumerable containing the single wrapped item.</returns>
+        ///<inheritdoc/>
         public IEnumerable<ItemBase> GetLoot()
         {
             _logger.Log(

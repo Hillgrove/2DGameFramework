@@ -14,7 +14,7 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="description">An optional description of the bow.</param>
         /// <param name="hitdamage">The base damage this bow inflicts.</param>
         /// <param name="range">The maximum range at which this bow can hit.</param>
-        public Bow(string name, string? description, int hitdamage, int range)
+        public Bow(string name, string description, int hitdamage, int range)
             : base(name, description, hitdamage, range, WeaponType.TwoHanded)
         {
         }

@@ -14,7 +14,7 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="hitdamage">The base damage this sword inflicts.</param>
         /// <param name="range">The attack range of the sword.</param>
         /// <param name="description">An optional description of the sword.</param>
-        public Sword(string name, int hitdamage, int range, string? description)
+        public Sword(string name, string description, int hitdamage, int range)
             : base(name, description, hitdamage, range, WeaponType.OneHanded)
         {
         }

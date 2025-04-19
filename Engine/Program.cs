@@ -12,11 +12,13 @@ frameworkLogger.Log(TraceEventType.Information, LogCategory.Game, "Framework sta
 var creatureFactory = provider.GetRequiredService<ICreatureFactory>();
 var consumableFactory = provider.GetRequiredService<IConsumableFactory>();
 var trapFactory = provider.GetRequiredService<ITrapFactory>();
+var armorFactory = provider.GetRequiredService<IArmorFactory>();
+var weaponFactory = provider.GetRequiredService<IWeaponFactory>();
 #endregion
 
 #region Create World and Creatures
 var world = provider.GetRequiredService<World>();
-var hero = creatureFactory.Create("Lennie", new Position(3, 4), 100);
+var hero = creatureFactory.Create("Hero-Man", new Position(3, 4), 100);
 var goblin = creatureFactory.Create("Goblin", new Position(5, 6), 50);
 #endregion
 
@@ -44,14 +46,14 @@ var lootableRemovableTrap = trapFactory.CreateTrap(
     isLootable: true,
     isRemovable: true);
 
-//var sword = new Sword(
-//    name: "Rusty Sword", 
-//    hitdamage: 10, 
-//    range: 5, 
-//    description: "This sword has seen better days");
+var sword = weaponFactory.CreateSword(
+    name: "Rusty Sword",
+    hitdamage: 10,
+    range: 5,
+    description: "This sword has seen better days");
 
 //var chest = new Container(
-//    name: "A Chest", 
+//    name: "A Chest",
 //    description: "An old chest",
 //    position: new Position(4, 1),
 //    logger: logger);
@@ -88,5 +90,5 @@ deadlyTrap.ReactTo(hero);
 
 Console.WriteLine(tree);
 //Console.WriteLine(chest);
-//Console.WriteLine(sword);
+Console.WriteLine(sword);
 //Console.WriteLine(swordWrapper);

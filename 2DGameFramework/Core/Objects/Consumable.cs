@@ -21,17 +21,14 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="effect">The action to perform on the target creature when used.</param>
         /// <param name="description">An optional description of the consumable.</param>
         /// <param name="logger">The logger to record usage events.</param>
-        public Consumable(string name, Action<Creature> effect, string? description, ILogger logger)
+        public Consumable(string name, Action<Creature> effect, string description, ILogger logger)
             : base(name, description)
         {
             _effect = effect;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Uses this consumable on the specified creature, logging the action and executing its effect.
-        /// </summary>
-        /// <param name="target">The creature to apply the consumable to.</param>
+        ///<inheritdoc/>
         public void UseOn(Creature target)
         {
             _logger.Log(

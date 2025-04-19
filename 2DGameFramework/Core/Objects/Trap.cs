@@ -31,7 +31,6 @@ namespace _2DGameFramework.Core.Objects
             _logger = logger;
         }
 
-
         /// <inheritdoc/>
         public void ReactTo(Creature target)
         {
@@ -43,9 +42,13 @@ namespace _2DGameFramework.Core.Objects
             target.ReceiveDamage(DamageAmount);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of the trap, including its base item info and damage amount.
+        /// </summary>
+        /// <returns>
+        /// A string that describes the trap, including its name, position, and the damage it deals when triggered.
+        /// </returns>
         public override string ToString() =>
             $"{base.ToString()} [Trap: {DamageAmount} dmg]";
-
     }
 }

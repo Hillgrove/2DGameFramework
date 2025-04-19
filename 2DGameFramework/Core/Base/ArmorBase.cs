@@ -12,14 +12,13 @@ namespace _2DGameFramework.Core.Base
         public int DamageReduction { get; }
         public DamageType DamageType { get; }
 
-        protected ArmorBase(string name, string? description, ItemSlot itemSlot, int damageReduction, DamageType damageType = DamageType.Physical)
+        protected ArmorBase(string name, string description, int damageReduction, ItemSlot itemSlot, DamageType damageType = DamageType.Physical)
             : base(name, description)
         {
             ItemSlot            = itemSlot;
             DamageReduction     = damageReduction;
             DamageType          = damageType;
         }
-
 
         /// <summary>
         /// Returns a textual representation of this armor, including its base item info,

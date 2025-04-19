@@ -22,7 +22,7 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="logger">The logger to record inventory events.</param>
         /// <param name="isLootable">Whether the container can be looted.</param>
         /// <param name="isRemovable">Whether the container can be removed from the world.</param>
-        public Container(string name, string? description, Position position, ILogger logger, bool isLootable = true, bool isRemovable = false)
+        public Container(string name, string description, Position position, ILogger logger, bool isLootable = true, bool isRemovable = false)
             : base(name, description, position, isLootable, isRemovable)
         {
             _logger = logger;
@@ -42,12 +42,7 @@ namespace _2DGameFramework.Core.Objects
                 $"Item '{item.Name}' added to container '{Name}' at {Position}");
         }
 
-        /// <summary>
-        /// Retrieves and removes all items from this container, logging the action.
-        /// </summary>
-        /// <returns>
-        /// A collection of <see cref="ItemBase"/> instances that were in the container.
-        /// </returns>
+        ///<inheritdoc/>
         public IEnumerable<ItemBase> GetLoot()
         {
             var loot = _items.ToList();

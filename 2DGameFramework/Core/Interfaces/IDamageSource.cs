@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines an immutable source of damage (e.g. a weapon, spell, trap, environmental hazard).
     /// </summary>
-    public interface IAttackSource
+    public interface IDamageSource
     {
         /// <summary>
         /// The amount of damage this source contributes.

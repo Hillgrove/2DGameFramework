@@ -10,7 +10,7 @@ namespace _2DGameFramework.Services
     /// </summary>
     public class InventoryService : IInventory
     {
-        private readonly List<IAttackSource> _attackItems = new();
+        private readonly List<IDamageSource> _attackItems = new();
         private readonly List<IDefenseSource> _defenseItems = new();
         private readonly List<IUsable> _usableItems = new();
 
@@ -25,9 +25,8 @@ namespace _2DGameFramework.Services
             _logger = logger;
         }
 
-        /// <summary>Adds a new attack item to the inventory.</summary>
-        /// <param name="item">The attack item to equip.</param>
-        public void EquipAttackItem(IAttackSource item)
+        /// <inheritdoc/>
+        public void EquipAttackItem(IDamageSource item)
         {
             _attackItems.Add(item);
 
@@ -37,8 +36,7 @@ namespace _2DGameFramework.Services
                 $"Equipped attack item: {((WorldObject)item).Name}");
         }
 
-        /// <summary>Adds a new defense item to the inventory.</summary>
-        /// <param name="item">The defense item to equip.</param>
+        /// <inheritdoc/>
         public void EquipDefenseItem(IDefenseSource item)
         {
             _defenseItems.Add(item);
@@ -48,31 +46,23 @@ namespace _2DGameFramework.Services
                 $"Equipped defense item: {((WorldObject)item).Name}");
         }
 
-        /// <summary>Calculates the total base damage from all equipped attack items.</summary>
-        /// <returns>The combined hit points of all equipped attack sources.</returns>
+        /// <inheritdoc/>
         public int GetTotalBaseDamage() => _attackItems.Sum(item => item.BaseDamage);
 
-        /// <summary>Calculates the total damage reduction from all equipped defense items.</summary>
-        /// <returns>The combined damage reduction value of all equipped defense sources.</returns>
+        /// <inheritdoc/>
         public int GetTotalDamageReduction() => _defenseItems.Sum(item => item.DamageReduction);
 
-        /// <summary>
-        /// Retrieves all usable items in the inventory.
-        /// </summary>
-        /// <returns>A read-only collection of usable items.</returns>
+        /// <inheritdoc/>
         public IEnumerable<IUsable> GetUsables() => _usableItems.AsReadOnly();
 
-        /// <summary>
-        /// Processes a collection of looted items, equipping or storing them based on their type.
-        /// </summary>
-        /// <param name="loot">The collection of looted <see cref="WorldObject"/> items.</param>
+        /// <inheritdoc/>
         public void ProcessLoot(IEnumerable<WorldObject> loot)
         {
             foreach (var item in loot)
             {
                 switch (item)
                 {
-                    case IAttackSource attackItem:
+                    case IDamageSource attackItem:
                         EquipAttackItem(attackItem);
                         break;
 
