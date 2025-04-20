@@ -2,9 +2,9 @@
 
 namespace _2DGameFramework.Core.Objects
 {
-    public class ConfigurableArmor : ArmorBase
+    public class DefaultArmor : ArmorBase
     {
-        public ConfigurableArmor(
+        public DefaultArmor(
             string name, 
             string description, 
             int damageReduction,

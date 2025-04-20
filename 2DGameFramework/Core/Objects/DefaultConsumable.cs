@@ -9,12 +9,12 @@ namespace _2DGameFramework.Core.Objects
     /// <summary>
     /// A data‑driven consumable (potion, scroll, etc.) that applies an effect when used.
     /// </summary>
-    public class ConfigurableConsumable : ItemBase, IUsable
+    public class DefaultConsumable : ItemBase, IUsable
     {
         private readonly Action<ICreature> _effect;
         private readonly ILogger _logger;
 
-        public ConfigurableConsumable(
+        public DefaultConsumable(
             string name, 
             string description,
             Action<ICreature> effect,

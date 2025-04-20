@@ -24,14 +24,14 @@ logger.Log(TraceEventType.Information, LogCategory.Game, "Demo starting...");
 
 #region Register Built‑In Framework Items
 // Weapons
-weaponFactory.Register("RustySword", () => new ConfigurableWeapon(
+weaponFactory.Register("RustySword", () => new DefaultWeapon(
     name:               "Rusty Sword",
     description:        "This sword has seen better days",
     hitdamage:          10,
     range:              1,
     weaponType:         WeaponType.OneHanded));
 
-weaponFactory.Register("Bow", () => new ConfigurableWeapon(
+weaponFactory.Register("Bow", () => new DefaultWeapon(
     name: "Bow",
     description: "A simple wooden bow",
     hitdamage: 7,
@@ -39,44 +39,44 @@ weaponFactory.Register("Bow", () => new ConfigurableWeapon(
     weaponType: WeaponType.TwoHanded));
 
 // Armor
-armorFactory.Register("Helmet", () => new ConfigurableArmor(
+armorFactory.Register("Helmet", () => new DefaultArmor(
     name:               "Basic Helmet",
     description:        "Simple steel helmet protecting the head.",
     damageReduction:    2,
     itemSlot:           ItemSlot.Head));
 
-armorFactory.Register("Chestplate", () => new ConfigurableArmor(
+armorFactory.Register("Chestplate", () => new DefaultArmor(
     name:               "Leather Chestplate",
     description:        "Light leather armor for the torso.",
     damageReduction:    5,
     itemSlot:           ItemSlot.Torso));
 
-armorFactory.Register("Greaves", () => new ConfigurableArmor(
+armorFactory.Register("Greaves", () => new DefaultArmor(
     name:               "Iron Greaves",
     description:        "Sturdy greaves to protect the legs.",
     damageReduction:    4,
     itemSlot:           ItemSlot.Legs));
 
-armorFactory.Register("Gauntlets", () => new ConfigurableArmor(
+armorFactory.Register("Gauntlets", () => new DefaultArmor(
     name:               "Chainmail Gauntlets",
     description:        "Interlinked steel rings for hand protection.",
     damageReduction:    3,
     itemSlot:           ItemSlot.Hands));
 
-armorFactory.Register("Boots", () => new ConfigurableArmor(
+armorFactory.Register("Boots", () => new DefaultArmor(
     name:               "Traveler’s Boots",
     description:        "Reinforced leather boots for the feet.",
     damageReduction:    2,
     itemSlot:           ItemSlot.Feet));
 
 // Consumables
-consumableFactory.Register("SmallHealingPotion", () => new ConfigurableConsumable(
+consumableFactory.Register("SmallHealingPotion", () => new DefaultConsumable(
     name: "Small Healing Potion",
     description: "Heals 20 HP",
     effect: c => c.AdjustHitPoints(20),
     logger: logger));
 
-consumableFactory.Register("WeakPoison", () => new ConfigurableConsumable(
+consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
     name: "Weak Poison",
     description: "Deals 10 HP damage",
     effect: c => c.AdjustHitPoints(-10),

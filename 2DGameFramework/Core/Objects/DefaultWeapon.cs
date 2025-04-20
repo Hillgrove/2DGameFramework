@@ -2,9 +2,9 @@
 
 namespace _2DGameFramework.Core.Objects
 {
-    public class ConfigurableWeapon : WeaponBase
+    public class DefaultWeapon : WeaponBase
     {
-        public ConfigurableWeapon(
+        public DefaultWeapon(
             string name, 
             string description, 
             int hitdamage, 
