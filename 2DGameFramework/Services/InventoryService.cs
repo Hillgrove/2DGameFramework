@@ -14,7 +14,7 @@ namespace _2DGameFramework.Services
     {
         private readonly List<IDamageSource> _attackItems = new();
         private readonly List<IDefenseSource> _defenseItems = new();
-        private readonly List<IUsable> _usableItems = new();
+        private readonly List<IConsumable> _usableItems = new();
         private readonly ILogger _logger;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace _2DGameFramework.Services
         public IEnumerable<IDefenseSource> GetDefenseItems() => _defenseItems.AsReadOnly();
 
         /// <inheritdoc/>
-        public IEnumerable<IUsable> GetUsables() => _usableItems.AsReadOnly();
+        public IEnumerable<IConsumable> GetUsables() => _usableItems.AsReadOnly();
 
         public void Loot(ICreature looter, ILootSource source, World world)
         {
@@ -91,7 +91,7 @@ namespace _2DGameFramework.Services
                         EquipDefenseItem(defenseItem);
                         break;
 
-                    case IUsable usableItem:
+                    case IConsumable usableItem:
                         _usableItems.Add(usableItem);
                         _logger.Log(
                             TraceEventType.Information,
@@ -109,9 +109,9 @@ namespace _2DGameFramework.Services
             }
         }
 
-        public void UseItem(ICreature user, IUsable item)
+        public void UseItem(ICreature user, IConsumable item)
         {
-            if (item is IUsable usable)
+            if (item is IConsumable usable)
                 usable.UseOn(user);
             else
                 _logger.Log(TraceEventType.Warning, LogCategory.Inventory,

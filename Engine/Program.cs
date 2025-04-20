@@ -17,7 +17,7 @@ var creatureFactory     = provider.GetRequiredService<ICreatureFactory>();
 // Generic factories
 var armorFactory        = provider.GetRequiredService<IFactory<IArmor>>();
 var weaponFactory       = provider.GetRequiredService<IFactory<IWeapon>>();
-var consumableFactory   = provider.GetRequiredService<IFactory<IUsable>>();
+var consumableFactory   = provider.GetRequiredService<IFactory<IConsumable>>();
 
 logger.Log(TraceEventType.Information, LogCategory.Game, "Demo starting...");
 #endregion
@@ -71,16 +71,18 @@ armorFactory.Register("Boots", () => new DefaultArmor(
 
 // Consumables
 consumableFactory.Register("SmallHealingPotion", () => new DefaultConsumable(
-    name: "Small Healing Potion",
-    description: "Heals 20 HP",
-    effect: c => c.AdjustHitPoints(20),
-    logger: logger));
+    name:               "Small Healing Potion",
+    description:        "Heals 20 HP",
+    type:               ConsumableType.Healing,
+    effect:             c => c.AdjustHitPoints(20),
+    logger:             logger));
 
 consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
-    name: "Weak Poison",
-    description: "Deals 10 HP damage",
-    effect: c => c.AdjustHitPoints(-10),
-    logger: logger));
+    name:               "Weak Poison",
+    description:        "Deals 10 HP damage",
+    type:               ConsumableType.Damage,
+    effect:             c => c.AdjustHitPoints(-10),
+    logger:             logger));
 
 // TODO: FIX
 //var ragePotion = new Consumable(
@@ -144,7 +146,10 @@ world.AddObject(new ItemWrapper(potion, new Position(3, 3), logger));
 
 hero.Attack(goblin);
 //hero.Loot(swordWrapper, world);
-hero.UseItem(potion);
+//hero.UseItem(potion);
+spikeTrap.ReactTo(hero);
+spikeTrap.ReactTo(hero);
+spikeTrap.ReactTo(hero);
 spikeTrap.ReactTo(hero);
 
 Console.WriteLine(world);

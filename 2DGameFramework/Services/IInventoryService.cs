@@ -30,12 +30,12 @@ namespace _2DGameFramework.Services
         /// <summary>
         /// Gets a read-only collection of usable items in the inventory.
         /// </summary>
-        /// <returns>A collection of <see cref="IUsable"/> items.</returns>
-        IEnumerable<IUsable> GetUsables();
+        /// <returns>A collection of <see cref="IConsumable"/> items.</returns>
+        IEnumerable<IConsumable> GetUsables();
 
         void Loot(ICreature looter, ILootSource source, World world);
         
-        void UseItem(ICreature user, IUsable item);
+        void UseItem(ICreature user, IConsumable item);
 
         IEnumerable<IDamageSource> GetAttackItems();
         

@@ -57,7 +57,11 @@ namespace _2DGameFramework.Core.Creatures
         /// <inheritdoc />
         public void AdjustHitPoints(int delta)
         {
+            int oldHitPoints = HitPoints;
             HitPoints = Math.Max(0, Math.Min(HitPoints + delta, MaxHitPoints));
+
+            // send notification
+            HealthChanged?.Invoke(this, new HealthChangedEventArgs(oldHitPoints, HitPoints));
         }
 
         /// <inheritdoc />
@@ -65,13 +69,13 @@ namespace _2DGameFramework.Core.Creatures
             => Position = _movementService.Move(Position, deltaX, deltaY, world);
 
         /// <inheritdoc />
-        public IEnumerable<IUsable> GetUsables() => _inventoryService.GetUsables();
+        public IEnumerable<IConsumable> GetUsables() => _inventoryService.GetUsables();
 
         /// <inheritdoc />
         public void Loot(ILootSource source, World world) => _inventoryService.Loot(this, source, world);
 
         /// <inheritdoc />
-        public void UseItem(IUsable item) => _inventoryService.UseItem(this, item);
+        public void UseItem(IConsumable item) => _inventoryService.UseItem(this, item);
 
         ///<inheritdoc/>
         public int GetTotalBaseDamage() => _statsService.GetTotalBaseDamage();
@@ -132,6 +136,14 @@ namespace _2DGameFramework.Core.Creatures
         {
             // e.g. trigger OnHit observers, apply bleed effect, log damage summary
         }
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Fired after HP is adjusted.  
+        /// Subscribers can inspect OldHp and NewHp to react (e.g. auto‑heal).
+        /// </summary>
+        public event EventHandler<HealthChangedEventArgs>? HealthChanged;
         #endregion
     }
 }

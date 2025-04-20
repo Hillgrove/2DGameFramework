@@ -11,6 +11,8 @@ namespace _2DGameFramework.Core.Creatures
         int HitPoints { get; }
         int MaxHitPoints { get; }
 
+        event EventHandler<HealthChangedEventArgs>? HealthChanged;
+
         /// <summary>Moves the creature by the specified deltas within the world bounds.</summary>
         /// <param name="deltaX">Change in X direction.</param>
         /// <param name="deltaY">Change in Y direction.</param>
@@ -24,5 +26,6 @@ namespace _2DGameFramework.Core.Creatures
         void Attack(ICreature target);
 
         void AdjustHitPoints(int delta);
+        IEnumerable<IConsumable> GetUsables();
     }
 }

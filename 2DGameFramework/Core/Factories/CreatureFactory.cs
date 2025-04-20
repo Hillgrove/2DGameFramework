@@ -1,4 +1,6 @@
 ﻿using _2DGameFramework.Core.Creatures;
+using _2DGameFramework.Core.Objects;
+using _2DGameFramework.Core.Observers;
 using _2DGameFramework.Services;
 
 namespace _2DGameFramework.Core.Factories
@@ -8,6 +10,7 @@ namespace _2DGameFramework.Core.Factories
     /// </summary>
     internal class CreatureFactory : ICreatureFactory
     {
+        private readonly HealthNotifier _notifier;
         private readonly IStatsService _statsService;
         private readonly ICombatService _combatService;
         private readonly IMovementService _movementService;
@@ -17,11 +20,13 @@ namespace _2DGameFramework.Core.Factories
         /// Initializes a new instance of the <see cref="CreatureFactory"/> class.
         /// </summary>
         public CreatureFactory(
+            HealthNotifier notifier,
             IStatsService statsService,
             ICombatService combatService,
             IMovementService movementService,
             IInventoryService inventoryService)
         {
+            _notifier = notifier;
             _statsService = statsService;
             _combatService = combatService;
             _movementService = movementService;
@@ -31,7 +36,7 @@ namespace _2DGameFramework.Core.Factories
         /// <inheritdoc/>
         public Creature Create(string name, string description, int hitpoints, Position position)
         {
-            return new Creature(
+            var creature = new DefaultCreature(
                 name,
                 description,
                 hitpoints,
@@ -40,6 +45,10 @@ namespace _2DGameFramework.Core.Factories
                 _combatService,
                 _movementService,
                 _inventoryService);
+
+            _notifier.Subscribe(creature);
+
+            return creature;
         }
     }
 }

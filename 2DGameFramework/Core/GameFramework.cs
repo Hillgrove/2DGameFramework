@@ -31,11 +31,11 @@ namespace _2DGameFramework.Core
             // 2) Core framework services (including ICombatService, IDamageCalculator, etc.)
             services.Add2DGameFramework();
 
-            services.AddSingleton<IFactory<IUsable>>(sp =>
+            services.AddSingleton<IFactory<IConsumable>>(sp =>
             {
                 var combat = sp.GetRequiredService<ICombatService>();
 
-                var factory = new Factory<IUsable>();
+                var factory = new Factory<IConsumable>();
 
                 return factory;
             });
@@ -43,7 +43,7 @@ namespace _2DGameFramework.Core
             // 3) Expose generic factories via DI
             services.AddSingleton<IFactory<IWeapon>>(new Factory<IWeapon>());
             services.AddSingleton<IFactory<IArmor>>(new Factory<IArmor>());
-            services.AddSingleton<IFactory<IUsable>>(new Factory<IUsable>());
+            services.AddSingleton<IFactory<IConsumable>>(new Factory<IConsumable>());
 
             return services.BuildServiceProvider();
         }
