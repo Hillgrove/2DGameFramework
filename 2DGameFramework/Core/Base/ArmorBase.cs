@@ -6,7 +6,7 @@ namespace _2DGameFramework.Core.Base
     /// Serves as the abstract base for all armor items, defining the equipment slot,
     /// damage reduction amount, and type of damage this armor mitigates.
     /// </summary>
-    public abstract class ArmorBase : ItemBase, IDefenseSource
+    public abstract class ArmorBase : ItemBase, IArmor
     {
         public ItemSlot ItemSlot { get; }
         public int DamageReduction { get; }

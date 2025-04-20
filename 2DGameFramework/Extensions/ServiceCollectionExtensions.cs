@@ -1,5 +1,6 @@
 ﻿using _2DGameFramework.Core;
 using _2DGameFramework.Core.Factories;
+using _2DGameFramework.Core.Interfaces;
 using _2DGameFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,10 +27,7 @@ namespace _2DGameFramework.Extensions
 
             // Factories
             services.AddSingleton<ITrapFactory, TrapFactory>();
-            services.AddSingleton<IArmorFactory, ArmorFactory>();
-            services.AddSingleton<IWeaponFactory, WeaponFactory>();
             services.AddSingleton<ICreatureFactory, CreatureFactory>();
-            services.AddSingleton<IConsumableFactory, ConsumableFactory>();
 
             // World
             services.AddSingleton<World>();

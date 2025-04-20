@@ -12,7 +12,7 @@ namespace _2DGameFramework.Core.Objects
     {
         public bool IsLootable { get; internal set; }
 
-        private readonly List<ItemBase> _items = new();
+        private readonly List<IItem> _items = new();
         private readonly ILogger _logger;
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace _2DGameFramework.Core.Objects
         /// Adds an item to this container and logs the action.
         /// </summary>
         /// <param name="item">The item to add to the container.</param>
-        public void AddItem(ItemBase item)
+        public void AddItem(IItem item)
         {
             _items.Add(item);
 
@@ -46,7 +46,7 @@ namespace _2DGameFramework.Core.Objects
         }
 
         ///<inheritdoc/>
-        public IEnumerable<ItemBase> GetLoot()
+        public IEnumerable<IItem> GetLoot()
         {
             var loot = _items.ToList();
             _items.Clear();

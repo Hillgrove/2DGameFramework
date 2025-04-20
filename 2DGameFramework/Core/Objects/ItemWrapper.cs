@@ -1,5 +1,4 @@
-﻿using _2DGameFramework.Core.Base;
-using _2DGameFramework.Core.Interfaces;
+﻿using _2DGameFramework.Core.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
 
@@ -12,7 +11,7 @@ namespace _2DGameFramework.Core.Objects
     {
         public bool IsLootable { get; internal set; }
 
-        private readonly ItemBase _wrappedItem;        
+        private readonly IItem _wrappedItem;        
         private readonly ILogger _logger;
 
 
@@ -23,7 +22,7 @@ namespace _2DGameFramework.Core.Objects
         /// <param name="item">The item to wrap.</param>
         /// <param name="position">The position of the wrapper in the world.</param>
         /// <param name="logger">The logger to record loot events.</param>
-        public ItemWrapper(ItemBase wrappedItem, Position position, ILogger logger, bool isLootable = true)
+        public ItemWrapper(IItem wrappedItem, Position position, ILogger logger, bool isLootable = true)
             : base(wrappedItem.Name, wrappedItem.Description, position, isRemovable: true)
         {
             IsLootable = isLootable;
@@ -32,7 +31,7 @@ namespace _2DGameFramework.Core.Objects
         }
 
         ///<inheritdoc/>
-        public IEnumerable<ItemBase> GetLoot()
+        public IEnumerable<IItem> GetLoot()
         {
             _logger.Log(
                 TraceEventType.Information,

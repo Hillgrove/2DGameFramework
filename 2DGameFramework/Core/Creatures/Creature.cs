@@ -66,7 +66,7 @@ namespace _2DGameFramework.Core.Creatures
         public void Loot(ILootSource source, World world) => _inventoryService.Loot(this, source, world);
 
         /// <inheritdoc />
-        public void UseItem(WorldObject item) => _inventoryService.UseItem(this, item);
+        public void UseItem(IUsable item) => _inventoryService.UseItem(this, item);
 
         ///<inheritdoc/>
         public int GetTotalBaseDamage() => _statsService.GetTotalBaseDamage();

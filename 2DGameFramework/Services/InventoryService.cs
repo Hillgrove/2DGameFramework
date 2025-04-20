@@ -77,7 +77,7 @@ namespace _2DGameFramework.Services
         }
 
         /// <inheritdoc/>
-        public void ProcessLoot(IEnumerable<WorldObject> loot)
+        public void ProcessLoot(IEnumerable<IItem> loot)
         {
             foreach (var item in loot)
             {
@@ -109,7 +109,7 @@ namespace _2DGameFramework.Services
             }
         }
 
-        public void UseItem(ICreature user, WorldObject item)
+        public void UseItem(ICreature user, IUsable item)
         {
             if (item is IUsable usable)
                 usable.UseOn(user);

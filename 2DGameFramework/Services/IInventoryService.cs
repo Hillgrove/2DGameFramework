@@ -25,7 +25,7 @@ namespace _2DGameFramework.Services
         /// Processes loot by adding it to the appropriate inventory list (attack, defense, usable).
         /// </summary>
         /// <param name="loot">A collection of <see cref="WorldObject"/> to be processed.</param>
-        void ProcessLoot(IEnumerable<WorldObject> loot);
+        void ProcessLoot(IEnumerable<IItem> loot);
 
         /// <summary>
         /// Gets a read-only collection of usable items in the inventory.
@@ -35,7 +35,7 @@ namespace _2DGameFramework.Services
 
         void Loot(ICreature looter, ILootSource source, World world);
         
-        void UseItem(ICreature user, WorldObject item);
+        void UseItem(ICreature user, IUsable item);
 
         IEnumerable<IDamageSource> GetAttackItems();
         

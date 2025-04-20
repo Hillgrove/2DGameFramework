@@ -12,7 +12,7 @@ namespace _2DGameFramework.Core.Interfaces
         /// <summary>
         /// Retrieves the collection of items available to be looted.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{ItemBase}"/> of lootable items.</returns>
-        IEnumerable<ItemBase> GetLoot();
+        /// <returns>An <see cref="IEnumerable{IItem}"/> of lootable items.</returns>
+        IEnumerable<IItem> GetLoot();
     }
 }

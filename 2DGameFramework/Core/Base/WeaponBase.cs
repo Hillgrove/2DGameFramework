@@ -6,7 +6,7 @@ namespace _2DGameFramework.Core.Base
     /// Abstract base class for all weapons, defining their base damage value, range,
     /// weapon category, and damage type.
     /// </summary>
-    public abstract class WeaponBase : ItemBase, IDamageSource
+    public abstract class WeaponBase : ItemBase, IWeapon
     {
         public int BaseDamage { get; }
         public int Range { get; }

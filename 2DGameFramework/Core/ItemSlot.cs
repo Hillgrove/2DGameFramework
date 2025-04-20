@@ -7,9 +7,10 @@ namespace _2DGameFramework.Core
     /// </summary>
     public enum ItemSlot
     {
-        head,
-        torso,
-        legs,
-        feet
+        Head,
+        Torso,
+        Hands,
+        Legs,
+        Feet
     }
 }

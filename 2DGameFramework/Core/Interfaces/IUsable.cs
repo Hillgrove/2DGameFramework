@@ -5,7 +5,7 @@ namespace _2DGameFramework.Core.Interfaces
     /// <summary>
     /// Defines an object that can be used on a creature.
     /// </summary>
-    public interface IUsable
+    public interface IUsable : IItem
     {
         /// <summary>
         /// Applies this usable object's effect to the specified creature.
