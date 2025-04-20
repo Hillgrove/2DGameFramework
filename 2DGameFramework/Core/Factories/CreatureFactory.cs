@@ -10,27 +10,31 @@ namespace _2DGameFramework.Core.Factories
     /// </summary>
     internal class CreatureFactory : ICreatureFactory
     {
-        private readonly HealthNotifier _notifier;
-        private readonly IStatsService _statsService;
+        private readonly IStatsService  _statsService;
         private readonly ICombatService _combatService;
         private readonly IMovementService _movementService;
         private readonly IInventoryService _inventoryService;
+        
+        private readonly HealthObserver _healthObserver;
+        private readonly DeathObserver  _deathObserver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatureFactory"/> class.
         /// </summary>
         public CreatureFactory(
-            HealthNotifier notifier,
             IStatsService statsService,
             ICombatService combatService,
             IMovementService movementService,
-            IInventoryService inventoryService)
+            IInventoryService inventoryService,
+            HealthObserver healthObserver,
+            DeathObserver deathObserver)
         {
-            _notifier = notifier;
             _statsService = statsService;
             _combatService = combatService;
             _movementService = movementService;
             _inventoryService = inventoryService;
+            _healthObserver = healthObserver;
+            _deathObserver = deathObserver;
         }
 
         /// <inheritdoc/>
@@ -46,7 +50,8 @@ namespace _2DGameFramework.Core.Factories
                 _movementService,
                 _inventoryService);
 
-            _notifier.Subscribe(creature);
+            _healthObserver.Subscribe(creature);
+            _deathObserver.Subscribe(creature);
 
             return creature;
         }

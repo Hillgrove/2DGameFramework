@@ -56,6 +56,7 @@ namespace _2DGameFramework.Services
         /// <inheritdoc/>
         public IEnumerable<IConsumable> GetUsables() => _usableItems.AsReadOnly();
 
+        ///<inheritdoc/>
         public void Loot(ICreature looter, ILootSource source, World world)
         {
             if (!source.IsLootable)
@@ -74,6 +75,25 @@ namespace _2DGameFramework.Services
                 _logger.Log(TraceEventType.Information, LogCategory.Inventory,
                     $"{source.Name} removed after looting.");
             }
+        }
+
+        public IEnumerable<IItem> RemoveAllItems(ICreature creature)
+        {
+            // collect everything
+            var items = new List<IItem>();
+            items.AddRange(_attackItems.Cast<IItem>());
+            items.AddRange(_defenseItems.Cast<IItem>());
+            items.AddRange(_usableItems.Cast<IItem>());
+
+            // clear out
+            _attackItems.Clear();
+            _defenseItems.Clear();
+            _usableItems.Clear();
+
+            _logger.Log(TraceEventType.Information, LogCategory.Inventory,
+                $"{creature.Name} dropped {items.Count} items on death.");
+
+            return items;
         }
 
         /// <inheritdoc/>

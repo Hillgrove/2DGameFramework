@@ -87,6 +87,16 @@ namespace _2DGameFramework.Core
         }
 
         /// <summary>
+        /// Removes the specified creature from the world.
+        /// </summary>
+        public void RemoveCreature(ICreature creature)
+        {
+            _creatures.Remove(creature);
+            _logger.Log(TraceEventType.Information, LogCategory.World,
+            $"Creature '{creature.Name}' removed from world.");
+        }
+
+        /// <summary>
         /// Returns all creatures currently in the world.
         /// </summary>
         /// <returns>An enumerable of <see cref="Creature"/> instances.</returns>

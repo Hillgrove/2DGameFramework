@@ -33,12 +33,17 @@ namespace _2DGameFramework.Services
         /// <returns>A collection of <see cref="IConsumable"/> items.</returns>
         IEnumerable<IConsumable> GetUsables();
 
-        void Loot(ICreature looter, ILootSource source, World world);
-        
-        void UseItem(ICreature user, IConsumable item);
-
         IEnumerable<IDamageSource> GetAttackItems();
         
         IEnumerable<IDefenseSource> GetDefenseItems();
+
+        void Loot(ICreature looter, ILootSource source, World world);
+
+        void UseItem(ICreature user, IConsumable item);
+
+        /// <summary>
+        /// Empties the given creature’s inventory and returns all items it was carrying.
+        /// </summary>
+        IEnumerable<IItem> RemoveAllItems(ICreature creature);
     }
 }

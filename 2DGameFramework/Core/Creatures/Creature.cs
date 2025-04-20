@@ -16,7 +16,7 @@ namespace _2DGameFramework.Core.Creatures
 
         protected readonly ICombatService _combatService;
         protected readonly IMovementService _movementService;
-        protected readonly IInventoryService _inventoryService;
+        protected readonly IInventoryService _inventory;
         protected readonly IStatsService _statsService;
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace _2DGameFramework.Core.Creatures
             _statsService = statsService;
             _combatService = combatService;
             _movementService = movementService;
-            _inventoryService = inventoryService;
+            _inventory = inventoryService;
         }
 
         #region Public Methods
@@ -62,6 +62,10 @@ namespace _2DGameFramework.Core.Creatures
 
             // send notification
             HealthChanged?.Invoke(this, new HealthChangedEventArgs(oldHitPoints, HitPoints));
+
+            // fire OnDeath when crossing from alive (>0) to dead (0)
+            if (oldHitPoints > 0 && HitPoints <= 0)
+                OnDeath?.Invoke(this, new DeathEventArgs(this));
         }
 
         /// <inheritdoc />
@@ -69,13 +73,13 @@ namespace _2DGameFramework.Core.Creatures
             => Position = _movementService.Move(Position, deltaX, deltaY, world);
 
         /// <inheritdoc />
-        public IEnumerable<IConsumable> GetUsables() => _inventoryService.GetUsables();
+        public IEnumerable<IConsumable> GetUsables() => _inventory.GetUsables();
 
         /// <inheritdoc />
-        public void Loot(ILootSource source, World world) => _inventoryService.Loot(this, source, world);
+        public void Loot(ILootSource source, World world) => _inventory.Loot(this, source, world);
 
         /// <inheritdoc />
-        public void UseItem(IConsumable item) => _inventoryService.UseItem(this, item);
+        public void UseItem(IConsumable item) => _inventory.UseItem(this, item);
 
         ///<inheritdoc/>
         public int GetTotalBaseDamage() => _statsService.GetTotalBaseDamage();
@@ -84,10 +88,10 @@ namespace _2DGameFramework.Core.Creatures
         public int GetTotalDamageReduction() => _statsService.GetTotalDamageReduction();
 
         /// <inheritdoc />
-        public void EquipWeapon(IDamageSource weapon) => _inventoryService.EquipAttackItem(weapon);
+        public void EquipWeapon(IDamageSource weapon) => _inventory.EquipAttackItem(weapon);
 
         /// <inheritdoc />
-        public void EquipArmor(IDefenseSource armor) => _inventoryService.EquipDefenseItem(armor);
+        public void EquipArmor(IDefenseSource armor) => _inventory.EquipDefenseItem(armor);
 
         /// <summary>
         /// Returns a string representation of the creature’s current state, including position and hit points.
@@ -144,6 +148,11 @@ namespace _2DGameFramework.Core.Creatures
         /// Subscribers can inspect OldHp and NewHp to react (e.g. auto‑heal).
         /// </summary>
         public event EventHandler<HealthChangedEventArgs>? HealthChanged;
+
+        /// <summary>
+        /// Fired once, the moment this creature’s HP falls to zero.
+        /// </summary>
+        public event EventHandler<DeathEventArgs>? OnDeath;
         #endregion
     }
 }

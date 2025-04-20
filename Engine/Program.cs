@@ -32,11 +32,11 @@ weaponFactory.Register("RustySword", () => new DefaultWeapon(
     weaponType:         WeaponType.OneHanded));
 
 weaponFactory.Register("Bow", () => new DefaultWeapon(
-    name: "Bow",
-    description: "A simple wooden bow",
-    hitdamage: 7,
-    range: 5,
-    weaponType: WeaponType.TwoHanded));
+    name:               "Bow",
+    description:        "A simple wooden bow",
+    hitdamage:          7,
+    range:              5,
+    weaponType:         WeaponType.TwoHanded));
 
 // Armor
 armorFactory.Register("Helmet", () => new DefaultArmor(
@@ -95,7 +95,7 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
 var world = provider.GetRequiredService<World>();
 
 // Creatures 
-var hero = creatureFactory.Create("Hero-Man", "The hero of all the lands", 100, new Position(3, 4));
+var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(3, 4));
 var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(5, 6));
 
 // Traps
@@ -149,7 +149,7 @@ hero.Attack(goblin);
 //hero.UseItem(potion);
 spikeTrap.ReactTo(hero);
 spikeTrap.ReactTo(hero);
-spikeTrap.ReactTo(hero);
-spikeTrap.ReactTo(hero);
+spikeTrap.ReactTo(goblin);
+spikeTrap.ReactTo(goblin);
 
 Console.WriteLine(world);

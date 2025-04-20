@@ -12,6 +12,7 @@ namespace _2DGameFramework.Core.Creatures
         int MaxHitPoints { get; }
 
         event EventHandler<HealthChangedEventArgs>? HealthChanged;
+        event EventHandler<DeathEventArgs>? OnDeath;
 
         /// <summary>Moves the creature by the specified deltas within the world bounds.</summary>
         /// <param name="deltaX">Change in X direction.</param>

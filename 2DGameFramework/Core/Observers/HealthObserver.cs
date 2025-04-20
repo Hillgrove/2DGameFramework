@@ -7,13 +7,13 @@ namespace _2DGameFramework.Core.Observers
     /// <summary>
     /// Listens for low‑HP on creatures and auto‑uses a healing item once below threshold.
     /// </summary>
-    public class HealthNotifier
+    public class HealthObserver
     {
         private readonly IInventoryService      _inventory;
         private readonly double                 _thresholdFraction;
         private readonly HashSet<ICreature>     _alreadyNotified = new();
 
-        public HealthNotifier(
+        public HealthObserver(
             IInventoryService inventory,
             double thresholdFraction = 0.25)
         {
