@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{B148C5FD-413D-4EF8-87DC-318AC78AAB63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp", "Engine\DemoApp.csproj", "{B148C5FD-413D-4EF8-87DC-318AC78AAB63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

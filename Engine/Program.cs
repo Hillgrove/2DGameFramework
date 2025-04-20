@@ -1,7 +1,10 @@
-﻿using _2DGameFramework.Core;
-using _2DGameFramework.Core.Factories;
-using _2DGameFramework.Core.Interfaces;
-using _2DGameFramework.Core.Objects;
+﻿using _2DGameFramework;
+using _2DGameFramework.Core;
+using _2DGameFramework.Domain.Items.Defaults;
+using _2DGameFramework.Domain.Objects;
+using _2DGameFramework.Domain.World;
+using _2DGameFramework.Factories;
+using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
@@ -92,7 +95,7 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
 #endregion
 
 #region Create World & entities
-var world = provider.GetRequiredService<World>();
+var world = provider.GetRequiredService<GameWorld>();
 
 // Creatures 
 var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(3, 4));

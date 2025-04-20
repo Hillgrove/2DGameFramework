@@ -1,4 +1,6 @@
-﻿namespace _2DGameFramework.Services
+﻿using _2DGameFramework.Interfaces;
+
+namespace _2DGameFramework.Services
 {
     public class StatsService : IStatsService
     {

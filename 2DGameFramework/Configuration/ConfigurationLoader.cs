@@ -3,21 +3,8 @@ using System.Diagnostics;
 using System.Xml.Linq;
 
 
-
 namespace _2DGameFramework.Configuration
 {
-    /// <summary>
-    /// Thrown when something is wrong in the configuration file.
-    /// </summary>
-    public class ConfigurationException : Exception
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationException"/> class with a specified error message.
-        /// </summary>
-        /// <param name="message">The message that describes the configuration error.</param>
-        public ConfigurationException(string message) : base(message) { }
-    }
-
     /// <summary>
     /// Loads game and logging settings from an XML file into separate <see cref = "WorldSettings" /> and <see cref = "LoggerSettings" /> objects.
     /// </summary>
@@ -74,7 +61,6 @@ namespace _2DGameFramework.Configuration
         }
 
         #region Private Methods
-
         /// <summary>
         /// Reads an integer child element and throws if missing or invalid.
         /// </summary>

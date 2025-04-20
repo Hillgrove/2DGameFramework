@@ -1,7 +1,6 @@
-﻿using _2DGameFramework.Core;
-using _2DGameFramework.Core.Creatures;
-using _2DGameFramework.Core.Interfaces;
-using _2DGameFramework.Core.Objects;
+﻿using _2DGameFramework.Domain.Objects;
+using _2DGameFramework.Domain.World;
+using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
 
@@ -57,7 +56,7 @@ namespace _2DGameFramework.Services
         public IEnumerable<IConsumable> GetUsables() => _usableItems.AsReadOnly();
 
         ///<inheritdoc/>
-        public void Loot(ICreature looter, ILootSource source, World world)
+        public void Loot(ICreature looter, ILootSource source, GameWorld world)
         {
             if (!source.IsLootable)
             {

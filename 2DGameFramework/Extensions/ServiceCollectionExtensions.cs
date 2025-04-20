@@ -1,6 +1,7 @@
-﻿using _2DGameFramework.Core;
-using _2DGameFramework.Core.Factories;
-using _2DGameFramework.Core.Observers;
+﻿using _2DGameFramework.Domain.World;
+using _2DGameFramework.Factories;
+using _2DGameFramework.Interfaces;
+using _2DGameFramework.Observers;
 using _2DGameFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,7 +35,7 @@ namespace _2DGameFramework.Extensions
             services.AddSingleton<ICreatureFactory, CreatureFactory>();
 
             // World
-            services.AddSingleton<World>();
+            services.AddSingleton<GameWorld>();
 
             return services;
         }
