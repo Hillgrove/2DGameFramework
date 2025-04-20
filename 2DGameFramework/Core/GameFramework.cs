@@ -19,12 +19,12 @@ namespace _2DGameFramework.Core
         /// Starts the 2DGameFramework by configuring and building a ServiceProvider.
         /// </summary>
         /// <returns>A ServiceProvider containing all registered framework services.</returns>
-        public static ServiceProvider Start()
+        public static ServiceProvider Start(string configFilePath, string traceSourceName)
         {
             var services = new ServiceCollection();
 
             // 1) config + logging
-            var (loggerAdapter, worldsettings) = InitializeLoggingAndConfiguration();
+            var (loggerAdapter, worldsettings) = InitializeLoggingAndConfiguration(configFilePath, traceSourceName);
             services.AddSingleton<ILogger>(loggerAdapter);
             services.AddSingleton(worldsettings);
 
@@ -40,28 +40,25 @@ namespace _2DGameFramework.Core
                 return factory;
             });
 
-            // 3) create and populate generic factories
-            var weaponFactory = new Factory<IWeapon>();
-            var armorFactory = new Factory<IArmor>();
-            var usableFactory = new Factory<IUsable>();
-
-            // expose via DI
-            services.AddSingleton<IFactory<IWeapon>>(weaponFactory);
-            services.AddSingleton<IFactory<IArmor>>(armorFactory);
-            services.AddSingleton<IFactory<IUsable>>(usableFactory);
+            // 3) Expose generic factories via DI
+            services.AddSingleton<IFactory<IWeapon>>(new Factory<IWeapon>());
+            services.AddSingleton<IFactory<IArmor>>(new Factory<IArmor>());
+            services.AddSingleton<IFactory<IUsable>>(new Factory<IUsable>());
 
             return services.BuildServiceProvider();
         }
 
         
-        private static (ILogger loggerAdapter, WorldSettings worldSettings) InitializeLoggingAndConfiguration()
+        private static (ILogger loggerAdapter, WorldSettings worldSettings) InitializeLoggingAndConfiguration(
+            string configFilePath,
+            string traceSourceName)
         {
             var loader = new ConfigurationLoader();
-            var (worldSettings, loggerSettings) = loader.Load("config.xml");
+            var (worldSettings, loggerSettings) = loader.Load(configFilePath);
 
-            var trace = new TraceSource("2DGameFramework")
+            var trace = new TraceSource(traceSourceName)
             {
-                Switch = { Level = loggerSettings.LogLevel }
+                Switch = { Level = loggerSettings.LogLevel } // uses that global setting
             };
 
             if (loggerSettings.Listeners.Count > 0)
@@ -74,7 +71,8 @@ namespace _2DGameFramework.Core
                         "File" when ListenerConfig.Settings.TryGetValue("Path", out var path) => new TextWriterTraceListener(path),
                         _ => throw new InvalidOperationException($"Unknown listener type '{ListenerConfig.Type}'")
                     };
-                    listener.Filter = new EventTypeFilter(loggerSettings.LogLevel);
+
+                    listener.Filter = new EventTypeFilter(ListenerConfig.FilterLevel);
                     trace.Listeners.Add(listener);
                 }
             }

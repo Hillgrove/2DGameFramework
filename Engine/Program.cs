@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 #region Framework Startup
-var provider = GameFramework.Start();
+var provider = GameFramework.Start("config.xml", "2DGameFramework");
 
 // Core serices
 var logger              = provider.GetRequiredService<ILogger>();

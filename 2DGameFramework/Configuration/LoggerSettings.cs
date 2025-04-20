@@ -10,8 +10,8 @@ namespace _2DGameFramework.Configuration
     public class ListenerConfig
     {
         public required string Type { get; set; }
-        public SourceLevels? FilterLevel { get; set; }
-        public Dictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
+        public SourceLevels FilterLevel { get; set; } = SourceLevels.All;
+        public Dictionary<string, string> Settings { get; set; } = new();
     }
 
     /// <summary>
@@ -21,6 +21,6 @@ namespace _2DGameFramework.Configuration
     public class LoggerSettings
     {
         public SourceLevels LogLevel { get; set; } = SourceLevels.All;
-        public List<ListenerConfig> Listeners { get; set; } = new List<ListenerConfig>();
+        public List<ListenerConfig> Listeners { get; set; } = new();
     }
 }

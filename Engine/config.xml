@@ -12,13 +12,18 @@
 
 		<!-- Listeners -->
 		<Listeners>
-			<!-- Console Listener -->
+			<!-- Console Listener (inherits Information) -->
 			<Listener type="Console" />
 
-			<!-- File listener -->
+			<!-- File Listener for all Information+ -->
+			<Listener type="File">
+				<Path>game-info.log</Path>
+			</Listener>
+
+			<!-- File Listener for Warning+ only -->
 			<Listener type="File">
 				<FilterLevel>Warning</FilterLevel>
-				<Path>game.log</Path>
+				<Path>game-warning.log</Path>
 			</Listener>
 		</Listeners>
 	</Logging>
