@@ -1,5 +1,6 @@
 ﻿using _2DGameFramework;
 using _2DGameFramework.Core;
+using _2DGameFramework.Domain.Items.Decorators;
 using _2DGameFramework.Domain.Items.Defaults;
 using _2DGameFramework.Domain.Objects;
 using _2DGameFramework.Domain.World;
@@ -86,12 +87,6 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
     type:               ConsumableType.Damage,
     effect:             c => c.AdjustHitPoints(-10),
     logger:             logger));
-
-// TODO: FIX
-//var ragePotion = new Consumable(
-//    "Rage Potion",
-//    creature => creature.AddTemporaryDamageBoost(1.5),
-//    "Increases damage output by 50% temporarily");
 #endregion
 
 #region Create World & entities
@@ -128,6 +123,11 @@ var bow =               weaponFactory.Create("Bow");
 var helmet =            armorFactory.Create("Helmet");          
 var potion =            consumableFactory.Create("SmallHealingPotion");
 
+var oiledSword = new TimedWeaponDecorator(
+    sword,
+    baseDmg => baseDmg + 5,
+    uses: 3);
+
 // place into world
 world.AddCreature(hero);
 world.AddCreature(goblin);
@@ -146,7 +146,9 @@ world.AddObject(new ItemWrapper(potion, new Position(3, 3), logger));
 // TODO: FIX
 //Console.WriteLine(world.GetObjects());
 
-
+hero.EquipWeapon(sword);
+hero.Attack(goblin);
+hero.EquipWeapon(sword);
 hero.Attack(goblin);
 //hero.Loot(swordWrapper, world);
 //hero.UseItem(potion);
