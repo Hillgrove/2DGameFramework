@@ -16,7 +16,7 @@ namespace _2DGameFramework.Domain.Items.Decorators
         /// <param name="uses">Number of attacks this buff applies to before expiring.</param>
         public TimedWeaponDecorator(
             IWeapon inner,
-            Func<int,int> modifier,
+            Func<int, int> modifier,
             int uses)
                 : base(inner)
         {
