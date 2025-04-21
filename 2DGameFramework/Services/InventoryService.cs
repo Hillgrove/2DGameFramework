@@ -115,7 +115,7 @@ namespace _2DGameFramework.Services
                         _logger.Log(
                             TraceEventType.Information,
                             LogCategory.Inventory,
-                            $"Stored usable item: {((WorldObject)usableItem).Name}");
+                            $"Stored usable item: {usableItem.Name}");
                         break;
 
                     default:

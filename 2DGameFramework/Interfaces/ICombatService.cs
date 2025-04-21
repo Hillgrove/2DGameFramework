@@ -1,4 +1,6 @@
-﻿namespace _2DGameFramework.Interfaces
+﻿using _2DGameFramework.Domain.Creatures;
+
+namespace _2DGameFramework.Interfaces
 {
     /// <summary>
     /// Defines combat operations such as attacking, receiving damage, and healing for creatures.
@@ -25,5 +27,13 @@
         /// <param name="creature">The creature to heal.</param>
         /// <param name="amount">The amount of hit points to restore.</param>
         void Heal(ICreature creature, int amount);
-    }
+
+        /// <summary>
+        /// Performs an attack using a specific damage source.
+        /// </summary>
+        /// <param name="attacker">The creature performing the attack.</param>
+        /// <param name="target">The creature being attacked.</param>
+        /// <param name="source">The specific damage source to use.</param>
+        void AttackWithSource(ICreature attacker, ICreature target, IDamageSource source);
+    }   // TODO: why 2 attackoptions?
 }
