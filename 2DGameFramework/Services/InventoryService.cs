@@ -33,7 +33,7 @@ namespace _2DGameFramework.Services
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Equipped attack item: {((WorldObject)item).Name}");
+                $"Equipped attack item: {((IItem)item).Name}");
         }
 
         /// <inheritdoc/>
@@ -43,7 +43,7 @@ namespace _2DGameFramework.Services
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Equipped defense item: {((WorldObject)item).Name}");
+                $"Equipped defense item: {((IItem)item).Name}");
         }
 
         /// <inheritdoc/>

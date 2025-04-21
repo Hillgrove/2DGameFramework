@@ -3,9 +3,8 @@
     /// <summary>
     /// Represents any named item in the framework.
     /// </summary>
-    public interface IItem
+    public interface IItem : IName
     {
-        string Name { get; }
-        string? Description { get; }
+        string Description { get; }
     }
 }

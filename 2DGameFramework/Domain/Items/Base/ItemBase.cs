@@ -1,17 +1,21 @@
-﻿using _2DGameFramework.Domain.World;
+﻿using _2DGameFramework.Interfaces;
 
 namespace _2DGameFramework.Domain.Items.Base
 {
-    /// <summary>
-    /// Abstract base class for all game‑world items.
-    /// Inherits core identity properties (Name, Description, etc.) from <see cref="WorldObject"/>.
-    /// Specialized item types—like weapons, armor, or consumables—derive from this class.
-    /// </summary>
-    public abstract class ItemBase : WorldObject
+
+    public abstract class ItemBase : IItem
     {
-        protected ItemBase(string name, string? description)
-            : base(name, description)
+        public string Name { get; }
+        public string Description { get; }
+        
+        protected ItemBase(string name, string description)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
         }
+
+        public override string ToString() =>
+            $"{Name} ({Description})";
+
     }
 }
