@@ -1,7 +1,6 @@
-﻿using _2DGameFramework.Core;
-using _2DGameFramework.Core.Creatures;
-using _2DGameFramework.Core.Interfaces;
-using _2DGameFramework.Core.Objects;
+﻿using _2DGameFramework.Domain.Objects;
+using _2DGameFramework.Domain.World;
+using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
 
@@ -14,7 +13,7 @@ namespace _2DGameFramework.Services
     {
         private readonly List<IDamageSource> _attackItems = new();
         private readonly List<IDefenseSource> _defenseItems = new();
-        private readonly List<IUsable> _usableItems = new();
+        private readonly List<IConsumable> _usableItems = new();
         private readonly ILogger _logger;
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace _2DGameFramework.Services
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Equipped attack item: {((WorldObject)item).Name}");
+                $"Equipped attack item: {((IItem)item).Name}");
         }
 
         /// <inheritdoc/>
@@ -44,7 +43,7 @@ namespace _2DGameFramework.Services
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Equipped defense item: {((WorldObject)item).Name}");
+                $"Equipped defense item: {((IItem)item).Name}");
         }
 
         /// <inheritdoc/>
@@ -54,9 +53,10 @@ namespace _2DGameFramework.Services
         public IEnumerable<IDefenseSource> GetDefenseItems() => _defenseItems.AsReadOnly();
 
         /// <inheritdoc/>
-        public IEnumerable<IUsable> GetUsables() => _usableItems.AsReadOnly();
+        public IEnumerable<IConsumable> GetUsables() => _usableItems.AsReadOnly();
 
-        public void Loot(ICreature looter, ILootSource source, World world)
+        ///<inheritdoc/>
+        public void Loot(ICreature looter, ILootSource source, GameWorld world)
         {
             if (!source.IsLootable)
             {
@@ -76,6 +76,25 @@ namespace _2DGameFramework.Services
             }
         }
 
+        public IEnumerable<IItem> RemoveAllItems(ICreature creature)
+        {
+            // collect everything
+            var items = new List<IItem>();
+            items.AddRange(_attackItems.Cast<IItem>());
+            items.AddRange(_defenseItems.Cast<IItem>());
+            items.AddRange(_usableItems.Cast<IItem>());
+
+            // clear out
+            _attackItems.Clear();
+            _defenseItems.Clear();
+            _usableItems.Clear();
+
+            _logger.Log(TraceEventType.Information, LogCategory.Inventory,
+                $"{creature.Name} dropped {items.Count} items on death.");
+
+            return items;
+        }
+
         /// <inheritdoc/>
         public void ProcessLoot(IEnumerable<IItem> loot)
         {
@@ -91,12 +110,12 @@ namespace _2DGameFramework.Services
                         EquipDefenseItem(defenseItem);
                         break;
 
-                    case IUsable usableItem:
+                    case IConsumable usableItem:
                         _usableItems.Add(usableItem);
                         _logger.Log(
                             TraceEventType.Information,
                             LogCategory.Inventory,
-                            $"Stored usable item: {((WorldObject)usableItem).Name}");
+                            $"Stored usable item: {usableItem.Name}");
                         break;
 
                     default:
@@ -109,9 +128,9 @@ namespace _2DGameFramework.Services
             }
         }
 
-        public void UseItem(ICreature user, IUsable item)
+        public void UseItem(ICreature user, IConsumable item)
         {
-            if (item is IUsable usable)
+            if (item is IConsumable usable)
                 usable.UseOn(user);
             else
                 _logger.Log(TraceEventType.Warning, LogCategory.Inventory,

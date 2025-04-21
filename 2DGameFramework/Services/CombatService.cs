@@ -1,4 +1,5 @@
-﻿using _2DGameFramework.Core.Creatures;
+﻿using _2DGameFramework.Domain.Creatures;
+using _2DGameFramework.Interfaces;
 using _2DGameFramework.Logging;
 using System.Diagnostics;
 
@@ -57,11 +58,22 @@ namespace _2DGameFramework.Services
             int before = creature.HitPoints;
 
             creature.AdjustHitPoints(amount);
-            
+
             int healed = creature.HitPoints - before;
 
             _logger.Log(TraceEventType.Information, LogCategory.Combat,
                 $"{creature.Name} healed for {healed}. HP now {creature.HitPoints}");
+        }
+
+        /// <inheritdoc />
+        public void AttackWithSource(ICreature attacker, ICreature target, IDamageSource source)
+        {
+            int damage = source.BaseDamage;
+
+            _logger.Log(TraceEventType.Information, LogCategory.Combat,
+                $"{attacker.Name} uses {source} against {target.Name}, dealing {damage} damage");
+
+            ReceiveDamage(target, damage);
         }
     }
 }

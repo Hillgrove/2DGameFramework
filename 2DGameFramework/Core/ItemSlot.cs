@@ -1,4 +1,4 @@
-﻿using _2DGameFramework.Core.Base;
+﻿using _2DGameFramework.Domain.Items.Base;
 
 namespace _2DGameFramework.Core
 {

@@ -1,5 +1,6 @@
 ﻿using _2DGameFramework.Core;
 
+
 namespace _2DGameFramework.Configuration
 {
     /// <summary>

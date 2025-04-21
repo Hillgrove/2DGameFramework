@@ -1,4 +1,4 @@
-﻿using _2DGameFramework.Core.Creatures;
+﻿using _2DGameFramework.Interfaces;
 
 namespace _2DGameFramework.Services
 {
