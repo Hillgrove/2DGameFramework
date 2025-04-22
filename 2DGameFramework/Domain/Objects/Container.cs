@@ -55,7 +55,7 @@ namespace _2DGameFramework.Domain.Objects
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Loot retrieved from container '{Name}' at {Position}. Items: {loot.Count}");
+                $"Loot in container '{Name}' at {Position}. Items: {loot.Count}");
 
             return loot;
         }
