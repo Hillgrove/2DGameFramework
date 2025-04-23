@@ -113,7 +113,7 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
 
 Console.WriteLine("\n==================== Creating Creatures ===================");
 var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(0, 0));
-var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(0, 1));
+var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(1, 1));
 #endregion
 
 Console.WriteLine();
@@ -185,6 +185,42 @@ Console.WriteLine("Hero HP after poison: " + hero.HitPoints);
 Wait();
 #endregion
 
+#region World objects
+// Traps
+var spikeTrap = trapFactory.CreateTrap(
+    name: "Deadly Spike Pit",
+    description: "Watch your step!",
+    damageAmount: 25,
+    damageType: DamageType.Physical,
+    position: new Position(2, 4),
+    isRemovable: false);
+
+// Environement Objects
+var tree = new EnvironmentObject(
+    name: "A Tree",
+    description: "A tall and majestic Tree",
+    position: new Position(1, 3));
+
+
+world.AddCreature(hero);
+world.AddCreature(goblin);
+world.AddObject(chest);
+world.AddObject(spikeTrap);
+world.AddObject(tree);
+
+// Show all creatures still alive
+var alive = world.GetCreatures().Where(c => c.HitPoints > 0);
+Console.WriteLine("Alive creatures: " + string.Join(", ", alive.Select(c => c.Name)));
+
+// Find objects at hero's position
+var objectsAtHero = world.GetObjects().Where(o => o.Position.Equals(hero.Position));
+Console.WriteLine("Objects at hero's position: " + string.Join(", ", objectsAtHero.Select(o => o.Name)));
+
+// Final world state
+Console.WriteLine("\n-- Final World State --");
+Console.WriteLine(world);
+#endregion
+
 #region Attacks
 Console.WriteLine("========================= Attack ==========================");
 // Basic attacks
@@ -229,52 +265,12 @@ while (goblin.HitPoints > 0)
     concreteHero.Attack(goblin);
 }
 
+// Trap
+spikeTrap.ReactTo(hero);
+
 Wait();
 #endregion
 
-#region World objects
-world.AddCreature(hero);
-world.AddCreature(goblin);
-world.AddObject(chest);
-
-// Show all creatures still alive
-var alive = world.GetCreatures().Where(c => c.HitPoints > 0);
-Console.WriteLine("Alive creatures: " + string.Join(", ", alive.Select(c => c.Name)));
-
-// Find objects at hero's position
-var objectsAtHero = world.GetObjects().Where(o => o.Position.Equals(hero.Position));
-Console.WriteLine("Objects at hero's position: " + string.Join(", ", objectsAtHero.Select(o => o.Name)));
-
-// Final world state
-Console.WriteLine("\n-- Final World State --");
-Console.WriteLine(world);
-#endregion
-
-
-
-
-
-
-// Traps
-var spikeTrap = trapFactory.CreateTrap(
-    name: "Deadly Spike Pit",
-    description: "Watch your step!",
-    damageAmount: 25,
-    damageType: DamageType.Physical,
-    position: new Position(2, 4),
-    isRemovable: false);
-
-// Environement Objects
-var tree = new EnvironmentObject(
-    name: "A Tree",
-    description: "A tall and majestic Tree",
-    position: new Position(1, 3));
-
-//hero.Attack(goblin);
-spikeTrap.ReactTo(hero);
-spikeTrap.ReactTo(hero);
-spikeTrap.ReactTo(goblin);
-spikeTrap.ReactTo(goblin);
 
 
 #region Helper Functions
