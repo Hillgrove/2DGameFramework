@@ -25,6 +25,12 @@ namespace _2DGameFramework.Services
             _logger = logger;
         }
 
+        public void AddItem(IItem item)
+        {
+        if (item == null) throw new ArgumentNullException(nameof(item));
+        ProcessLoot(new[] { item});
+        }
+
         /// <inheritdoc/>
         public void EquipAttackItem(IDamageSource item)
         {

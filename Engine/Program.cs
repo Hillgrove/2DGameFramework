@@ -124,21 +124,12 @@ Console.WriteLine("               *   Testing of 2DGameFramework   *");
 Console.WriteLine("               *                                *");
 Console.WriteLine("               **********************************");
 
-#region Movement
-Console.WriteLine("\n========================= Movement ========================\n");
-
-hero.MoveBy(-2, -2, world);
-goblin.MoveBy(-2, 1, world);
-
-Wait();
-#endregion
-
 #region Container & Loot Tests
 Console.WriteLine("\n========================= Container =======================\n");
 var chest = new Container(
     name: "A Chest",
     description: "A dusty wooden chest",
-    position: new Position(0, 0),
+    position: new Position(2, 2),
     logger: logger);
 
 // Place items in chest
@@ -151,7 +142,9 @@ chest.AddItem(sword);
 chest.AddItem(helmet);
 chest.AddItem(potion);
 
-
+Console.WriteLine();
+goblin.Inventory.AddItem(poison);
+goblin.EquipArmor(helmet);
 
 Console.WriteLine($"\n{ chest}");
 Wait();
@@ -189,6 +182,7 @@ Wait();
 
 #region World objects
 Console.WriteLine("\n====================== World Objects ======================\n");
+
 // Traps
 var spikeTrap = trapFactory.CreateTrap(
     name: "Deadly Spike Pit",
@@ -217,6 +211,15 @@ Console.WriteLine("\nAlive creatures in the world: " + string.Join(", ", alive.S
 // Find objects at hero's position
 var objectsAtHero = world.GetObjects().Where(o => o.Position.Equals(hero.Position));
 Console.WriteLine("Objects at hero's position: " + string.Join(", ", objectsAtHero.Select(o => o.Name)));
+
+Wait();
+#endregion
+
+#region Movement
+Console.WriteLine("\n========================= Movement ========================\n");
+
+hero.MoveBy(-2, -2, world);
+goblin.MoveBy(-2, 1, world);
 
 Wait();
 #endregion

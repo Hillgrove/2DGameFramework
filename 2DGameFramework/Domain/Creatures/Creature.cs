@@ -16,6 +16,7 @@ namespace _2DGameFramework.Domain.Creatures
         public int HitPoints { get; internal set; }
         public int MaxHitPoints { get; }
         public Position Position { get; internal set; }
+        public IInventoryService Inventory => _inventory;
 
         protected readonly ICombatService _combatService;
         protected readonly IMovementService _movementService;
