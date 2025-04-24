@@ -16,6 +16,6 @@ namespace _2DGameFramework.Interfaces
         /// <param name="dy">Change in Y coordinate.</param>
         /// <param name="world">The world providing boundary limits.</param>
         /// <returns>The clamped new position.</returns>
-        Position Move(Position current, int dx, int dy, GameWorld world);
+        Position Move(ICreature mover, Position current, int dx, int dy, GameWorld world);
     }
 }

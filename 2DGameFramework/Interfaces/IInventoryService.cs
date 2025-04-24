@@ -8,6 +8,11 @@ namespace _2DGameFramework.Interfaces
     public interface IInventoryService
     {
         /// <summary>
+        /// Adds a generic item (weapon, armor or consumable) to the creature’s inventory.
+        /// </summary>
+        void AddItem(IItem item);
+
+        /// <summary>
         /// Equips an attack item to the creature's inventory.
         /// </summary>
         /// <param name="attackItem">The attack item to equip.</param>

@@ -47,7 +47,7 @@ namespace _2DGameFramework.Domain.Objects
         }
 
         ///<inheritdoc/>
-        public IEnumerable<IItem> GetLoot()
+        public IEnumerable<IItem> GetLoot(ICreature looter)
         {
             var loot = _items.ToList();
             _items.Clear();
@@ -55,24 +55,29 @@ namespace _2DGameFramework.Domain.Objects
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Loot retrieved from container '{Name}' at {Position}. Items: {loot.Count}");
+                $"{looter.Name} looted {loot.Count} items from container '{Name}' at {Position}.");
 
             return loot;
         }
 
         /// <summary>
-        /// Returns a formatted string describing this container’s base information,
-        /// including its name, current item count, and list of item names.
+        /// Overrides ToString to include current contents
         /// </summary>
-        /// <returns>A string representation of this container.</returns>
         public override string ToString()
         {
-            var itemList = _items.Count > 0
+            var contents = _items.Any()
                 ? string.Join(", ", _items.Select(i => i.Name))
-                : "None";
+                : "(empty)";
 
-            return $"{base.ToString()} [Items: {_items.Count}] [{itemList}]";
+            return $"{Name} at {Position} contains: [{contents}]";
         }
+
+        /// <summary>
+        /// Returns items currently in the container without removing them.
+        /// </summary>
+        public IEnumerable<IItem> PeekLoot() => _items.AsReadOnly();
+
+
 
 
     }

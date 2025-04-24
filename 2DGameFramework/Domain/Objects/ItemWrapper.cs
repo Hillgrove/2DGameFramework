@@ -33,12 +33,12 @@ namespace _2DGameFramework.Domain.Objects
         }
 
         ///<inheritdoc/>
-        public IEnumerable<IItem> GetLoot()
+        public IEnumerable<IItem> GetLoot(ICreature looter)
         {
             _logger.Log(
                 TraceEventType.Information,
                 LogCategory.Inventory,
-                $"Item '{_wrappedItem.Name}' looted from wrapper at {Position}");
+                $"{looter.Name} looted '{_wrappedItem.Name}' from wrapper at {Position}");
 
             return new[] { _wrappedItem };
         }
@@ -50,6 +50,5 @@ namespace _2DGameFramework.Domain.Objects
         /// <returns>A string representation of the item wrapper.</returns>
         public override string ToString() =>
             $"{base.ToString()} [Contains: {_wrappedItem.Name}]";
-
     }
 }

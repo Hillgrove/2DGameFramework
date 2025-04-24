@@ -25,6 +25,12 @@ namespace _2DGameFramework.Services
             _logger = logger;
         }
 
+        public void AddItem(IItem item)
+        {
+        if (item == null) throw new ArgumentNullException(nameof(item));
+        ProcessLoot(new[] { item});
+        }
+
         /// <inheritdoc/>
         public void EquipAttackItem(IDamageSource item)
         {
@@ -65,7 +71,7 @@ namespace _2DGameFramework.Services
                 return;
             }
 
-            var items = source.GetLoot();
+            var items = source.GetLoot(looter);
             ProcessLoot(items);
 
             if (source is ItemWrapper)

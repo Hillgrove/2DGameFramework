@@ -1,4 +1,5 @@
 ﻿using _2DGameFramework.Core;
+using _2DGameFramework.Domain.Combat;
 using _2DGameFramework.Domain.World;
 using _2DGameFramework.Interfaces;
 using _2DGameFramework.Services;
@@ -15,11 +16,14 @@ namespace _2DGameFramework.Domain.Creatures
         public int HitPoints { get; internal set; }
         public int MaxHitPoints { get; }
         public Position Position { get; internal set; }
+        public IInventoryService Inventory => _inventory;
 
         protected readonly ICombatService _combatService;
         protected readonly IMovementService _movementService;
         protected readonly IInventoryService _inventory;
         protected readonly IStatsService _statsService;
+
+        protected readonly Dictionary<string, IAttackAction> _namedActions = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Creature"/> class.
@@ -53,8 +57,25 @@ namespace _2DGameFramework.Domain.Creatures
         }
 
         #region Public Methods
+        /// <summary>
+        /// Registers an attack action under a unique key.
+        /// CompositeAttackAction can itself wrap multiple actions.
+        /// </summary>
+        public void RegisterAttackAction(string key, IAttackAction action)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Action key must be non-empty", nameof(key));
+            _namedActions[key] = action;
+        }
+
         /// <inheritdoc />
-        public void Attack(ICreature target) => AttackTemplate(target);
+        public void Attack(string actionKey, ICreature target)
+        {
+            if (!_namedActions.TryGetValue(actionKey, out var action))
+                throw new InvalidOperationException($"No attack registered with key '{actionKey}'");
+
+            AttackTemplate(action, target);
+        }
 
         /// <inheritdoc />
         public void AdjustHitPoints(int delta)
@@ -72,7 +93,7 @@ namespace _2DGameFramework.Domain.Creatures
 
         /// <inheritdoc />
         public void MoveBy(int deltaX, int deltaY, GameWorld world)
-            => Position = _movementService.Move(Position, deltaX, deltaY, world);
+            => Position = _movementService.Move(this, Position, deltaX, deltaY, world);
 
         /// <inheritdoc />
         public IEnumerable<IConsumable> GetUsables() => _inventory.GetUsables();
@@ -109,11 +130,11 @@ namespace _2DGameFramework.Domain.Creatures
         /// calls PreAttack, DoAttack, then PostAttack in order.
         /// </summary>
         /// <param name="target">The creature to be attacked.</param>
-        protected void AttackTemplate(ICreature target)
+        protected void AttackTemplate(IAttackAction action, ICreature target)
         {
-            PreAttack(target);
-            DoAttack(target);
-            PostAttack(target);
+            PreAttack(action, target);
+            DoAttack(action, target);
+            PostAttack(action, target);
         }
 
         /// <summary>
@@ -121,7 +142,7 @@ namespace _2DGameFramework.Domain.Creatures
         /// Subclasses can override to add pre‐attack behavior.
         /// </summary>
         /// <param name="target">The creature to be attacked.</param>
-        protected virtual void PreAttack(ICreature target)
+        protected virtual void PreAttack(IAttackAction action, ICreature target)
         {
             // e.g. throw if out of range, consume stamina, apply “first‑strike” buff
         }
@@ -131,14 +152,14 @@ namespace _2DGameFramework.Domain.Creatures
         /// to perform the actual damage application.
         /// </summary>
         /// <param name="target">The creature to be attacked.</param>
-        protected abstract void DoAttack(ICreature target);
+        protected abstract void DoAttack(IAttackAction action, ICreature target);
 
         /// <summary>
         /// Hook invoked after the actual attack logic. 
         /// Subclasses can override to add post‐attack behavior.
         /// </summary>
         /// <param name="target">The creature that was attacked.</param>
-        protected virtual void PostAttack(ICreature target)
+        protected virtual void PostAttack(IAttackAction action, ICreature target)
         {
             // e.g. trigger OnHit observers, apply bleed effect, log damage summary
         }
