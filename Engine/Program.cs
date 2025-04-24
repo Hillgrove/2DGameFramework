@@ -221,53 +221,58 @@ Wait();
 
 #region Attacks
 Console.WriteLine("\n========================= Attack ==========================\n");
-// Basic attacks
+
+// Prepare attack actions using CombatService
 IAttackAction swordAttack = new DamageSourceAttack(sword, combatService);
 IAttackAction daggerAttack = new DamageSourceAttack(weaponFactory.Create("ShinyDagger"), combatService);
 IAttackAction bowAttack = new DamageSourceAttack(weaponFactory.Create("LongBow"), combatService);
 
-var concreteHero = (DefaultCreature)hero;
+// TODO: Fix concrete hero
+// Register actions with keys on DefaultCreature
+var heroCreature = (DefaultCreature)hero;
+heroCreature.AddAttackAction("Sword", swordAttack);
+heroCreature.AddAttackAction("Dagger", daggerAttack);
+heroCreature.AddAttackAction("Bow", bowAttack);
 
-// Single attacks
-Console.WriteLine("Sword attack");
-concreteHero.AddAttackAction(swordAttack);
-concreteHero.Attack(goblin);
+// Composite action (Dual Wield)
+var dualWieldAction = new CompositeAttackAction();
+dualWieldAction.Add(swordAttack);
+dualWieldAction.Add(daggerAttack);
+heroCreature.AddAttackAction("DualWield", dualWieldAction);
 
-Console.WriteLine("\nDagger attack");
-concreteHero.AddAttackAction(daggerAttack);
-concreteHero.Attack(goblin);
-
-Console.WriteLine("\nBow attack");
-concreteHero.AddAttackAction(bowAttack);
-concreteHero.Attack(goblin);
-
-// Composite attack (dual wield)
-var dualWield = new CompositeAttackAction();
-dualWield.Add(swordAttack);
-dualWield.Add(daggerAttack);
-concreteHero.AddAttackAction(dualWield);
-concreteHero.Attack(goblin);
-
-// Decorator test: timed weapon buff
+// Decorator test: timed sword buff
 var timedSword = new TimedWeaponDecorator(sword, dmg => dmg + 5, uses: 2);
-IAttackAction buffedAttack = new DamageSourceAttack(timedSword, combatService);
-concreteHero.AddAttackAction(buffedAttack);
-Console.WriteLine("\nApplying 3 buffered attacks:");
+var buffedAttack = new DamageSourceAttack(timedSword, combatService);
+heroCreature.AddAttackAction("BuffedSword", buffedAttack);
+
+
+// Execute specific actions by key
+Console.WriteLine("-- Sword Attack --");
+heroCreature.Attack("Sword", goblin);
+Console.ReadKey();
+
+Console.WriteLine("\n-- Dagger Attack --");
+heroCreature.Attack("Dagger", goblin);
+Console.ReadKey();
+
+Console.WriteLine("\n-- Bow Attack --");
+heroCreature.Attack("Bow", goblin);
+Console.ReadKey();
+
+Console.WriteLine("\n-- Dual Wield Attack --");
+heroCreature.Attack("DualWield", goblin);
+Console.ReadKey();
+
+Console.WriteLine("\n-- Buffed Sword Attacks --");
 for (int i = 1; i <= 3; i++)
 {
-    Console.WriteLine($"Attack #{i}");
-    concreteHero.Attack(goblin);
+    Console.WriteLine($"\nBuffed Attack #{i}");
+    heroCreature.Attack("BuffedSword", goblin);
 }
+Console.ReadKey();
 
-// Test death events by finishing off goblin
-Console.WriteLine("\nFinishing off goblin:");
-while (goblin.HitPoints > 0)
-{
-    concreteHero.Attack(goblin);
-}
-
-// Trap
-spikeTrap.ReactTo(hero);
+Console.WriteLine("\n-- Killing off Goblin with a trap --");
+spikeTrap.ReactTo(goblin);
 
 Wait();
 #endregion

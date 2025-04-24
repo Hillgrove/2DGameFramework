@@ -1,4 +1,5 @@
-﻿using _2DGameFramework.Domain.Creatures;
+﻿using _2DGameFramework.Domain.Combat;
+using _2DGameFramework.Domain.Creatures;
 using _2DGameFramework.Domain.World;
 using _2DGameFramework.Services;
 
@@ -23,12 +24,17 @@ namespace _2DGameFramework.Interfaces
         void MoveBy(int deltaX, int deltaY, GameWorld world);
 
         /// <summary>
-        /// Performs an attack on the target creature.
+        /// Registers an attack action under the given key (name).
         /// </summary>
-        /// <param name="target">The creature to attack.</param>
-        void Attack(ICreature target);
+        void RegisterAttackAction(string key, IAttackAction action);
+
+        /// <summary>
+        /// Executes the action registered under the given key against the target.
+        /// </summary>
+        void Attack(string actionKey, ICreature target);
 
         void AdjustHitPoints(int delta);
+        
         IEnumerable<IConsumable> GetUsables();
     }
 }
