@@ -113,7 +113,7 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
 
 Console.WriteLine("\nCreating Creatures...");
 var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(2, 2));
-var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(1, 1));
+var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(1, 1), .50);
 #endregion
 
 Console.WriteLine();
@@ -150,6 +150,8 @@ var helmet = armorFactory.Create("Helmet");
 chest.AddItem(sword);
 chest.AddItem(helmet);
 chest.AddItem(potion);
+
+
 
 Console.WriteLine($"\n{ chest}");
 Wait();
@@ -191,7 +193,7 @@ Console.WriteLine("\n====================== World Objects ======================
 var spikeTrap = trapFactory.CreateTrap(
     name: "Deadly Spike Pit",
     description: "Watch your step!",
-    damageAmount: 25,
+    damageAmount: 100,
     damageType: DamageType.Physical,
     position: new Position(2, 4),
     isRemovable: false);
@@ -263,13 +265,9 @@ Console.WriteLine("\n-- Dual Wield Attack --");
 heroCreature.Attack("DualWield", goblin);
 Console.ReadKey();
 
-Console.WriteLine("\n-- Buffed Sword Attacks --");
-for (int i = 1; i <= 3; i++)
-{
-    Console.WriteLine($"\nBuffed Attack #{i}");
-    heroCreature.Attack("BuffedSword", goblin);
-}
-Console.ReadKey();
+Console.WriteLine("\n-- Buffed Sword Attack --");
+heroCreature.Attack("BuffedSword", goblin);
+ Console.ReadKey();
 
 Console.WriteLine("\n-- Killing off Goblin with a trap --");
 spikeTrap.ReactTo(goblin);

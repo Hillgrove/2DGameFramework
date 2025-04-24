@@ -13,22 +13,23 @@ namespace _2DGameFramework.Observers
     {
         private readonly ILogger _logger;
         private readonly IInventoryService _inventory;
-        private readonly double _thresholdFraction;
+        private readonly Dictionary<ICreature, double> _thresholds = new();
 
         public HealthObserver(
             ILogger logger,
-            IInventoryService inventory,
-            double thresholdFraction = 0.25)
+            IInventoryService inventory)
         {
             _logger = logger;
             _inventory = inventory;
-            _thresholdFraction = thresholdFraction;
         }
 
 
         /// <summary>Subscribe a single creature’s HealthChanged event.</summary>
-        public void Subscribe(ICreature creature)
+        public void Subscribe(ICreature creature, double thresholdFraction)
         {
+            // clamp threshold between 0 and 1
+            var frac = Math.Clamp(thresholdFraction, 0.0, 1.0);
+            _thresholds[creature] = frac;
             creature.HealthChanged += OnHealthChanged;
         }
 
@@ -36,7 +37,11 @@ namespace _2DGameFramework.Observers
         {
             if (sender is not ICreature creature) return;
 
-            int thresholdHitPoints = (int)(creature.MaxHitPoints * _thresholdFraction);
+            // skip if not in our map or already dead
+            if (!_thresholds.TryGetValue(creature, out var thresholdFraction)) return;
+            if (e.NewHp <= 0) return;
+
+            int thresholdHitPoints = (int)(creature.MaxHitPoints * thresholdFraction);
 
             if (e.OldHp > thresholdHitPoints && e.NewHp <= thresholdHitPoints)
             {

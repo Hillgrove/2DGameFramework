@@ -39,7 +39,7 @@ namespace _2DGameFramework.Factories
         }
 
         /// <inheritdoc/>
-        public Creature Create(string name, string description, int hitpoints, Position position)
+        public Creature Create(string name, string description, int hitpoints, Position position, double autoHealThreshold)
         {
             var creature = new DefaultCreature(
                 name,
@@ -51,7 +51,7 @@ namespace _2DGameFramework.Factories
                 _movementService,
                 _inventoryService);
 
-            _healthObserver.Subscribe(creature);
+            _healthObserver.Subscribe(creature, autoHealThreshold);
             _deathObserver.Subscribe(creature);
 
             return creature;

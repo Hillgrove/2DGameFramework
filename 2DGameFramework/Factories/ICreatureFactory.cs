@@ -18,6 +18,6 @@ namespace _2DGameFramework.Factories
         /// <param name="hitpoints">The initial and maximum hit points of the creature.</param>
         /// <param name="description">An optional description providing additional details about the creature.</param>
         /// <returns>A fully initialized <see cref="Creature"/> instance.</returns>
-        Creature Create(string name, string description, int hitpoints, Position position);
+        Creature Create(string name, string description, int hitpoints, Position position, double autoHealThreshold = 0.25);
     }
 }
