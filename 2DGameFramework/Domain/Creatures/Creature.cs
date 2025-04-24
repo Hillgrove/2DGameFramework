@@ -72,7 +72,7 @@ namespace _2DGameFramework.Domain.Creatures
 
         /// <inheritdoc />
         public void MoveBy(int deltaX, int deltaY, GameWorld world)
-            => Position = _movementService.Move(Position, deltaX, deltaY, world);
+            => Position = _movementService.Move(this, Position, deltaX, deltaY, world);
 
         /// <inheritdoc />
         public IEnumerable<IConsumable> GetUsables() => _inventory.GetUsables();

@@ -13,8 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 #region Framework Startup
+Console.WriteLine("Framework Startup...");
 
-Console.WriteLine("==================== Framework Startup ====================");
 var provider = GameFramework.Start("config.xml", "2DGameFramework");
 
 // Core serices
@@ -33,7 +33,7 @@ var world = provider.GetRequiredService<GameWorld>();
 #endregion
 
 #region Register Weapons
-Console.WriteLine("\n=================== Registering Weapons ===================");
+Console.WriteLine("\nRegistering Weapons...");
 
 weaponFactory.Register("RustySword", () => new DefaultWeapon(
     name: "Rusty Sword",
@@ -58,7 +58,7 @@ weaponFactory.Register("LongBow", () => new DefaultWeapon(
 #endregion
 
 #region Register Armor
-Console.WriteLine("\n==================== Registering Armor ====================");
+Console.WriteLine("\nRegistering Armor...");
 
 armorFactory.Register("Helmet", () => new DefaultArmor(
     name: "Basic Helmet",
@@ -92,7 +92,7 @@ armorFactory.Register("Boots", () => new DefaultArmor(
 #endregion
 
 #region Register Consumables
-Console.WriteLine("\n================= Registering Consumables =================");
+Console.WriteLine("\nRegistering Consumables...");
 
 consumableFactory.Register("SmallHealingPotion", () => new DefaultConsumable(
     name: "Small Healing Potion",
@@ -111,11 +111,12 @@ consumableFactory.Register("WeakPoison", () => new DefaultConsumable(
 
 #region Create Creatures
 
-Console.WriteLine("\n==================== Creating Creatures ===================");
-var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(0, 0));
+Console.WriteLine("\nCreating Creatures...");
+var hero = creatureFactory.Create("Hero", "The hero of all the lands", 100, new Position(2, 2));
 var goblin = creatureFactory.Create("Goblin", "Scrawny little goblin", 50, new Position(1, 1));
 #endregion
 
+Console.WriteLine();
 Console.WriteLine();
 Console.WriteLine("               **********************************");
 Console.WriteLine("               *                                *");
@@ -124,22 +125,20 @@ Console.WriteLine("               *                                *");
 Console.WriteLine("               **********************************");
 
 #region Movement
-Console.WriteLine("\n========================= Movement ========================");
+Console.WriteLine("\n========================= Movement ========================\n");
 
-// TODO: add some logging
-hero.MoveBy(2, 3, world);
-goblin.MoveBy(-1, 1, world);
+hero.MoveBy(-2, -2, world);
+goblin.MoveBy(-2, 1, world);
 
 Wait();
 #endregion
 
 #region Container & Loot Tests
-Console.WriteLine("\n==================== Container and Loot ===================");
-
+Console.WriteLine("\n========================= Container =======================\n");
 var chest = new Container(
     name: "A Chest",
     description: "A dusty wooden chest",
-    position: new Position(4, 1),
+    position: new Position(0, 0),
     logger: logger);
 
 // Place items in chest
@@ -152,40 +151,42 @@ chest.AddItem(sword);
 chest.AddItem(helmet);
 chest.AddItem(potion);
 
-// TODO: make tostring override show loot in chest - GetLoot empties chest
-// Show chest contents
-Console.WriteLine("\nChest contains: " + string.Join(", ", chest.GetLoot().Select(i => i.Name)));
+Console.WriteLine($"\n{ chest}");
 Wait();
 
+Console.WriteLine("\n=========================== Loot ==========================\n");
 // Hero loots chest
 hero.Loot(chest, world);
-Console.WriteLine("After looting, hero: " + hero);
-Console.WriteLine("Remaining in chest: " + chest.GetLoot().Count() + " items");
+Console.WriteLine("\nRemaining in chest: " + chest.PeekLoot().Count() + " items");
 Wait();
 
 
 // Add poison and loot again
+ Console.WriteLine();
 chest.AddItem(poison);
-Console.WriteLine("Chest now contains: " + string.Join(", ", chest.GetLoot().Select(i => i.Name)));
 hero.Loot(chest, world);
-Console.WriteLine("After second loot, hero items: " + string.Join(", ", hero.GetUsables().Select(u => u.Name)));
+Console.WriteLine("\nAfter second loot, hero has these usables: " + string.Join(", ", hero.GetUsables().Select(u => u.Name)));
+
+Wait();
 #endregion
 
 #region Consumables
-// TODO: fix log
-Console.WriteLine("======================= Consumables =======================");
-Console.WriteLine("Hero HP before use: " + hero.HitPoints);
-var healingPotion = hero.GetUsables().FirstOrDefault(u => u.Name == "Small Healing Potion");
-if (healingPotion != null) hero.UseItem(healingPotion);
-Console.WriteLine("Hero HP after healing: " + hero.HitPoints);
+Console.WriteLine("\n======================= Consumables =======================\n");
+Console.WriteLine($"Hero HP before use: {hero.HitPoints}\n");
+
 var damagePoison = hero.GetUsables().FirstOrDefault(u => u.Name == "Weak Poison");
 if (damagePoison != null) hero.UseItem(damagePoison);
-Console.WriteLine("Hero HP after poison: " + hero.HitPoints);
+Console.WriteLine($"Hero HP after poison: {hero.HitPoints}\n");
+
+var healingPotion = hero.GetUsables().FirstOrDefault(u => u.Name == "Small Healing Potion");
+if (healingPotion != null) hero.UseItem(healingPotion);
+Console.WriteLine($"Hero HP after healing: {hero.HitPoints}");
 
 Wait();
 #endregion
 
 #region World objects
+Console.WriteLine("\n====================== World Objects ======================\n");
 // Traps
 var spikeTrap = trapFactory.CreateTrap(
     name: "Deadly Spike Pit",
@@ -201,7 +202,6 @@ var tree = new EnvironmentObject(
     description: "A tall and majestic Tree",
     position: new Position(1, 3));
 
-
 world.AddCreature(hero);
 world.AddCreature(goblin);
 world.AddObject(chest);
@@ -210,19 +210,17 @@ world.AddObject(tree);
 
 // Show all creatures still alive
 var alive = world.GetCreatures().Where(c => c.HitPoints > 0);
-Console.WriteLine("Alive creatures: " + string.Join(", ", alive.Select(c => c.Name)));
+Console.WriteLine("\nAlive creatures in the world: " + string.Join(", ", alive.Select(c => c.Name)));
 
 // Find objects at hero's position
 var objectsAtHero = world.GetObjects().Where(o => o.Position.Equals(hero.Position));
 Console.WriteLine("Objects at hero's position: " + string.Join(", ", objectsAtHero.Select(o => o.Name)));
 
-// Final world state
-Console.WriteLine("\n-- Final World State --");
-Console.WriteLine(world);
+Wait();
 #endregion
 
 #region Attacks
-Console.WriteLine("========================= Attack ==========================");
+Console.WriteLine("\n========================= Attack ==========================\n");
 // Basic attacks
 IAttackAction swordAttack = new DamageSourceAttack(sword, combatService);
 IAttackAction daggerAttack = new DamageSourceAttack(weaponFactory.Create("ShinyDagger"), combatService);
@@ -231,12 +229,15 @@ IAttackAction bowAttack = new DamageSourceAttack(weaponFactory.Create("LongBow")
 var concreteHero = (DefaultCreature)hero;
 
 // Single attacks
+Console.WriteLine("Sword attack");
 concreteHero.AddAttackAction(swordAttack);
 concreteHero.Attack(goblin);
 
+Console.WriteLine("\nDagger attack");
 concreteHero.AddAttackAction(daggerAttack);
 concreteHero.Attack(goblin);
 
+Console.WriteLine("\nBow attack");
 concreteHero.AddAttackAction(bowAttack);
 concreteHero.Attack(goblin);
 
@@ -270,8 +271,6 @@ spikeTrap.ReactTo(hero);
 
 Wait();
 #endregion
-
-
 
 #region Helper Functions
 static void Wait()

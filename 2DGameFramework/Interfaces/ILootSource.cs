@@ -11,6 +11,6 @@
         /// Retrieves the collection of items available to be looted.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{IItem}"/> of lootable items.</returns>
-        IEnumerable<IItem> GetLoot();
+        IEnumerable<IItem> GetLoot(ICreature looter);
     }
 }

@@ -8,9 +8,10 @@
     {
         Game            = 1000,
         World           = 2000,
-        Combat          = 3000,
-        Inventory       = 4000,
-        Configuration   = 5000,
+        Movement        = 3000,
+        Combat          = 4000,
+        Inventory       = 5000,
+        Configuration   = 6000,
         Error           = 9000
     }
 }
