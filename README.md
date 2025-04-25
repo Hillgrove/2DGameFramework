@@ -9,7 +9,7 @@ Dette bibliotek giver et grundlæggende API til at definere et turbaseret 2D-spi
 
 ---
 
-## Funktionalitet ⚙️
+## ⚙️ Funktionalitet 
 
 - **🌍 World**: Konfigurerbar 2D-verden med bredde, højde og lister af væsener og objekter  
 - **🐉 Creature**: Har navn, livspoint, angrebs- og forsvarsinventar samt metoder til at angribe, modtage skade og loot  
@@ -18,7 +18,7 @@ Dette bibliotek giver et grundlæggende API til at definere et turbaseret 2D-spi
 
 ---
 
-## Udvidelser & Fleksibilitet 🔧
+## 🔧 Udvidelser & Fleksibilitet 
 
 - **🛠️ Konfiguration**: Læs konfigurationsfil (`config.xml`) for at sætte world size, difficulty level og logging
 - **📋 Logging**: Brug `System.Diagnostics.TraceSource` med fleksible `TraceListener`-opsætninger (Console, File, filterniveauer)
@@ -33,7 +33,7 @@ Dette bibliotek giver et grundlæggende API til at definere et turbaseret 2D-spi
 
 ---
 
-## Teknologi 💻
+## 💻 Teknologi 
 
 - **Sprog**: C# (.NET)  
 - **Dependency Injection**: `Microsoft.Extensions.DependencyInjection` via `services.Add2DGameFramework()` :contentReference[oaicite:4]{index=4}  
@@ -43,7 +43,7 @@ Dette bibliotek giver et grundlæggende API til at definere et turbaseret 2D-spi
 
 ---
 
-## Eksempel på brug 🚀
+## 🚀 Eksempel på brug 
 
 Start frameworket og hent services via DI:
 
