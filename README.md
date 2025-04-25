@@ -36,7 +36,6 @@ Dette bibliotek giver et grundlæggende API til at definere et turbaseret 2D-spi
 ## 💻 Teknologi 
 
 - **Sprog**: C# (.NET)  
-- **Dependency Injection**: `Microsoft.Extensions.DependencyInjection` via `services.Add2DGameFramework()` :contentReference[oaicite:4]{index=4}  
 - **Logging**: `GameLoggerAdapter` wrapping `TraceSource`  
 - **Konfiguration**: `ConfigurationLoader` håndterer XML-filen  
 - **Arkitektur**: Interfaces, generiske factories, observer- og decorator-mønstre  
