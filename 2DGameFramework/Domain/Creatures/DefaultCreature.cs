@@ -30,27 +30,11 @@ namespace _2DGameFramework.Domain.Creatures
         }
 
         /// <summary>
-        /// Pre-attack hook; no-op by default.
-        /// </summary>
-        protected override void PreAttack(IAttackAction action, ICreature target)
-        {
-            // e.g. consume stamina or check range
-        }
-
-        /// <summary>
         /// Executes exactly the chosen IAttackAction.
         /// </summary>
         protected override void DoAttack(IAttackAction action, ICreature target)
         {
             action.Execute(this, target);
-        }
-
-        /// <summary>
-        /// Post-attack hook; no-op by default.
-        /// </summary>
-        protected override void PostAttack(IAttackAction action, ICreature target)
-        {
-            // e.g. apply status effects
         }
     }
 }

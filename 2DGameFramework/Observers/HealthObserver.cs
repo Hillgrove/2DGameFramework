@@ -45,6 +45,7 @@ namespace _2DGameFramework.Observers
 
             if (e.OldHp > thresholdHitPoints && e.NewHp <= thresholdHitPoints)
             {
+                // find første “usable” hvor Type‐bitmasken indeholder Healing-flaget
                 var healingItem = creature
                     .GetUsables()
                     .FirstOrDefault(u => (u.Type & ConsumableType.Healing) != 0);
